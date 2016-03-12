@@ -5,13 +5,14 @@
     3) activity_main.xml - This layout xml file needed in order to tell Android what
         to show in MainActivity.
     4) strings.xml - When text needs to be shown throughout the app, the text is placed here. This
-        allows easy translation. 
+        allows easy translation.
 -->
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sqisland.android.hello">
   <application
-      android:label="@string/app_name">
+      android:label="@string/app_name"
+      android:icon="@mipmap/ic_launcher">
     <activity
         android:name=".MainActivity"
         android:label="@string/app_name">
