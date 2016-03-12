@@ -1,3 +1,12 @@
+<!--
+    Four files are needed for a basic Android app.
+    1) AndroidManifest.xml - Specifies the structure of the app.
+    2) MainActivity.java - The main screen of the app, also known as the main activity.
+    3) activity_main.xml - This layout xml file needed in order to tell Android what
+        to show in MainActivity.
+    4) strings.xml - When text needs to be shown throughout the app, the text is placed here. This
+        allows easy translation. 
+-->
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sqisland.android.hello">
