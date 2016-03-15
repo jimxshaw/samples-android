@@ -11,9 +11,11 @@ public class MainActivity extends AppCompatActivity {
     // inheriting from. Once the compiler knows this, it can help us identify errors in our code.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        // We call super.onCreate(bundleAlias) just in case the super activity class needs to do
+        // some configuring prior to our activity kicking off.
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_main);
+        // This sets the activity content from a layout resource, R. The resource will be inflated,
+        // adding all top-level views to the activity.
+        setContentView(R.layout.main);
     }
 }
