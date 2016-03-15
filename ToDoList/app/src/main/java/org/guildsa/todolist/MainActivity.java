@@ -2,6 +2,9 @@ package org.guildsa.todolist;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 // MainActivity inherits from many super classes of which one is AppCompatActivity. The highest
 // super class Activity is one where all sub activity classes inherit.
@@ -17,5 +20,23 @@ public class MainActivity extends AppCompatActivity {
         // This sets the activity content from a layout resource, R. The resource will be inflated,
         // adding all top-level views to the activity.
         setContentView(R.layout.main);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add_task:
+                Log.d("MainActivity", "Add a new task");
+                return true;
+
+            default:
+                return false;
+        }
     }
 }
