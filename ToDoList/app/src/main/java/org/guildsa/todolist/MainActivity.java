@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setMessage("What do you want to do?");
                 final EditText inputField = new EditText(this);
                 builder.setView(inputField);
+
                 builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
