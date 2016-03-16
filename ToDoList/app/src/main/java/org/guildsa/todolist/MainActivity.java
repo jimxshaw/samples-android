@@ -1,13 +1,12 @@
 package org.guildsa.todolist;
 
 import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +20,7 @@ import org.guildsa.todolist.db.TaskDBHelper;
 // MainActivity inherits from many super activity classes. The highest
 // super class is Activity, where all sub activity classes such as ListActivity, AppCompatActivity
 // and etc. inherit.
-public class MainActivity extends ListActivity {
+public class MainActivity extends AppCompatActivity {
     private TaskDBHelper helper;
     private ListAdapter listAdapter;
 
@@ -83,7 +82,7 @@ public class MainActivity extends ListActivity {
                         values.put(TaskContract.Columns.TASK, task);
 
                         db.insertWithOnConflict(TaskContract.TABLE, null, values,
-                                                    SQLiteDatabase.CONFLICT_IGNORE);
+                                SQLiteDatabase.CONFLICT_IGNORE);
 
                         updateUI();
                     }
@@ -115,5 +114,9 @@ public class MainActivity extends ListActivity {
                                               0);
 
         this.setListAdapter(listAdapter);
+    }
+
+    public void setListAdapter(ListAdapter listAdapter) {
+        this.listAdapter = listAdapter;
     }
 }

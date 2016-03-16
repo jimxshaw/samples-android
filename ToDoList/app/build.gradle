@@ -6,8 +6,8 @@ android {
 
     defaultConfig {
         applicationId "org.guildsa.todolist"
-        minSdkVersion 19
-        targetSdkVersion 19
+        minSdkVersion 22
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }
