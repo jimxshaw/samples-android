@@ -1,6 +1,7 @@
 package org.guildsa.todolist;
 
 import android.app.AlertDialog;
+import android.app.ListActivity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.Cursor;
@@ -11,14 +12,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.SimpleCursorAdapter;
 
 import org.guildsa.todolist.db.TaskContract;
 import org.guildsa.todolist.db.TaskDBHelper;
 
 // MainActivity inherits from many super activity classes. The highest
-// super class Activity is one where all sub activity classes inherit.
-public class MainActivity extends AppCompatActivity {
+// super class is Activity, where all sub activity classes such as ListActivity, AppCompatActivity
+// and etc. inherit.
+public class MainActivity extends ListActivity {
     private TaskDBHelper helper;
+    private ListAdapter listAdapter;
 
     // The @Override Android Studio annotation is not mandatory but is quite useful to use anyway.
     // Its purpose is to tell the compiler that we're overriding a method from a class we're
@@ -32,17 +37,18 @@ public class MainActivity extends AppCompatActivity {
         // adding all top-level views to the activity.
         setContentView(R.layout.main);
 
+        /*// Code to retrieve list items from SQLite and log them to the console.
         SQLiteDatabase sqlDB = new TaskDBHelper(this).getWritableDatabase();
         Cursor cursor = sqlDB.query(TaskContract.TABLE,
                                     new String[]{ TaskContract.Columns.TASK },
                                     null, null, null, null, null);
-
         cursor.moveToFirst();
-
         while (cursor.moveToNext()) {
             Log.d("MainActivity cursor",
                     cursor.getString(cursor.getColumnIndexOrThrow(TaskContract.Columns.TASK)));
-        }
+        }*/
+
+        updateUI();
     }
 
     // This method is used to add a task menu in the top right corner.
@@ -78,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
 
                         db.insertWithOnConflict(TaskContract.TABLE, null, values,
                                                     SQLiteDatabase.CONFLICT_IGNORE);
+
+                        updateUI();
                     }
                 });
 
@@ -90,5 +98,22 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return false;
         }
+    }
+
+    private void updateUI() {
+        helper = new TaskDBHelper(MainActivity.this);
+        SQLiteDatabase sqlDB = helper.getReadableDatabase();
+        Cursor cursor = sqlDB.query(TaskContract.TABLE,
+                                    new String[] { TaskContract.Columns._ID, TaskContract.Columns.TASK },
+                                    null, null, null, null, null);
+
+        listAdapter = new SimpleCursorAdapter(this,
+                                              R.layout.task_view,
+                                              cursor,
+                                              new String[] { TaskContract.Columns.TASK },
+                                              new int[] { R.id.taskTextView},
+                                              0);
+
+        this.setListAdapter(listAdapter);
     }
 }

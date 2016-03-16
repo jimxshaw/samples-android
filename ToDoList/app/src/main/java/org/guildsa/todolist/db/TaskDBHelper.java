@@ -5,7 +5,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-// This helper class will open the database for us.
+// The SQLiteOpenHelper class will manage database creation and version management. Our TaskDBHelper
+// sub class can implement onOpen(), onCreate() and onUpgrade(), which takes care of opening the
+// database if it exists, creating it if it doesn't and upgrading it as necessary.
 public class TaskDBHelper extends SQLiteOpenHelper {
     public TaskDBHelper(Context context) {
         super(context, TaskContract.DB_NAME, null, TaskContract.DB_VERSION);
