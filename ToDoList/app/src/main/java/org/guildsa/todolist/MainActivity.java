@@ -3,6 +3,7 @@ package org.guildsa.todolist;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,6 +31,18 @@ public class MainActivity extends AppCompatActivity {
         // This sets the activity content from a layout resource, R. The resource will be inflated,
         // adding all top-level views to the activity.
         setContentView(R.layout.main);
+
+        SQLiteDatabase sqlDB = new TaskDBHelper(this).getWritableDatabase();
+        Cursor cursor = sqlDB.query(TaskContract.TABLE,
+                                    new String[]{ TaskContract.Columns.TASK },
+                                    null, null, null, null, null);
+
+        cursor.moveToFirst();
+
+        while (cursor.moveToNext()) {
+            Log.d("MainActivity cursor",
+                    cursor.getString(cursor.getColumnIndexOrThrow(TaskContract.Columns.TASK)));
+        }
     }
 
     // This method is used to add a task menu in the top right corner.
