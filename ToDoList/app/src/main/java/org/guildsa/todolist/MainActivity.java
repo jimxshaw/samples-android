@@ -15,7 +15,7 @@ import android.widget.EditText;
 import org.guildsa.todolist.db.TaskContract;
 import org.guildsa.todolist.db.TaskDBHelper;
 
-// MainActivity inherits from many super classes of which one is AppCompatActivity. The highest
+// MainActivity inherits from many super activity classes. The highest
 // super class Activity is one where all sub activity classes inherit.
 public class MainActivity extends AppCompatActivity {
     private TaskDBHelper helper;
