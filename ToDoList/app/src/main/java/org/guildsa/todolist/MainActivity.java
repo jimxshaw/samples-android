@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 import org.guildsa.todolist.db.TaskContract;
@@ -22,6 +23,7 @@ import org.guildsa.todolist.db.TaskDBHelper;
 // and etc. inherit.
 public class MainActivity extends AppCompatActivity {
     private TaskDBHelper helper;
+    private ListView listView;
     private ListAdapter listAdapter;
 
     // The @Override Android Studio annotation is not mandatory but is quite useful to use anyway.
@@ -110,13 +112,11 @@ public class MainActivity extends AppCompatActivity {
                                               R.layout.task_view,
                                               cursor,
                                               new String[] { TaskContract.Columns.TASK },
-                                              new int[] { R.id.taskTextView},
+                                              new int[] { R.id.taskTextView },
                                               0);
 
-        this.setListAdapter(listAdapter);
+        listView = (ListView) findViewById(R.id.list);
+        listView.setAdapter(listAdapter);
     }
 
-    public void setListAdapter(ListAdapter listAdapter) {
-        this.listAdapter = listAdapter;
-    }
 }
