@@ -1,7 +1,9 @@
 package org.guildsa.todolist;
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,9 +11,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import org.guildsa.todolist.db.TaskContract;
+import org.guildsa.todolist.db.TaskDBHelper;
+
 // MainActivity inherits from many super classes of which one is AppCompatActivity. The highest
 // super class Activity is one where all sub activity classes inherit.
 public class MainActivity extends AppCompatActivity {
+    private TaskDBHelper helper;
+
     // The @Override Android Studio annotation is not mandatory but is quite useful to use anyway.
     // Its purpose is to tell the compiler that we're overriding a method from a class we're
     // inheriting from. Once the compiler knows this, it can help us identify errors in our code.
@@ -46,7 +53,18 @@ public class MainActivity extends AppCompatActivity {
                 builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Log.d("MainActivity", inputField.getText().toString());
+                        String task = inputField.getText().toString();
+                        Log.d("MainActivity", task);
+
+                        helper = new TaskDBHelper(MainActivity.this);
+                        SQLiteDatabase db = helper.getWritableDatabase();
+                        ContentValues values = new ContentValues();
+
+                        values.clear();
+                        values.put(TaskContract.Columns.TASK, task);
+
+                        db.insertWithOnConflict(TaskContract.TABLE, null, values,
+                                                    SQLiteDatabase.CONFLICT_IGNORE);
                     }
                 });
 
