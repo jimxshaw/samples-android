@@ -3,13 +3,16 @@ package guildsa.org.weatherapp.service;
 import android.net.Uri;
 import android.os.AsyncTask;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+
+import guildsa.org.weatherapp.data.Channel;
 
 public class YahooWeatherService {
     private WeatherServiceCallback callback;
@@ -64,8 +67,41 @@ public class YahooWeatherService {
 
             @Override
             protected void onPostExecute(String s) {
-                super.onPostExecute(s);
+                if (s == null & error != null) {
+                    callback.serviceFailure(error);
+
+                    return;
+                }
+
+                try {
+                    JSONObject data = new JSONObject(s);
+
+                    JSONObject queryResults = data.optJSONObject("query");
+
+                    int count = queryResults.optInt("count");
+
+                    if (count == 0) {
+                        callback.serviceFailure(new LocationWeatherException("No weather information found for " + queryLocation));
+
+                        return;
+                    }
+
+
+                    Channel channel = new Channel();
+                    channel.populate(queryResults.optJSONObject("results").optJSONObject("channel"));
+
+                    callback.serviceSuccess(channel);
+                }
+                catch (JSONException e) {
+                    callback.serviceFailure(e);
+                }
             }
         }.execute(location);
+    }
+
+    public class LocationWeatherException extends Exception {
+        public LocationWeatherException(String detailMessage) {
+            super(detailMessage);
+        }
     }
 }
