@@ -18,6 +18,7 @@ public class YahooWeatherService {
     private WeatherServiceCallback callback;
     private String location;
     private Exception error;
+    private String temperatureUnit = "F";
 
     public YahooWeatherService(WeatherServiceCallback callback) {
         this.callback = callback;
@@ -27,6 +28,10 @@ public class YahooWeatherService {
         return location;
     }
 
+    public String getTemperatureUnit() {
+        return temperatureUnit;
+    }
+
     public void refreshWeather(String l) {
         this.location = l;
 
@@ -34,8 +39,11 @@ public class YahooWeatherService {
 
             @Override
             protected String doInBackground(String... strings) {
+
+                String unit = getTemperatureUnit().equalsIgnoreCase("f") ? "f" : "c";
+
                 // Yahoo Query Language query take from Yahoo Weather API site.
-                String YQL = String.format("select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s\")", strings[0]);
+                String YQL = String.format("select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s\") and u='" + unit + "'", strings[0]);
 
                 // Use the Yahoo Weather API endpoint but replace the default q= with %s that utilizes our YQL.
                 String endpoint = String.format("https://query.yahooapis.com/v1/public/yql?q=%s&format=json", Uri.encode(YQL));
