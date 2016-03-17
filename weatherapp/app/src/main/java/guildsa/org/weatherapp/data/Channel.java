@@ -6,6 +6,6 @@ public class Channel implements JSONPopulator {
 
     @Override
     public void populate(JSONObject data) {
-        
+
     }
 }

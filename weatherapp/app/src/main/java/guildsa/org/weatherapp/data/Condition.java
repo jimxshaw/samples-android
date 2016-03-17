@@ -6,6 +6,6 @@ public class Condition implements JSONPopulator {
 
     @Override
     public void populate(JSONObject data) {
-        
+
     }
 }
