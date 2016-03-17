@@ -15,7 +15,7 @@
         android:id="@+id/weatherIconImageView"
         android:src="@drawable/wna"
         android:layout_alignParentTop="true"
-        android:layout_alignEnd="@+id/temperatureTextView" />
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"

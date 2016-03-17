@@ -27,15 +27,15 @@ public class YahooWeatherService {
         return location;
     }
 
-    public void refreshWeather(String location) {
-        final String queryLocation = location;
+    public void refreshWeather(String l) {
+        this.location = l;
 
         new AsyncTask<String, Void, String>() {
 
             @Override
-            protected String doInBackground(String... params) {
+            protected String doInBackground(String... strings) {
                 // Yahoo Query Language query take from Yahoo Weather API site.
-                String YQL = String.format("select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s\")", queryLocation);
+                String YQL = String.format("select * from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"%s\")", strings[0]);
 
                 // Use the Yahoo Weather API endpoint but replace the default q= with %s that utilizes our YQL.
                 String endpoint = String.format("https://query.yahooapis.com/v1/public/yql?q=%s&format=json", Uri.encode(YQL));
@@ -81,7 +81,7 @@ public class YahooWeatherService {
                     int count = queryResults.optInt("count");
 
                     if (count == 0) {
-                        callback.serviceFailure(new LocationWeatherException("No weather information found for " + queryLocation));
+                        callback.serviceFailure(new LocationWeatherException("No weather information found for " + location));
 
                         return;
                     }
