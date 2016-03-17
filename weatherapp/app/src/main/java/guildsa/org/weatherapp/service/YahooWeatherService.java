@@ -6,7 +6,7 @@ public class YahooWeatherService {
     private WeatherServiceCallback callback;
     private String location;
 
-    YahooWeatherService(WeatherServiceCallback callback) {
+    public YahooWeatherService(WeatherServiceCallback callback) {
         this.callback = callback;
     }
 
