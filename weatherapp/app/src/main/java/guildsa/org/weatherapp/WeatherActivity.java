@@ -1,6 +1,7 @@
 package guildsa.org.weatherapp;
 
 import android.app.ProgressDialog;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import guildsa.org.weatherapp.data.Channel;
+import guildsa.org.weatherapp.data.Item;
 import guildsa.org.weatherapp.service.WeatherServiceCallback;
 import guildsa.org.weatherapp.service.YahooWeatherService;
 
@@ -43,6 +45,22 @@ public class WeatherActivity extends AppCompatActivity implements WeatherService
     @Override
     public void serviceSuccess(Channel channel) {
         progressDialog.hide();
+
+        Item item = channel.getItem();
+
+        int resourceId = getResources().getIdentifier("drawable/w" + item.getCondition().getCode(), null, getPackageName());
+
+        @SuppressWarnings("deprecation")
+        Drawable weatherIconDrawable = getResources().getDrawable(resourceId);
+
+        weatherIconImageView.setImageDrawable(weatherIconDrawable);
+
+        // Unicode degree symbol is \u00B0.
+        temperatureTextView.setText(item.getCondition().getTemperature() + "\u00B0" + channel.getUnits().getTemperature());
+        conditionTextView.setText(item.getCondition().getDescription());
+        locationTextView.setText(service.getLocation());
+
+
     }
 
     @Override
