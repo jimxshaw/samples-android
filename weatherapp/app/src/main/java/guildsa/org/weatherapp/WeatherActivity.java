@@ -39,7 +39,7 @@ public class WeatherActivity extends AppCompatActivity implements WeatherService
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
-        service.refreshWeather("Dallas, TX");
+        service.refreshWeather("Miami, FL");
     }
 
     @Override
