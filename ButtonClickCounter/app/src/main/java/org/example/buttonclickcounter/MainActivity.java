@@ -34,12 +34,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 buttonCounter++;
-                if (buttonCounter < 2) {
-                    ourMessage.setText("The button was pushed " + buttonCounter + " time.");
+
+                String result = "The button was pushed " + buttonCounter + " time";
+
+                if (buttonCounter != 1) {
+                    result += "s.";
                 }
                 else {
-                    ourMessage.setText("The button was pushed " + buttonCounter + " times.");
+                    result += ".";
                 }
+
+                ourMessage.setText(result);
             }
         };
 
@@ -73,8 +78,9 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             // We want to display a toast message to our settings menu screen. Toast.LENGTH_LONG means
             // to show the message for a long period of time than it normally would appear.
-            Toast toastMessage = Toast.makeText(this, "The settings menu option was tapped", Toast.LENGTH_LONG);
+            Toast toastMessage = Toast.makeText(this, "The text value is now " + ourMessage.getText(), Toast.LENGTH_LONG);
             toastMessage.show();
+            buttonCounter = 0;
             return true;
         }
 
