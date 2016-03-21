@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,7 +24,7 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity {
 
     private Button btnParse;
-    private ListView xmlListView;
+    private ListView listApps;
     private String mFileContents; // Retrieved data returned from our downloadXMLFile method.
 
     @Override
@@ -39,9 +40,17 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ParseApplications parseApplications = new ParseApplications(mFileContents);
                 parseApplications.process();
+
+                // List views must utilize an array adapter that takes in the context, the layout
+                // for each individual list item and the objects that correspond to each list item.
+                ArrayAdapter<Application> arrayAdapter = new ArrayAdapter<>(
+                        MainActivity.this, R.layout.list_item, parseApplications.getApplications());
+
+                // Bind our array adapter to our list view.
+                listApps.setAdapter(arrayAdapter);
             }
         });
-        xmlListView = (ListView) findViewById(R.id.xmlListView);
+        listApps = (ListView) findViewById(R.id.listApps);
 
         // Instantiate our private async task class and execute it with our Apple xml link.
         DownloadData downloadData = new DownloadData();

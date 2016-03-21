@@ -23,7 +23,7 @@
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/xmlListView"
+        android:id="@+id/listApps"
         android:layout_below="@+id/btnParse"
         android:layout_alignParentStart="true"
         android:layout_marginTop="24dp"

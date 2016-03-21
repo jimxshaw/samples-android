@@ -32,4 +32,15 @@ public class Application {
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
+
+    // In order to display each list item within our list view the way we want it, we must
+    // override the .toString method. When the Application class gets used in any of our
+    // layout views, this particular .toString method will automatically called as opposed to
+    // the default .toString that's attached to all Java objects.
+    @Override
+    public String toString() {
+        return "Name: " + getName() + "\n" +
+                "Artist: " + getArtist() + "\n" +
+                "Release Date: " + getReleaseDate().substring(0, 10);
+    }
 }
