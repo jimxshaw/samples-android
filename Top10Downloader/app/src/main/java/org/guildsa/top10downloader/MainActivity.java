@@ -143,6 +143,9 @@ public class MainActivity extends AppCompatActivity {
             catch (IOException e) {
                 Log.d("DownloadData", "IO Exception reading data: " + e.getMessage());
             }
+            catch (SecurityException e) {
+                Log.d("DownloadData", "Security Exception. Needs permission? " + e.getMessage());
+            }
 
             // This return statement is needed to break out of our downloadXMLFile method in case
             // an exception occurred.
