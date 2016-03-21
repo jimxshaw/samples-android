@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnSubtraction;
     private Button btnMultiplication;
     private Button btnDivision;
+    private Button btnClear;
     private TextView txtResult;
 
     @Override
@@ -35,52 +37,84 @@ public class MainActivity extends AppCompatActivity {
         btnSubtraction = (Button) findViewById(R.id.btnSubtraction);
         btnMultiplication = (Button) findViewById(R.id.btnMultiplication);
         btnDivision = (Button) findViewById(R.id.btnDivision);
+        btnClear = (Button) findViewById(R.id.btnClear);
         txtResult = (TextView) findViewById(R.id.txtResult);
 
         btnAddition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double oper1 = Double.parseDouble(operand1.getText().toString());
-                double oper2 = Double.parseDouble(operand2.getText().toString());
+                if ((operand1.getText().length() > 0) && (operand2.getText().length() > 0)) {
+                    double oper1 = Double.parseDouble(operand1.getText().toString());
+                    double oper2 = Double.parseDouble(operand2.getText().toString());
 
-                double theResult = oper1 + oper2;
-                txtResult.setText(Double.toString(theResult));
+                    txtResult.setText(Double.toString(oper1 + oper2));
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "Input field(s) cannot be blank!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         btnSubtraction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double oper1 = Double.parseDouble(operand1.getText().toString());
-                double oper2 = Double.parseDouble(operand2.getText().toString());
+                if ((operand1.getText().length() > 0) && (operand2.getText().length() > 0)) {
+                    double oper1 = Double.parseDouble(operand1.getText().toString());
+                    double oper2 = Double.parseDouble(operand2.getText().toString());
 
-                double theResult = oper1 - oper2;
-                txtResult.setText(Double.toString(theResult));
+                    txtResult.setText(Double.toString(oper1 - oper2));
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "Input field(s) cannot be blank!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         btnMultiplication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double oper1 = Double.parseDouble(operand1.getText().toString());
-                double oper2 = Double.parseDouble(operand2.getText().toString());
+                if ((operand1.getText().length() > 0) && (operand2.getText().length() > 0)) {
+                    double oper1 = Double.parseDouble(operand1.getText().toString());
+                    double oper2 = Double.parseDouble(operand2.getText().toString());
 
-                double theResult = oper1 * oper2;
-                txtResult.setText(Double.toString(theResult));
+                    txtResult.setText(Double.toString(oper1 * oper2));
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "Input field(s) cannot be blank!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         btnDivision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double oper1 = Double.parseDouble(operand1.getText().toString());
-                double oper2 = Double.parseDouble(operand2.getText().toString());
+                if ((operand1.getText().length() > 0) && (operand2.getText().length() > 0)) {
+                    double oper1 = Double.parseDouble(operand1.getText().toString());
+                    double oper2 = Double.parseDouble(operand2.getText().toString());
 
-                double theResult = oper1 / oper2;
-                txtResult.setText(Double.toString(theResult));
+                    if (oper2 == 0) {
+                        Toast.makeText(MainActivity.this, "Division by 0 is undefined", Toast.LENGTH_SHORT).show();
+                        txtResult.setText("Undefined");
+                    }
+                    else {
+                        txtResult.setText(Double.toString(oper1 / oper2));
+                    }
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "Input field(s) cannot be blank", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
+        btnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                operand1.getText().clear();
+                operand2.getText().clear();
+                txtResult.setText(R.string.result_value_default);
+                operand1.requestFocus();
+            }
+        });
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {

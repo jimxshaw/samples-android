@@ -102,7 +102,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="0.00"
+        android:text="@string/result_value_default"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CLEAR"
+        android:id="@+id/btnClear"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp" />
 
 </LinearLayout>
