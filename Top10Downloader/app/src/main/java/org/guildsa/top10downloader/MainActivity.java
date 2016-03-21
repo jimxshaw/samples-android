@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TODO: Add parse activiation code.
-                
+
             }
         });
         xmlListView = (ListView) findViewById(R.id.xmlListView);
