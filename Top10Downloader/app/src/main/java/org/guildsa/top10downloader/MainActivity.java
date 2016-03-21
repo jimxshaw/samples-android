@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button btnParse;
     private ListView xmlListView;
+    private String mFileContents; // Retrieved data returned from our downloadXMLFile method.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
         btnParse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Add parse activiation code.
-
+                ParseApplications parseApplications = new ParseApplications(mFileContents);
+                parseApplications.process();
             }
         });
         xmlListView = (ListView) findViewById(R.id.xmlListView);
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
     // be of type String.
     private class DownloadData extends AsyncTask<String, Void, String> {
 
-        private String mFileContents;
+
 
         // Our doInBackground method will execute and process whatever the async task need to be done.
         // Then it automatically calls the onPostExecute method.
