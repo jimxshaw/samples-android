@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +19,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
+    private TextView xmlTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        xmlTextView = (TextView) findViewById(R.id.xmlTextView);
 
         // Instantiate our private async task class and execute it with our Apple xml link.
         DownloadData downloadData = new DownloadData();
@@ -94,6 +98,10 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(result);
 
             Log.d("DownloadData", "Result was: " + result);
+
+            // Take the mFileContents, which is filled with the Apple data xml we need, and set it to
+            // our text view variable.
+            xmlTextView.setText(mFileContents);
         }
 
         private String downloadXMLFile(String urlPath) {
@@ -142,9 +150,11 @@ public class MainActivity extends AppCompatActivity {
             }
             catch (IOException e) {
                 Log.d("DownloadData", "IO Exception reading data: " + e.getMessage());
+                e.printStackTrace();
             }
             catch (SecurityException e) {
                 Log.d("DownloadData", "Security Exception. Needs permission? " + e.getMessage());
+                e.printStackTrace();
             }
 
             // This return statement is needed to break out of our downloadXMLFile method in case
