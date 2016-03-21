@@ -26,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Instantiate our private async task class and execute it with our Apple xml link.
+        DownloadData downloadData = new DownloadData();
+        downloadData.execute("http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topfreeapplications/limit=10/xml");
+
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -69,18 +73,27 @@ public class MainActivity extends AppCompatActivity {
 
         private String mFileContents;
 
+        // Our doInBackground method will execute and process whatever the async task need to be done.
+        // Then it automatically calls the onPostExecute method.
         @Override
         protected String doInBackground(String... params) {
             // Any methods that takes in a parameter type... means when we call the method, we are
             // allowed to pass in a variable number of arguments of that specified type.
-
-
             mFileContents = downloadXMLFile(params[0]);
             if (mFileContents == null) {
                 Log.d("DownloadData", "Downloading error");
             }
 
             return mFileContents;
+        }
+
+        // The doInBackground's returned String mFileContents is what is being passed in as the
+        // argument on our onPOstExecute method.
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            Log.d("DownloadData", "Result was: " + result);
         }
 
         private String downloadXMLFile(String urlPath) {
@@ -126,11 +139,14 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 return tempBuffer.toString();
-
             }
             catch (IOException e) {
                 Log.d("DownloadData", "IO Exception reading data: " + e.getMessage());
             }
+
+            // This return statement is needed to break out of our downloadXMLFile method in case
+            // an exception occurred.
+            return null;
         }
     }
 }
