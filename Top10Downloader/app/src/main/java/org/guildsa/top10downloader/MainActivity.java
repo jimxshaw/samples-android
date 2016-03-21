@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -19,7 +21,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
-    private TextView xmlTextView;
+
+    private Button btnParse;
+    private ListView xmlListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +32,15 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        xmlTextView = (TextView) findViewById(R.id.xmlTextView);
+        btnParse = (Button) findViewById(R.id.btnParse);
+        btnParse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Add parse activiation code.
+                
+            }
+        });
+        xmlListView = (ListView) findViewById(R.id.xmlListView);
 
         // Instantiate our private async task class and execute it with our Apple xml link.
         DownloadData downloadData = new DownloadData();
@@ -99,9 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
             Log.d("DownloadData", "Result was: " + result);
 
-            // Take the mFileContents, which is filled with the Apple data xml we need, and set it to
-            // our text view variable.
-            xmlTextView.setText(mFileContents);
+
         }
 
         private String downloadXMLFile(String urlPath) {
