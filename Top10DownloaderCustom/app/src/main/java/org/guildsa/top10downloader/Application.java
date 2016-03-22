@@ -8,7 +8,7 @@ public class Application {
     private String name;
     private String artist;
     private String releaseDate;
-    private String image;
+    private String imageUrl;
 
     public String getName() {
         return name;
@@ -34,9 +34,9 @@ public class Application {
         this.releaseDate = releaseDate;
     }
 
-    public String getImage() { return image; }
+    public String getImage() { return imageUrl; }
 
-    public void setImage(String image) { this.image = image; }
+    public void setImage(String image) { this.imageUrl = image; }
 
     // In order to display each list item within our list view the way we want it, we must
     // override the .toString method. When the Application class gets used in any of our

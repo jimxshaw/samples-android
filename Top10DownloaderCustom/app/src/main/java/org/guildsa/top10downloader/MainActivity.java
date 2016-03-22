@@ -1,5 +1,6 @@
 package org.guildsa.top10downloader;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -20,11 +21,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button btnParse;
-    private ListView listApps;
+    private ListView listAppsView;
     private String mFileContents; // Retrieved data returned from our downloadXMLFile method.
 
     @Override
@@ -41,16 +43,11 @@ public class MainActivity extends AppCompatActivity {
                 ParseApplications parseApplications = new ParseApplications(mFileContents);
                 parseApplications.process();
 
-                // List views must utilize an array adapter that takes in the context, the layout
-                // for each individual list item and the objects that correspond to each list item.
-                ArrayAdapter<Application> arrayAdapter = new ArrayAdapter<>(
-                        MainActivity.this, R.layout.list_item, parseApplications.getApplications());
-
-                // Bind our array adapter to our list view.
-                listApps.setAdapter(arrayAdapter);
+                //TODO: Write Custom Adapter in order to configure a more complicated list_item.xml.
+                listAppsView.setAdapter(new CustomAdapter(MainActivity.this, parseApplications.getApplications()));
             }
         });
-        listApps = (ListView) findViewById(R.id.listApps);
+        listAppsView = (ListView) findViewById(R.id.listAppsView);
 
         // Instantiate our private async task class and execute it with our Apple xml link.
         DownloadData downloadData = new DownloadData();
