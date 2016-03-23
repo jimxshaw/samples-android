@@ -40,40 +40,47 @@ public class CustomAdapter extends ArrayAdapter<Application> {
         // Retrieve each application from our array list of applications according to its position.
         Application rawApplication = values.get(position);
 
+        // Retrieve the image url for each app.
         String appImageUrl = rawApplication.getImageUrl();
 
+        // Instantiate our utility class to capture the app image from the app image url and set
+        // that image to our list item image view.
         new DownloadImageTask((ImageView) rowView.findViewById(R.id.image)).execute(appImageUrl);
 
+        // Capture and set the fields of each app to our list item text view.
         app.setText(rawApplication.toString());
 
         return rowView;
     }
 
+
+    // This is an utility class that will asynchronously go to an image url, capture the image file,
+    // convert it to a Bitmap object. The bitmap object will then be set to an image view.
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
+        ImageView bitmapImageView;
 
         public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
+            this.bitmapImageView = bmImage;
         }
 
         protected Bitmap doInBackground(String... urls) {
-            String urlDisplay = urls[0];
-            Bitmap appImage = null;
+            String imageUrl = urls[0];
+            Bitmap bitmapImage = null;
 
             try {
-                InputStream inputStream = new java.net.URL(urlDisplay).openStream();
-                appImage = BitmapFactory.decodeStream(inputStream);
+                InputStream inputStream = new java.net.URL(imageUrl).openStream();
+                bitmapImage = BitmapFactory.decodeStream(inputStream);
             }
             catch (Exception e) {
                 Log.e("ImageUrl", e.getMessage());
                 e.printStackTrace();
             }
 
-            return appImage;
+            return bitmapImage;
         }
 
         protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
+            bitmapImageView.setImageBitmap(result);
         }
 
     }
