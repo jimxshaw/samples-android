@@ -38,7 +38,6 @@ public class CustomAdapter extends ArrayAdapter<Application> {
         String appImageUrl = rawApplication.getImageUrl();
 
         app.setText(rawApplication.toString());
-        app.setTextColor(Color.RED);
 
         return rowView;
     }
