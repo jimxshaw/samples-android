@@ -34,9 +34,9 @@ public class Application {
         this.releaseDate = releaseDate;
     }
 
-    public String getImage() { return imageUrl; }
+    public String getImageUrl() { return imageUrl; }
 
-    public void setImage(String image) { this.imageUrl = image; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
     // In order to display each list item within our list view the way we want it, we must
     // override the .toString method. When the Application class gets used in any of our

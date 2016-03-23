@@ -101,7 +101,7 @@ public class ParseApplications {
                                 currentRecord.setReleaseDate(textValue);
                             }
                             else if (tagName.equalsIgnoreCase("image")) {
-                                currentRecord.setImage(textValue);
+                                currentRecord.setImageUrl(textValue);
                             }
                         }
                         break;
@@ -123,7 +123,7 @@ public class ParseApplications {
             Log.d("ParseApplications", "Name: " + app.getName());
             Log.d("ParseApplications", "Artist: " + app.getArtist());
             Log.d("ParseApplications", "Release Date: " + app.getReleaseDate());
-            Log.d("ParseApplications", "Image: " + app.getImage());
+            Log.d("ParseApplications", "ImageUrl: " + app.getImageUrl());
         }
 
         return status;
