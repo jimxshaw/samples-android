@@ -53,7 +53,6 @@ public class CustomAdapter extends ArrayAdapter<Application> {
         return rowView;
     }
 
-
     // This is an utility class that will asynchronously go to an image url, capture the image file,
     // convert it to a Bitmap object. The bitmap object will then be set to an image view.
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
