@@ -21,26 +21,16 @@
             </intent-filter>
         </activity>
         <activity
+            android:label="@string/title_activity_you_tube"
             android:name=".YouTubeActivity"
             android:configChanges="orientation|screenSize|keyboard"
-            android:label="@string/title_activity_you_tube"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
+            android:label="@string/title_activity_stand_alone"
             android:name=".StandAloneActivity"
             android:configChanges="orientation|screenSize|keyboard"
-            android:label="@string/title_activity_stand_alone"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
