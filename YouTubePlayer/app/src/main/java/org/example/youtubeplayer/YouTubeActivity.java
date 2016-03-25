@@ -13,9 +13,9 @@ public class YouTubeActivity extends YouTubeBaseActivity
 {
 
     // The google api key is given to us after we sign up for its api service.
-    private String GOOGLE_API_KEY = "TBA";
+    private String GOOGLE_API_KEY = "AIzaSyCyiGx1ais9yhfwyCniAnJ4tNwM-W8ZvYI";
     // Every video has an id, an unique identifier.
-    private String YOUTUBE_VIDEO_ID = "TBA";
+    private String YOUTUBE_VIDEO_ID = "ObiqJzfyACM";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
