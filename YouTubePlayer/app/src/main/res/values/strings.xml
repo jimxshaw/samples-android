@@ -5,4 +5,6 @@
     <string name="title_activity_stand_alone">StandAloneActivity</string>
     <string name="play_video">Play Video</string>
     <string name="play_playlist">Play Playlist</string>
+    <string name="play_single_video">Play a single video</string>
+    <string name="standalone_menu">Standalone Sub Menu</string>
 </resources>
