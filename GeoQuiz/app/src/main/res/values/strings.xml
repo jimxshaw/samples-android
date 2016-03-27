@@ -3,5 +3,7 @@
     <string name="question_text">Austin is the capital of Texas</string>
     <string name="true_button">True</string>
     <string name="false_button">False</string>
+    <string name="correct_toast">Correct!</string>
+    <string name="incorrect_toast">Incorrect!</string>
     <string name="action_settings">Settings</string>
 </resources>
