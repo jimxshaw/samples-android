@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ public class QuizActivity extends AppCompatActivity {
     private ImageButton mImgPrevButton;
     private ImageButton mImgNextButton;
     private TextView mQuestionTextView;
+    private static final String TAG = "QuizActivity";
 
     private Question[] mQuestionBank = new Question[] {
             new Question(R.string.question_africa, false),
@@ -52,9 +54,26 @@ public class QuizActivity extends AppCompatActivity {
         Toast.makeText(QuizActivity.this, messageResId, Toast.LENGTH_SHORT).show();
     }
 
+    // The Android OS calls onCreate(Bundle) method after the activity instance is created but
+    // before it is put on the screen. Typically, an activity overrides onCreate to prepare the
+    // specifics of its user interface:
+    // - inflating widgets and putting them on the screen (in the call to setContentView(int)),
+    // - getting references to inflated widgets,
+    // - setting listeners on widgets to handle user interaction,
+    // - connecting to external model data.
+
+    // It's important for us to understand that we never call onCreate or any other Activity
+    // lifecycle methods ourselves. We override them in our activity subclasses and Android calls
+    // them at the appropriate time.
+
+    // The @Override annotation is necessary and asks the compiler to ensure that the class
+    // actually has the method that we are attempting to override. If we misspelled onCreate with
+    // Oncreate, for example, the compile would catch that.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.d(TAG, "onCreate(Bundle) called");
 
         // This method inflates a layout and puts it on the screen. When a layout is inflated,
         // each widget in the layout file is instantiated as defined by its attributes. We
@@ -122,6 +141,43 @@ public class QuizActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart() called");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause() called");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume() called");
+    }
+
+    // By pressing the Home button, the sequence of onPause() -> onStop() is called. We're telling
+    // Android we're going to check something else and might be back. Android pauses and stops our
+    // activity but doesn't destroy in case we do return. Occasionally, an activity destruction
+    // will occur when Android needs to reclaim memory for example. 
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop() called");
+    }
+
+    // By pressing the Back button, the sequence of onPause() -> onStop() -> onDestroy() is
+    // called. We've telling Android we're done with this activity and won't need it anymore.
+    // Android destroys our activity as a way to conserve the device's limited resources.
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy() called");
     }
 
     @Override
