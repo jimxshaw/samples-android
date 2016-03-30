@@ -21,7 +21,9 @@ public class QuizActivity extends AppCompatActivity {
     private ImageButton mImgPrevButton;
     private ImageButton mImgNextButton;
     private TextView mQuestionTextView;
+
     private static final String TAG = "QuizActivity";
+    private static final String KEY_INDEX = "index";
 
     private Question[] mQuestionBank = new Question[] {
             new Question(R.string.question_africa, false),
@@ -52,6 +54,20 @@ public class QuizActivity extends AppCompatActivity {
 
         // Toast.makeText(Context context, int resID, int duration)
         Toast.makeText(QuizActivity.this, messageResId, Toast.LENGTH_SHORT).show();
+    }
+
+    // If an activity is paused or stopped then its onSaveInstanceState method is called. When it's
+    // called, the data is saved to the Bundle object. That Bundle object is stashed in our
+    // activity's activity records by Android. When our activity is stashed, an Activity object
+    // does not exist but the activity record object lives on in Android. Android can reanimate
+    // the activity using the activity record when it needs to. Our activity can pass into the
+    // stashed state without onDestroy being called. However, we can always rely on onPause and
+    // onSaveInstanceState to be called. 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        Log.i(TAG, "onSaveInstanceState");
+        savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
     }
 
     // The Android OS calls onCreate(Bundle) method after the activity instance is created but
@@ -127,6 +143,10 @@ public class QuizActivity extends AppCompatActivity {
                 updateQuestion();
             }
         });
+
+        if (savedInstanceState != null) {
+            mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+        }
 
         updateQuestion();
 
