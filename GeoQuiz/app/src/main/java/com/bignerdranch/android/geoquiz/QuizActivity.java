@@ -164,7 +164,7 @@ public class QuizActivity extends AppCompatActivity {
     // By pressing the Home button, the sequence of onPause() -> onStop() is called. We're telling
     // Android we're going to check something else and might be back. Android pauses and stops our
     // activity but doesn't destroy in case we do return. Occasionally, an activity destruction
-    // will occur when Android needs to reclaim memory for example. 
+    // will occur when Android needs to reclaim memory for example.
     @Override
     public void onStop() {
         super.onStop();
