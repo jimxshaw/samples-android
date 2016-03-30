@@ -36,6 +36,7 @@ public class QuizActivity extends AppCompatActivity {
     private int mCurrentIndex = 0;
 
     private void updateQuestion() {
+        //Log.d(TAG, "Updating question text for question #" + mCurrentIndex, new Exception());
         int question = mQuestionBank[mCurrentIndex].getTextResId();
         mQuestionTextView.setText(question);
     }
@@ -62,7 +63,7 @@ public class QuizActivity extends AppCompatActivity {
     // does not exist but the activity record object lives on in Android. Android can reanimate
     // the activity using the activity record when it needs to. Our activity can pass into the
     // stashed state without onDestroy being called. However, we can always rely on onPause and
-    // onSaveInstanceState to be called. 
+    // onSaveInstanceState to be called.
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
@@ -93,7 +94,7 @@ public class QuizActivity extends AppCompatActivity {
 
         // This method inflates a layout and puts it on the screen. When a layout is inflated,
         // each widget in the layout file is instantiated as defined by its attributes. We
-        // specify wich layout to inflate by passing in the layout's resource id.
+        // specify which layout to inflate by passing in the layout's resource id.
         setContentView(R.layout.activity_quiz);
 
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
