@@ -12,5 +12,10 @@
     <string name="question_africa">The Nile River flows from north to south.</string>
     <string name="question_europe">The Alps exist only in Switzerland.</string>
     <string name="question_americas">Alaska is the largest US state by area.</string>
+    <string name="warning_text">Are you sure you want to do this?</string>
+    <string name="show_answer_button">Show Answer</string>
+    <string name="cheat_button">Cheat!</string>
+    <string name="judgement_toast">Cheating is wrong.</string>
+    <string name="title_activity_cheat">Cheat</string>
 
 </resources>
