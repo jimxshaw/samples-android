@@ -1,5 +1,6 @@
 package com.bignerdranch.android.geoquiz;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -27,6 +28,8 @@ public class QuizActivity extends AppCompatActivity {
     private static final String TAG = "QuizActivity";
     private static final String KEY_INDEX = "index";
 
+    private static final int REQUEST_CODE_CHEAT = 0;
+
     private Question[] mQuestionBank = new Question[] {
             new Question(R.string.question_africa, false),
             new Question(R.string.question_americas, true),
@@ -36,6 +39,7 @@ public class QuizActivity extends AppCompatActivity {
     };
 
     private int mCurrentIndex = 0;
+    private boolean mIsCheater;
 
     private void updateQuestion() {
         //Log.d(TAG, "Updating question text for question #" + mCurrentIndex, new Exception());
@@ -48,11 +52,16 @@ public class QuizActivity extends AppCompatActivity {
 
         int messageResId = 0;
 
-        if (userPressedTrue == answerIsTrue) {
-            messageResId = R.string.correct_toast;
+        if (mIsCheater) {
+            messageResId = R.string.judgement_toast;
         }
         else {
-            messageResId = R.string.incorrect_toast;
+
+            if (userPressedTrue == answerIsTrue) {
+                messageResId = R.string.correct_toast;
+            } else {
+                messageResId = R.string.incorrect_toast;
+            }
         }
 
         // Toast.makeText(Context context, int resID, int duration)
@@ -71,6 +80,20 @@ public class QuizActivity extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
         Log.i(TAG, "onSaveInstanceState");
         savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+
+        if (requestCode == REQUEST_CODE_CHEAT) {
+            if (data == null) {
+                return;
+            }
+            mIsCheater = CheatActivity.wasAnswerShown(data);
+        }
     }
 
     // The Android OS calls onCreate(Bundle) method after the activity instance is created but
@@ -131,7 +154,15 @@ public class QuizActivity extends AppCompatActivity {
                 // Start CheatActivity
                 boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
                 Intent i = CheatActivity.newIntent(QuizActivity.this, answerIsTrue);
-                startActivity(i);
+
+                // When we want to hear back from the child activity, we call startActivityForResult.
+                // The first parameter is the intent as before. The second is the request code.
+                // The request code is a user-defined integer that's sent to the child and then
+                // received back by the parent. It's used when an activity starts more than one type
+                // of child activity and needs to know who is reporting back. QuizActivity will only
+                // ever start one type of child activity, but using a constant for the request code is
+                // a best practice that will set us up well for future changes.
+                startActivityForResult(i, REQUEST_CODE_CHEAT);
             }
         });
 
@@ -145,6 +176,7 @@ public class QuizActivity extends AppCompatActivity {
                     mCurrentIndex = mQuestionBank.length - 1;
                 }
 
+                mIsCheater = false;
                 updateQuestion();
             }
         });
@@ -154,6 +186,7 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
+                mIsCheater = false;
                 updateQuestion();
             }
         });
