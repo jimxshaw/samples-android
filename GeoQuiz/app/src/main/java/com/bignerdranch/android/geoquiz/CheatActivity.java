@@ -36,10 +36,16 @@ public class CheatActivity extends AppCompatActivity {
         return i;
     }
 
+    // This static method will be called by QuizActivity so that it could determine if the Show
+    // Answer button in CheatActivity was clicked and then would process act accordingly.
     public static boolean wasAnswerShown(Intent result) {
         return result.getBooleanExtra(EXTRA_ANSWER_SHOWN, false);
     }
 
+    // A boolean representing whether or not the Show Answer button was clicked is passed into
+    // this helper method. Base on that argument, an appropriate intent will be set as the result.
+    // Later, QuizActivity's will use the set result in its OnActivityResult method to do specific
+    // processing.
     private boolean setAnswerShownResult(boolean isAnswerShown) {
         Intent data = new Intent();
         data.putExtra(EXTRA_ANSWER_SHOWN, isAnswerShown);
@@ -48,6 +54,9 @@ public class CheatActivity extends AppCompatActivity {
         return isAnswerShown;
     }
 
+    // CheatActivity's instance state is saved because the result of whether or not the
+    // Show Answer button was clicked must persist. Otherwise the user could simply switch this
+    // activity's orientation and CheatActivity would reset, which would also reset Show Answer.
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
@@ -84,8 +93,10 @@ public class CheatActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             mIsCheater = savedInstanceState.getBoolean(EXTRA_ANSWER_SHOWN, false);
-            Log.d(TAG, "Is Cheater: " + mIsCheater);
+            boolean resultValue = setAnswerShownResult(mIsCheater);
+            Log.d(TAG, "Is Cheater: " + resultValue);
         }
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
