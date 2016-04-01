@@ -32,15 +32,16 @@ public class QuizActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_CHEAT = 0;
 
     private Question[] mQuestionBank = new Question[] {
-            new Question(R.string.question_africa, false),
-            new Question(R.string.question_americas, true),
-            new Question(R.string.question_asia, true),
-            new Question(R.string.question_europe, false),
-            new Question(R.string.question_oceans, true)
+            // Question(int textResId, boolean isAnswerTrue, boolean wasAnswerShown)
+            new Question(R.string.question_africa, false, false),
+            new Question(R.string.question_americas, true, false),
+            new Question(R.string.question_asia, true, false),
+            new Question(R.string.question_europe, false, false),
+            new Question(R.string.question_oceans, true, false)
     };
 
     private int mCurrentIndex = 0;
-    private boolean mIsCheater;
+    private boolean mIsCheater = false;
 
     private void updateQuestion() {
         //Log.d(TAG, "Updating question text for question #" + mCurrentIndex, new Exception());
@@ -49,11 +50,14 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void checkAnswer(boolean userPressedTrue) {
-        boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
+        Question currentQuestion = mQuestionBank[mCurrentIndex];
+
+        boolean answerIsTrue = currentQuestion.isAnswerTrue();
 
         int messageResId = 0;
 
         if (mIsCheater) {
+            currentQuestion.setAnswerShown(true);
             messageResId = R.string.judgement_toast;
         }
         else {
@@ -178,7 +182,6 @@ public class QuizActivity extends AppCompatActivity {
                     mCurrentIndex = mQuestionBank.length - 1;
                 }
 
-                mIsCheater = false;
                 updateQuestion();
             }
         });
@@ -188,7 +191,7 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
-                mIsCheater = false;
+
                 updateQuestion();
             }
         });
