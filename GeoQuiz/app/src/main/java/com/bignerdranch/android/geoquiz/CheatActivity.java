@@ -1,7 +1,11 @@
 package com.bignerdranch.android.geoquiz;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.bluetooth.BluetoothClass;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -16,6 +21,7 @@ public class CheatActivity extends AppCompatActivity {
 
     private boolean mAnswerIsTrue;
     private TextView mAnswerTextView;
+    private TextView mApiLevelTextView;
     private Button mShowAnswer;
     private boolean mIsCheater;
 
@@ -76,6 +82,18 @@ public class CheatActivity extends AppCompatActivity {
         mAnswerIsTrue = getIntent().getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false);
 
         mAnswerTextView = (TextView) findViewById(R.id.answer_text_view);
+        mApiLevelTextView = (TextView) findViewById(R.id.api_level_text_view);
+
+        // In order to get the string value of an Android string resource we have to call
+        // the context.getString with the resource as argument. 
+        String mApiLevelText = CheatActivity.this.getString(R.string.api_level) + " " + String.valueOf(Build.VERSION.SDK_INT);
+
+        try {
+            mApiLevelTextView.setText(mApiLevelText);
+        }
+        catch (NullPointerException ex) {
+            Log.d(TAG, "Error: " + ex);
+        }
 
         mShowAnswer = (Button) findViewById(R.id.show_answer_button);
         mShowAnswer.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +106,37 @@ public class CheatActivity extends AppCompatActivity {
                     mAnswerTextView.setText(R.string.false_button);
                 }
                 mIsCheater = setAnswerShownResult(true);
+
+                // Certain animation methods like createCircularReveal requires a certain Android
+                // version. We'll check the device's version with an if conditional. If the device
+                // meets the API level then show the newer animation, otherwise perform another action.
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    int cx = mShowAnswer.getWidth() / 2;
+                    int cy = mShowAnswer.getHeight() / 2;
+                    float radius = mShowAnswer.getWidth();
+
+                    // createCircularReveal(View view, int centerX,  int centerY, float startRadius, float endRadius)
+                    Animator anim = ViewAnimationUtils.createCircularReveal(mShowAnswer, cx, cy, radius, 0);
+                    // Add a listener on the animation so we'll know when the it completes.
+                    anim.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+
+                            // Set the view that will be hidden or shown based on the animation.
+                            // Once the animation completes, we'll show the answer and hide the button.
+                            mAnswerTextView.setVisibility(View.VISIBLE);
+                            mShowAnswer.setVisibility(View.INVISIBLE);
+                        }
+
+                    });
+                    // The animation actually begins here.
+                    anim.start();
+                }
+                else {
+                    mAnswerTextView.setVisibility(View.VISIBLE);
+                    mShowAnswer.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
