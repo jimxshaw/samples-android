@@ -5,12 +5,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
-public class CrimeActivity extends FragmentActivity {
+// The only difference between this abstract class and CrimeActivity is an abstract method named
+// createFragment that we use to instantiate the fragment. Subclasses of SingleFragmentActivity
+// will implement this method to return an instance of the fragment that the activity is hosting.
+public abstract class SingleFragmentActivity extends FragmentActivity {
+    protected abstract Fragment createFragment();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_fragment);
+
+        // We set the activity's view to be inflated from content_fragment.xml. Then we look for the
+        // fragment in the FragmentManager in that container, creating and adding it if it doesn't exist.
 
         // The FragmentManager is responsible for managing our fragments and adding their views to
         // the activity's view hierarchy. It handles two things: a list of fragments and a back
@@ -21,9 +28,8 @@ public class CrimeActivity extends FragmentActivity {
         // When we retrieve the CrimeFragment from the FragmentManager, we get it by the
         // container view id.
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
-
         if (fragment == null) {
-            fragment = new CrimeFragment();
+            fragment = createFragment();
             // This code creates and commits a fragment transaction, which are used to add, remove,
             // attach, detach or replace fragments in the fragment list. They're the core of how we
             // use fragments to compose and recompose screens at runtime. The FragmentManager
@@ -38,20 +44,5 @@ public class CrimeActivity extends FragmentActivity {
                     .add(R.id.fragment_container, fragment)
                     .commit();
         }
-
-
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
     }
-
-
 }
