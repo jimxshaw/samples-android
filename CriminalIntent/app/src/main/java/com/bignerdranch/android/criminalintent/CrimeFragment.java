@@ -52,7 +52,7 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 // We call toString on the user input's character sequence and then we set the string
-                // as the Crime's title. 
+                // as the Crime's title.
                 mCrime.setTitle(s.toString());
             }
 
