@@ -5,10 +5,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
-// The only difference between this abstract class and CrimeActivity is an abstract method named
-// createFragment that we use to instantiate the fragment. Subclasses of SingleFragmentActivity
-// will implement this method to return an instance of the fragment that the activity is hosting.
+// An abstract class is a class that cannot be instantiated, meaning you cannot create
+// new instances of an abstract class. The purpose of an abstract class is to function as
+// a base for subclasses.
 public abstract class SingleFragmentActivity extends FragmentActivity {
+
+    // Subclasses of SingleFragmentActivity will implement createFragment to return an instance of the
+    // fragment that the activity is hosting. E.g. CrimeActivity calling createFragment will return
+    // an instance of CrimeFragment. With CrimeListActivity, we get an instance of CrimeListFragment.
     protected abstract Fragment createFragment();
 
     @Override
