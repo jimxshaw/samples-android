@@ -7,8 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.text.DateFormat;
 import java.util.List;
 
 public class CrimeListFragment extends Fragment {
@@ -49,18 +52,41 @@ public class CrimeListFragment extends Fragment {
     }
 
     // The ViewHolder's job is small. It does only one thing, which is holding on to a View.
-    private class CrimeHolder extends RecyclerView.ViewHolder {
-        public TextView mTitleTextView;
+    private class CrimeHolder extends RecyclerView.ViewHolder
+                                implements View.OnClickListener {
+        private Crime mCrime;
+        private TextView mTitleTextView;
+        private TextView mDateTextView;
+        private CheckBox mSolvedCheckBox;
 
         // The itemView field is our ViewHolder's reason for existing: it holds a reference to the entire
         // View we passed into super(view). A RecyclerView never creates Views by themselves. It
         // always creates ViewHolders, which bring their itemViews along for the ride.
         public CrimeHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
 
-            // This ViewHolder currently maintains a reference to the title TextView. It expects the
-            // itemView to be a TextView but if it isn't then it will crash.
-            mTitleTextView = (TextView) itemView;
+            mTitleTextView = (TextView) itemView.findViewById(R.id.list_item_crime_title_text_view);
+            mDateTextView = (TextView) itemView.findViewById(R.id.list_item_crime_date_text_view);
+            mSolvedCheckBox = (CheckBox) itemView.findViewById(R.id.list_item_crime_solved_check_box);
+        }
+
+        // When given a crime, CrimeHolder will now update the title TextView, date TextView and solved
+        // CheckBox to reflect the state of the Crime.
+        public void bindCrime(Crime crime) {
+            mCrime = crime;
+            mTitleTextView.setText(mCrime.getTitle());
+            DateFormat mDateFormat = DateFormat.getDateInstance();
+            String mFormattedDate = mDateFormat.format(mCrime.getDate());
+            mDateTextView.setText(mFormattedDate);
+            mSolvedCheckBox.setChecked(mCrime.isSolved());
+        }
+
+        // Since the details of a particular crime is implemented yet, we'll simply issue a toast
+        // when the user clicks on an item. 
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(getActivity(), mCrime.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -94,10 +120,9 @@ public class CrimeListFragment extends Fragment {
         @Override
         public void onBindViewHolder(CrimeHolder holder, int position) {
             // The position in this particular case is the index of the Crime in our array. Once we
-            // extract that out, we bind that Crime to our View by sending its title to our ViewHolder's
-            // TextView.
+            // extract that out, we bind that Crime to our View.
             Crime crime = mCrimes.get(position);
-            holder.mTitleTextView.setText(crime.getTitle());
+            holder.bindCrime(crime);
         }
 
         @Override

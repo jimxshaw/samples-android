@@ -75,8 +75,8 @@ public class CrimeFragment extends Fragment {
         // A date without formatting looks ugly. We use the DateFormat class to format the current date
         // and then set that to the button text.
         DateFormat mDateFormat = DateFormat.getDateInstance();
-        String mformattedDate = mDateFormat.format(mCrime.getDate());
-        mDateButton.setText(mformattedDate);
+        String mFormattedDate = mDateFormat.format(mCrime.getDate());
+        mDateButton.setText(mFormattedDate);
         mDateButton.setEnabled(false);
 
         mSolvedCheckBox = (CheckBox) v.findViewById(R.id.crime_solved);
