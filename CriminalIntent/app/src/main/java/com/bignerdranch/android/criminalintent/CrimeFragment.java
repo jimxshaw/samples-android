@@ -7,7 +7,12 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+
+import java.text.DateFormat;
 
 // CrimeFragment is a controller that interacts with model and view objects. Its job is to present
 // the details of a specific crime and update those details as the user changes them.
@@ -15,6 +20,8 @@ public class CrimeFragment extends Fragment {
 
     private Crime mCrime;
     private EditText mTitleField;
+    private Button mDateButton;
+    private CheckBox mSolvedCheckBox;
 
     // Fragment.onCreate is public while Activity.onCreate is protected. The reason all the Fragment
     // lifecycle methods are public is because they will be called by whatever activity is hosting
@@ -59,6 +66,25 @@ public class CrimeFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 // This space is intentionally left blank.
+            }
+        });
+
+        // Grab the crime date button by id, cast it, assign it to a variable and then set the text with
+        // the date of the crime, which defaults to the current date. The button is disabled for now.
+        mDateButton = (Button) v.findViewById(R.id.crime_date);
+        // A date without formatting looks ugly. We use the DateFormat class to format the current date
+        // and then set that to the button text.
+        DateFormat mDateFormat = DateFormat.getDateInstance();
+        String mformattedDate = mDateFormat.format(mCrime.getDate());
+        mDateButton.setText(mformattedDate);
+        mDateButton.setEnabled(false);
+
+        mSolvedCheckBox = (CheckBox) v.findViewById(R.id.crime_solved);
+        mSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // Set the crime's solved property based on whether or not the solved box is checked.
+                mCrime.setSolved(isChecked);
             }
         });
 
