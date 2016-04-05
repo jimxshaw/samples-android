@@ -1,5 +1,6 @@
 package com.bignerdranch.android.criminalintent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -82,11 +83,14 @@ public class CrimeListFragment extends Fragment {
             mSolvedCheckBox.setChecked(mCrime.isSolved());
         }
 
-        // Since the details of a particular crime is implemented yet, we'll simply issue a toast
-        // when the user clicks on an item. 
         @Override
         public void onClick(View v) {
-            Toast.makeText(getActivity(), mCrime.getTitle() + " clicked!", Toast.LENGTH_SHORT).show();
+            // CrimeListFragment creates an explicit intent tht names the CrimeActivity.class.
+            // It uses the getActivity method to pass its hosting activity as the Context object
+            // that the Intent constructor requires. 
+            // Intent(Context packageContext, Class<?> cls)
+            Intent intent = new Intent(getActivity(), CrimeActivity.class);
+            startActivity(intent);
         }
     }
 
