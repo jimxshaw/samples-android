@@ -85,11 +85,10 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            // CrimeListFragment creates an explicit intent tht names the CrimeActivity.class.
-            // It uses the getActivity method to pass its hosting activity as the Context object
-            // that the Intent constructor requires.
-            // Intent(Context packageContext, Class<?> cls)
-            Intent intent = new Intent(getActivity(), CrimeActivity.class);
+            // Our CrimeHolder will use the newIntent method passed in from CrimeActivity while
+            // itself passing in the crime ID of the particular crime clicked from the list of crimes.
+            Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
+            // The activity that starts with this Intent is CrimeActivity.
             startActivity(intent);
         }
     }
