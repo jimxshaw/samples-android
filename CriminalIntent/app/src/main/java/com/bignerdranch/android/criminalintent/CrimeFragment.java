@@ -13,11 +13,13 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import java.text.DateFormat;
+import java.util.UUID;
 
 // CrimeFragment is a controller that interacts with model and view objects. Its job is to present
 // the details of a specific crime and update those details as the user changes them.
 public class CrimeFragment extends Fragment {
 
+    // The mCrime object is the Crime retrieved by ID from within onCreate.
     private Crime mCrime;
     private EditText mTitleField;
     private Button mDateButton;
@@ -30,7 +32,15 @@ public class CrimeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCrime = new Crime();
+
+        // Get the hosting activity, CrimeActivity, the getIntent method returns the Intent that was
+        // used to start CrimeActivity. We call getSerializableExtra on the Intent to extract the UUID
+        // out into a variable. The UUID type can be serialized hence using that method. After
+        // retrieving the ID, we use it to fetch that particular Crime from CrimeLab.
+        UUID crimeId = (UUID) getActivity()
+                                .getIntent()
+                                .getSerializableExtra(CrimeActivity.EXTRA_CRIME_ID);
+        mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
     }
 
     // Note that we do not inflate the fragment's view in onCreate. We create and configure the view
@@ -50,6 +60,7 @@ public class CrimeFragment extends Fragment {
         // Finding the view and then casting works almost exactly the same within a fragment as
         // within an activity except here we have to fully qualify the code with View.findViewById(int).
         mTitleField = (EditText) v.findViewById(R.id.crime_title);
+        mTitleField.setText(mCrime.getTitle());
         mTitleField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -80,6 +91,7 @@ public class CrimeFragment extends Fragment {
         mDateButton.setEnabled(false);
 
         mSolvedCheckBox = (CheckBox) v.findViewById(R.id.crime_solved);
+        mSolvedCheckBox.setChecked(mCrime.isSolved());
         mSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
