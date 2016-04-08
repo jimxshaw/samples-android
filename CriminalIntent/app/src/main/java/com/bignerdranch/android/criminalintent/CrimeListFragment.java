@@ -21,6 +21,7 @@ public class CrimeListFragment extends Fragment {
     // It works with two subclasses, Adapter and ViewHolder.
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
+    private int mCrimeAdapterLastClickPosition = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,16 +41,37 @@ public class CrimeListFragment extends Fragment {
         return view;
     }
 
+    // The reason why we override onResume instead of onStart to update the UI is because we cannot
+    // assume that our activity will be stopped when another activity is in front of it. Our activity
+    // could simply be paused and if our updateUI method were in onStart then our UI will not be reloaded.
+    // Within onResume is the safest place to take action to update a fragment's view.
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
+
     private void updateUI() {
         // Get our singleton CrimeLab that holds our list of crimes.
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         // Get that list of crimes and assign it.
         List<Crime> crimes = crimeLab.getCrimes();
 
-        // Instantiate our CrimeAdapter with the list of crimes passed in.
-        mAdapter = new CrimeAdapter(crimes);
-        // We use the CrimeAdapter with our RecyclerView
-        mCrimeRecyclerView.setAdapter(mAdapter);
+        if (mAdapter == null) {
+            // Instantiate our CrimeAdapter with the list of crimes passed in.
+            mAdapter = new CrimeAdapter(crimes);
+            // We use the CrimeAdapter with our RecyclerView
+            mCrimeRecyclerView.setAdapter(mAdapter);
+        }
+        else {
+            // Using the adapter's notifyDataSetChanged method means the entire list of crimes would
+            // update even though we only changed something on one particular crime. To update the UI
+            // solely for the crime that was changed, use the notifyItemChanged method with the adapter
+            // position. The later way is more efficient. 
+            //mAdapter.notifyDataSetChanged();
+            mAdapter.notifyItemChanged(mCrimeAdapterLastClickPosition);
+            mCrimeAdapterLastClickPosition = -1;
+        }
     }
 
     // The ViewHolder's job is small. It does only one thing, which is holding on to a View.
@@ -85,6 +107,7 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
+            mCrimeAdapterLastClickPosition = getAdapterPosition();
             // Our CrimeHolder will use the newIntent method passed in from CrimeActivity while
             // itself passing in the crime ID of the particular crime clicked from the list of crimes.
             Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
