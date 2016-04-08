@@ -19,11 +19,30 @@ import java.util.UUID;
 // the details of a specific crime and update those details as the user changes them.
 public class CrimeFragment extends Fragment {
 
+    private static final String ARG_CRIME_ID = "crime_id";
+
     // The mCrime object is the Crime retrieved by ID from within onCreate.
     private Crime mCrime;
     private EditText mTitleField;
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
+
+    // Every fragment instance can have a Bundle object attached to it. This bundle contains key-value
+    // pairs that work just like the intent of an Activity. Each pair is known as an argument.
+    // To attach the arguments bundle to a fragment, we call Fragment.setArguments(Bundle). Attaching
+    // arguments to a fragment must be done after the fragment is created but before it is added to
+    // an activity. To hit this narrow window, we add a static method called newInstance to the
+    // Fragment class. When the hosting activity needs an instance of this fragment, we have it call
+    // newInstance rather than calling the constructor directly. The activity can pass in any required
+    // parameters to newInstance that the fragment needs to create its arguments.
+    public static CrimeFragment newInstance(UUID crimeId) {
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_CRIME_ID, crimeId);
+
+        CrimeFragment fragment = new CrimeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     // Fragment.onCreate is public while Activity.onCreate is protected. The reason all the Fragment
     // lifecycle methods are public is because they will be called by whatever activity is hosting
@@ -33,13 +52,10 @@ public class CrimeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Get the hosting activity, CrimeActivity, the getIntent method returns the Intent that was
-        // used to start CrimeActivity. We call getSerializableExtra on the Intent to extract the UUID
-        // out into a variable. The UUID type can be serialized hence using that method. After
-        // retrieving the ID, we use it to fetch that particular Crime from CrimeLab.
-        UUID crimeId = (UUID) getActivity()
-                                .getIntent()
-                                .getSerializableExtra(CrimeActivity.EXTRA_CRIME_ID);
+        // Our CrimeFragment uses the getArguments method to get the crime ID passed into it by
+        // CrimeActivity.
+        // After retrieving the ID, we use it to fetch that particular Crime from CrimeLab.
+        UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
     }
 

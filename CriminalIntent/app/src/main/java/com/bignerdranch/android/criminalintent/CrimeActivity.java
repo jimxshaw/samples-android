@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class CrimeActivity extends SingleFragmentActivity {
 
-    public static final String EXTRA_CRIME_ID = "com.bignerdranch.android.criminalintent.crime_id";
+    private static final String EXTRA_CRIME_ID = "com.bignerdranch.android.criminalintent.crime_id";
 
     // This activity's hosted CrimeFragment needs to display the data for a specific Crime when we
     // click on it in our CrimeListFragment's RecyclerView. We can tell which clicked CrimeFragment
@@ -25,7 +25,13 @@ public class CrimeActivity extends SingleFragmentActivity {
     // Our CrimeActivity hosts a CrimeFragment.
     @Override
     protected Fragment createFragment() {
-        return new CrimeFragment();
+
+        // The getIntent method returns the Intent that was used to start CrimeActivity. We call
+        // getSerializableExtra on the Intent to extract the UUID out into a variable. The UUID type
+        // can be serialized hence using that method. After retrieving the ID, we create a new instance
+        // of the fragment this activity will host and then pass the ID into it.
+        UUID crimeId = (UUID) getIntent().getSerializableExtra(EXTRA_CRIME_ID);
+        return CrimeFragment.newInstance(crimeId);
     }
 
 }
