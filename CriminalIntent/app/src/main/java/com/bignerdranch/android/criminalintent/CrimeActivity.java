@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 import java.util.UUID;
-
+// CLASS DEPRECATED AWAY. NOT USED.
+// For testing purposes we use CrimeActivity to host CrimeFragment but it's limiting because we need
+// the ability to "page" through our list of crimes when we view a particular CrimeFragment. Hence,
+// we'll forgo CrimeActivity for CrimePagerActivity to host CrimeFragment.
 public class CrimeActivity extends SingleFragmentActivity {
 
     private static final String EXTRA_CRIME_ID = "com.bignerdranch.android.criminalintent.crime_id";

@@ -110,8 +110,12 @@ public class CrimeListFragment extends Fragment {
             mCrimeAdapterLastClickPosition = getAdapterPosition();
             // Our CrimeHolder will use the newIntent method passed in from CrimeActivity while
             // itself passing in the crime ID of the particular crime clicked from the list of crimes.
-            Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
-            // The activity that starts with this Intent is CrimeActivity.
+            //Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
+
+            // When pressing a list item in CrimeListFragment we want to start an instance of
+            // CrimePagerActivity instead of CrimeActivity.
+            Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
+            // The activity that starts with this Intent is CrimePagerActivity.
             startActivity(intent);
         }
     }
