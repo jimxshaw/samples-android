@@ -2,6 +2,7 @@ package com.bignerdranch.android.criminalintent;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import java.util.UUID;
 public class CrimeFragment extends Fragment {
 
     private static final String ARG_CRIME_ID = "crime_id";
+    private static final String DIALOG_DATE = "DialogDate";
 
     // The mCrime object is the Crime retrieved by ID from within onCreate.
     private Crime mCrime;
@@ -104,7 +106,20 @@ public class CrimeFragment extends Fragment {
         DateFormat mDateFormat = DateFormat.getDateInstance();
         String mFormattedDate = mDateFormat.format(mCrime.getDate());
         mDateButton.setText(mFormattedDate);
-        mDateButton.setEnabled(false);
+        mDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // To get a DialogFragment added to the FragmentManager and put on screen, we can call
+                // show(FragmentManager, String) or show(FragmentTransaction, String). The string
+                // parameter uniquely identifies the DialogFragment in the FragmentManager's list.
+                // The different between the two show method is if we pass in a FragmentTransaction,
+                // we are responsible for creating and committing that transaction. If we pass a
+                // FragmentManager, a transaction will automatically be created and committed for us.
+                FragmentManager manager = getFragmentManager();
+                DatePickerFragment dialog = new DatePickerFragment();
+                dialog.show(manager, DIALOG_DATE);
+            }
+        });
 
         mSolvedCheckBox = (CheckBox) v.findViewById(R.id.crime_solved);
         mSolvedCheckBox.setChecked(mCrime.isSolved());

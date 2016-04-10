@@ -1,8 +1,8 @@
 package com.bignerdranch.android.criminalintent;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
 // Within this DatePickerFragment, we'll create and configure an instance of AlertDialog that displays
