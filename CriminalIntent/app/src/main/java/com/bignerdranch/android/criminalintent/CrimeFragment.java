@@ -136,16 +136,16 @@ public class CrimeFragment extends Fragment {
                 // The different between the two show method is if we pass in a FragmentTransaction,
                 // we are responsible for creating and committing that transaction. If we pass a
                 // FragmentManager, a transaction will automatically be created and committed for us.
-                FragmentManager manager = getFragmentManager();
+                FragmentManager fragmentManager = getFragmentManager();
                 // We retrieve the date of the selected crime and pass it into DatePickerFragment's
                 // newInstance method where it will be stored in the arguments bundle that DatePickerFragment
                 // itself can access.
-                DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
+                DatePickerFragment datePickerDialog = DatePickerFragment.newInstance(mCrime.getDate());
                 // To have CrimeFragment receive the newly selected date back from DatePickerFragment,
                 // we make CrimeFragment the target fragment of DatePickerFragment. The setTargetFragment
                 // method takes in a fragment and a request code.
-                dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
-                dialog.show(manager, DIALOG_DATE);
+                datePickerDialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
+                datePickerDialog.show(fragmentManager, DIALOG_DATE);
             }
         });
 

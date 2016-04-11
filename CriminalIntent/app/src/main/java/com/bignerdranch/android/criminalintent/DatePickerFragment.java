@@ -103,6 +103,9 @@ public class DatePickerFragment extends DialogFragment {
         Intent intent = new Intent();
         intent.putExtra(EXTRA_DATE, date);
 
+        // The getTargetFragment method returns the fragment set by the setTargetFragment method, which
+        // in this case is CrimeFragment. The target fragment was set in CrimeFragment's date button
+        // on click event handler.
         getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
     }
 }
