@@ -1,5 +1,7 @@
 package com.bignerdranch.android.criminalintent;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +16,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import java.text.DateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 // CrimeFragment is a controller that interacts with model and view objects. Its job is to present
@@ -22,6 +25,8 @@ public class CrimeFragment extends Fragment {
 
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "DialogDate";
+
+    private static final int REQUEST_DATE = 0;
 
     // The mCrime object is the Crime retrieved by ID from within onCreate.
     private Crime mCrime;
@@ -59,6 +64,26 @@ public class CrimeFragment extends Fragment {
         // After retrieving the ID, we use it to fetch that particular Crime from CrimeLab.
         UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == REQUEST_DATE) {
+            Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+            mCrime.setDate(date);
+            updateDate();
+        }
+    }
+
+    private void updateDate() {
+        // A date without formatting looks ugly. We use the DateFormat class to format the current date
+        // and then set that to the button text.
+        DateFormat mDateFormat = DateFormat.getDateInstance();
+        String mFormattedDate = mDateFormat.format(mCrime.getDate());
+        mDateButton.setText(mFormattedDate);
     }
 
     // Note that we do not inflate the fragment's view in onCreate. We create and configure the view
@@ -101,11 +126,7 @@ public class CrimeFragment extends Fragment {
         // Grab the crime date button by id, cast it, assign it to a variable and then set the text with
         // the date of the crime, which defaults to the current date. The button is disabled for now.
         mDateButton = (Button) v.findViewById(R.id.crime_date);
-        // A date without formatting looks ugly. We use the DateFormat class to format the current date
-        // and then set that to the button text.
-        DateFormat mDateFormat = DateFormat.getDateInstance();
-        String mFormattedDate = mDateFormat.format(mCrime.getDate());
-        mDateButton.setText(mFormattedDate);
+        updateDate();
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,6 +141,10 @@ public class CrimeFragment extends Fragment {
                 // newInstance method where it will be stored in the arguments bundle that DatePickerFragment
                 // itself can access.
                 DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
+                // To have CrimeFragment receive the newly selected date back from DatePickerFragment,
+                // we make CrimeFragment the target fragment of DatePickerFragment. The setTargetFragment
+                // method takes in a fragment and a request code.
+                dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
                 dialog.show(manager, DIALOG_DATE);
             }
         });

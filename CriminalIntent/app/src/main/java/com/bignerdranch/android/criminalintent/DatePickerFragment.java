@@ -1,6 +1,9 @@
 package com.bignerdranch.android.criminalintent;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -11,12 +14,15 @@ import android.widget.DatePicker;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 // Within this DatePickerFragment, we'll create and configure an instance of AlertDialog that displays
 // a DatePicker widget. DatePickerFragment will be hosted by CrimePagerActivity. The purpose being when
 // we page through our Crime ViewPager views and click the date button of that particular Crime, a date
 // widget dialog will appear to allow us to set a date.
 public class DatePickerFragment extends DialogFragment {
+
+    public static final String EXTRA_DATE = "com.bignerdranch.android.criminalintent.date";
 
     private static final String ARG_DATE = "date";
 
@@ -72,7 +78,31 @@ public class DatePickerFragment extends DialogFragment {
         return new AlertDialog.Builder(getActivity())
                                         .setView(v)
                                         .setTitle(R.string.date_picker_title)
-                                        .setPositiveButton(android.R.string.ok, null)
+                                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                int year = mDatePicker.getYear();
+                                                int month = mDatePicker.getMonth();
+                                                int day = mDatePicker.getDayOfMonth();
+                                                Date date = new GregorianCalendar(year, month, day).getTime();
+                                                sendResult(Activity.RESULT_OK, date);
+                                            }
+                                        })
                                         .create();
+    }
+
+    // When the user presses the positive button in the dialog, we want to retrieve
+    // the date from DatePicker and send the result back to CrimeFragment. In order to do that we have
+    // to add an implementation of DialogInterface.OnClickListener, in AlertDialog.Builder's setPositiveButton
+    // method, that retrieves the newly selected date and calls sendResult.
+    private void sendResult(int resultCode, Date date) {
+        if (getTargetFragment() == null) {
+            return;
+        }
+
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_DATE, date);
+
+        getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
     }
 }
