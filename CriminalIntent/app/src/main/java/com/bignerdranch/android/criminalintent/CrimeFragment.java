@@ -116,7 +116,10 @@ public class CrimeFragment extends Fragment {
                 // we are responsible for creating and committing that transaction. If we pass a
                 // FragmentManager, a transaction will automatically be created and committed for us.
                 FragmentManager manager = getFragmentManager();
-                DatePickerFragment dialog = new DatePickerFragment();
+                // We retrieve the date of the selected crime and pass it into DatePickerFragment's
+                // newInstance method where it will be stored in the arguments bundle that DatePickerFragment
+                // itself can access.
+                DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
                 dialog.show(manager, DIALOG_DATE);
             }
         });
