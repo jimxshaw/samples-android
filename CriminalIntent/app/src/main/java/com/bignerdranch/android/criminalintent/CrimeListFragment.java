@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -22,6 +24,16 @@ public class CrimeListFragment extends Fragment {
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
     private int mCrimeAdapterLastClickPosition = -1;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // The FragmentManager is responsible for calling Fragment.onCreateOptions(Menu, MenuInflater)
+        // when the activity receives its onCreateOptionsMenu(...) callback from the Operating System.
+        // We must explicitly tell the FragmentManager that our fragment should receive a call to
+        // onCreateOptionsMenu(...). We do this by calling the following method.
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,6 +61,16 @@ public class CrimeListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         updateUI();
+    }
+
+    // Menus are managed by callbacks from the Activity class. When the menu is needed, Android calls
+    // the Activity onCreateOptionsMenu(menu) method. Since we're implementing a Fragment, Fragment
+    // comes with its own set of menu callbacks, which we'll implement here in CrimeListFragment.
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        // This populates the Menu instance with the items defined in our file.
+        inflater.inflate(R.menu.fragment_crime_list, menu);
     }
 
     private void updateUI() {
