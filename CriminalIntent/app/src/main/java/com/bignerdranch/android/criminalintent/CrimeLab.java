@@ -27,14 +27,14 @@ public class CrimeLab {
         // List implementation like LinkedList then we can do so easily.
         mCrimes = new ArrayList<>();
 
-        // Pre-populate our list of crimes for testing purposes.
-        for (int i = 0; i < 100; i++) {
-            Crime crime = new Crime();
-            crime.setTitle("Crime #" + i);
-            // Mark every other crime as solved.
-            crime.setSolved(i % 2 == 0);
-            mCrimes.add(crime);
-        }
+//        // Pre-populate our list of crimes for testing purposes.
+//        for (int i = 0; i < 100; i++) {
+//            Crime crime = new Crime();
+//            crime.setTitle("Crime #" + i);
+//            // Mark every other crime as solved.
+//            crime.setSolved(i % 2 == 0);
+//            mCrimes.add(crime);
+//        }
     }
 
     public static CrimeLab get(Context context) {
@@ -55,5 +55,9 @@ public class CrimeLab {
             }
         }
         return null;
+    }
+
+    public void addCrime(Crime crime) {
+        mCrimes.add(crime);
     }
 }

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -71,6 +72,27 @@ public class CrimeListFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         // This populates the Menu instance with the items defined in our file.
         inflater.inflate(R.menu.fragment_crime_list, menu);
+    }
+
+    // When we click on an action item, this fragment receives a callback to the method
+    // onOptionsItemSelect(MenuItem). This method receives an instance of MenuItem that describes the
+    // user's selection. Menus often have more than one menu item option. We determine which action
+    // item has be selected by checking the ID of the MenuItem and then respond accordingly. This ID
+    // corresponds to the ID we assigned to the MenuItem in our menu file.
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.menu_item_new_crime:
+                // We create a new Crime, add it to CrimeLab and then start an instance of CrimePagerActivity
+                // to edit the new Crime.
+                Crime crime = new Crime();
+                CrimeLab.get(getActivity()).addCrime(crime);
+                Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(menuItem);
+        }
     }
 
     private void updateUI() {
