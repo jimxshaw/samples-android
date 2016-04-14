@@ -4,11 +4,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 
 // An abstract class is a class that cannot be instantiated, meaning you cannot create
 // new instances of an abstract class. The purpose of an abstract class is to function as
 // a base for subclasses.
-public abstract class SingleFragmentActivity extends FragmentActivity {
+public abstract class SingleFragmentActivity extends AppCompatActivity {
 
     // Subclasses of SingleFragmentActivity will implement createFragment to return an instance of the
     // fragment that the activity is hosting. E.g. CrimeActivity calling createFragment will return
