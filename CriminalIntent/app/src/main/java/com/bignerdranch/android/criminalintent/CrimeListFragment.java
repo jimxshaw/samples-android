@@ -79,6 +79,7 @@ public class CrimeListFragment extends Fragment {
         inflater.inflate(R.menu.fragment_crime_list, menu);
 
         MenuItem subtitleItem = menu.findItem(R.id.menu_item_show_subtitle);
+
         if (mSubtitleVisible) {
             subtitleItem.setTitle(R.string.hide_subtitle);
         }
@@ -122,9 +123,11 @@ public class CrimeListFragment extends Fragment {
         // We generate the subtitle string using getString method, which accepts replacement values
         // for the placeholders in the string resource.
         String subtitle = getString(R.string.subtitle_format, crimeCount);
+
         if (!mSubtitleVisible) {
             subtitle = null;
         }
+
         // The activity that hosts CrimeListFragment must be cast to AppCompatActivity so that it can
         // have access to the toolbar. The toolbar is known as the actionbar in legacy Android.
         AppCompatActivity activity = (AppCompatActivity) getActivity();
@@ -152,6 +155,10 @@ public class CrimeListFragment extends Fragment {
             mAdapter.notifyItemChanged(mCrimeAdapterLastClickPosition);
             mCrimeAdapterLastClickPosition = -1;
         }
+
+        // By adding updateSubtitle to updateUI, when we create a new crime and then return to
+        // CrimeListActivity with the Back button, the number of crimes in the subtitle will update.
+        updateSubtitle();
     }
 
     // The ViewHolder's job is small. It does only one thing, which is holding on to a View.
