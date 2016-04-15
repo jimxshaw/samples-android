@@ -24,6 +24,8 @@ import java.util.List;
 
 public class CrimeListFragment extends Fragment {
 
+    private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
+
     // The RecyclerView's only responsibilities are recycling TextViews and positioning them on the screen.
     // It works with two subclasses, Adapter and ViewHolder.
     private RecyclerView mCrimeRecyclerView;
@@ -54,9 +56,23 @@ public class CrimeListFragment extends Fragment {
         // the scrolling behavior.
         mCrimeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        // If savedInstanceState exists, we extract the value set to our SAVED_SUBTITLE_VISIBLE key
+        // and assign it to our boolean variable.
+        if (savedInstanceState != null) {
+            mSubtitleVisible = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBLE);
+        }
+
         updateUI();
 
         return view;
+    }
+
+    // The purpose of saving our instance state is to save the visibility of our crime count
+    // subtitle even when the device changes orientation. 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(SAVED_SUBTITLE_VISIBLE, mSubtitleVisible);
     }
 
     // The reason why we override onResume instead of onStart to update the UI is because we cannot
@@ -80,6 +96,8 @@ public class CrimeListFragment extends Fragment {
 
         MenuItem subtitleItem = menu.findItem(R.id.menu_item_show_subtitle);
 
+        // Changes the words in the toolbar item depending on whether or not the number of crimes
+        // is shown.
         if (mSubtitleVisible) {
             subtitleItem.setTitle(R.string.hide_subtitle);
         }
