@@ -29,6 +29,7 @@ public class CrimeListFragment extends Fragment {
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
     private int mCrimeAdapterLastClickPosition = -1;
+    private boolean mSubtitleVisible;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,14 @@ public class CrimeListFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         // This populates the Menu instance with the items defined in our file.
         inflater.inflate(R.menu.fragment_crime_list, menu);
+
+        MenuItem subtitleItem = menu.findItem(R.id.menu_item_show_subtitle);
+        if (mSubtitleVisible) {
+            subtitleItem.setTitle(R.string.hide_subtitle);
+        }
+        else {
+            subtitleItem.setTitle(R.string.show_subtitle);
+        }
     }
 
     // When we click on an action item, this fragment receives a callback to the method
@@ -95,6 +104,8 @@ public class CrimeListFragment extends Fragment {
                 startActivity(intent);
                 return true;
             case R.id.menu_item_show_subtitle:
+                mSubtitleVisible = !mSubtitleVisible;
+                getActivity().invalidateOptionsMenu();
                 updateSubtitle();
                 return true;
             default:
@@ -111,6 +122,9 @@ public class CrimeListFragment extends Fragment {
         // We generate the subtitle string using getString method, which accepts replacement values
         // for the placeholders in the string resource.
         String subtitle = getString(R.string.subtitle_format, crimeCount);
+        if (!mSubtitleVisible) {
+            subtitle = null;
+        }
         // The activity that hosts CrimeListFragment must be cast to AppCompatActivity so that it can
         // have access to the toolbar. The toolbar is known as the actionbar in legacy Android.
         AppCompatActivity activity = (AppCompatActivity) getActivity();
