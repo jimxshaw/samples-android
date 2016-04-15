@@ -2,9 +2,13 @@ package com.bignerdranch.android.criminalintent;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -90,9 +94,27 @@ public class CrimeListFragment extends Fragment {
                 Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
                 startActivity(intent);
                 return true;
+            case R.id.menu_item_show_subtitle:
+                updateSubtitle();
+                return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
+    }
+
+    // This subtitle will display the number of crimes in our crimes list and updateSubtitle method
+    // will set the subtitle of the toolbar.
+    private void updateSubtitle() {
+        CrimeLab crimeLab = CrimeLab.get(getActivity());
+        int crimeCount = crimeLab.getCrimes().size();
+
+        // We generate the subtitle string using getString method, which accepts replacement values
+        // for the placeholders in the string resource.
+        String subtitle = getString(R.string.subtitle_format, crimeCount);
+        // The activity that hosts CrimeListFragment must be cast to AppCompatActivity so that it can
+        // have access to the toolbar. The toolbar is known as the actionbar in legacy Android.
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.getSupportActionBar().setSubtitle(subtitle);
     }
 
     private void updateUI() {
