@@ -156,7 +156,12 @@ public class CrimeListFragment extends Fragment {
         // The activity that hosts CrimeListFragment must be cast to AppCompatActivity so that it can
         // have access to the toolbar. The toolbar is known as the actionbar in legacy Android.
         AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.getSupportActionBar().setSubtitle(subtitle);
+
+        // We added an if conditional to deal with potential null pointer exceptions.
+        if(activity.getSupportActionBar() != null){
+            activity.getSupportActionBar().setSubtitle(subtitle);
+        }
+
     }
 
     private void updateUI() {
