@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">LearnDroid</string>
+    <string name="about">This is my awesome new Android app!</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_about">About</string>
+    <string name="surprise_me">Surprise me!</string>
+    <string name="title_activity_about">AboutActivity</string>
+    <string name="action_settings">Settings</string>
+</resources>
