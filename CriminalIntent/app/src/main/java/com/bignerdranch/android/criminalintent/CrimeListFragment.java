@@ -140,7 +140,14 @@ public class CrimeListFragment extends Fragment {
 
         // We generate the subtitle string using getString method, which accepts replacement values
         // for the placeholders in the string resource.
-        String subtitle = getString(R.string.subtitle_format, crimeCount);
+        String subtitle;
+
+        if (crimeCount < 2) {
+            subtitle = getString(R.string.subtitle_format_single, crimeCount);
+        }
+        else {
+            subtitle = getString(R.string.subtitle_format_many, crimeCount);
+        }
 
         if (!mSubtitleVisible) {
             subtitle = null;
