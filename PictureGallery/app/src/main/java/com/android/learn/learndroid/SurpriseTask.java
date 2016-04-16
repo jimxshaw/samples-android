@@ -11,9 +11,6 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-/**
- * Created by raghavsood on 11/09/15.
- */
 public class SurpriseTask extends AsyncTask<String, Integer, Bitmap[]> {
 	public static String TAG = "SurpriseTask";
 	private Context mContext;
