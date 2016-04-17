@@ -8,12 +8,16 @@ import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -64,6 +68,8 @@ public class CrimeFragment extends Fragment {
         // After retrieving the ID, we use it to fetch that particular Crime from CrimeLab.
         UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
+
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -163,6 +169,27 @@ public class CrimeFragment extends Fragment {
         return v;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_crime, menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.menu_item_delete_crime:
+                CrimeLab.get(getActivity()).deleteCrime(mCrime);
+                Toast.makeText(getActivity(), "Crime deleted!", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent();
+
+                //TODO: Delete crime works but users cannot press the Back button. Fix Back button bug.
+
+                getActivity().setResult(Activity.RESULT_OK, intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(menuItem);
+        }
+    }
 
 }

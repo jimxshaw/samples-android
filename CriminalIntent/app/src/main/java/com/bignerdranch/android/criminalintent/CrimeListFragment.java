@@ -26,6 +26,8 @@ public class CrimeListFragment extends Fragment {
 
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
 
+    private static final int RESULT_TAG = 0;
+
     // The RecyclerView's only responsibilities are recycling TextViews and positioning them on the screen.
     // It works with two subclasses, Adapter and ViewHolder.
     private RecyclerView mCrimeRecyclerView;
@@ -120,7 +122,8 @@ public class CrimeListFragment extends Fragment {
                 Crime crime = new Crime();
                 CrimeLab.get(getActivity()).addCrime(crime);
                 Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
-                startActivity(intent);
+                startActivityForResult(intent, RESULT_TAG);
+                //startActivity(intent);
                 return true;
             case R.id.menu_item_show_subtitle:
                 mSubtitleVisible = !mSubtitleVisible;
