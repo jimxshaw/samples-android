@@ -26,13 +26,11 @@ public class CrimeListFragment extends Fragment {
 
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
 
-    private static final int RESULT_TAG = 0;
-
     // The RecyclerView's only responsibilities are recycling TextViews and positioning them on the screen.
     // It works with two subclasses, Adapter and ViewHolder.
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
-    private int mCrimeAdapterLastClickPosition = -1;
+    //private int mCrimeAdapterLastClickPosition = -1; // Not used because adapter is refreshing the entire list every time.
     private boolean mSubtitleVisible;
 
     @Override
@@ -122,8 +120,7 @@ public class CrimeListFragment extends Fragment {
                 Crime crime = new Crime();
                 CrimeLab.get(getActivity()).addCrime(crime);
                 Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
-                startActivityForResult(intent, RESULT_TAG);
-                //startActivity(intent);
+                startActivity(intent);
                 return true;
             case R.id.menu_item_show_subtitle:
                 mSubtitleVisible = !mSubtitleVisible;
@@ -184,9 +181,9 @@ public class CrimeListFragment extends Fragment {
             // update even though we only changed something on one particular crime. To update the UI
             // solely for the crime that was changed, use the notifyItemChanged method with the adapter
             // position. The later way is more efficient. 
-            //mAdapter.notifyDataSetChanged();
-            mAdapter.notifyItemChanged(mCrimeAdapterLastClickPosition);
-            mCrimeAdapterLastClickPosition = -1;
+            mAdapter.notifyDataSetChanged();
+//            mAdapter.notifyItemChanged(mCrimeAdapterLastClickPosition);
+//            mCrimeAdapterLastClickPosition = -1;
         }
 
         // By adding updateSubtitle to updateUI, when we create a new crime and then return to
@@ -227,7 +224,7 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            mCrimeAdapterLastClickPosition = getAdapterPosition();
+            //mCrimeAdapterLastClickPosition = getAdapterPosition();
             // Our CrimeHolder will use the newIntent method passed in from CrimeActivity while
             // itself passing in the crime ID of the particular crime clicked from the list of crimes.
             //Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());

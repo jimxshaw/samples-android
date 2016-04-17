@@ -179,13 +179,16 @@ public class CrimeFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.menu_item_delete_crime:
-                CrimeLab.get(getActivity()).deleteCrime(mCrime);
-                Toast.makeText(getActivity(), "Crime deleted!", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent();
+                try {
+                    CrimeLab.get(getActivity()).deleteCrime(mCrime);
+                    Toast.makeText(getActivity(), "Crime deleted!", Toast.LENGTH_SHORT).show();
 
-                //TODO: Delete crime works but users cannot press the Back button. Fix Back button bug.
-
-                getActivity().setResult(Activity.RESULT_OK, intent);
+                    //TODO: Delete crime works but only when CrimeListFragment's adapter uses notifyDataSetChanged.
+                    getActivity().finish();
+                }
+                catch (IndexOutOfBoundsException ex) {
+                    ex.printStackTrace();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
