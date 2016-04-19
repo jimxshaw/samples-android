@@ -97,7 +97,7 @@ public class CrimeLab {
         // the crime where the UUID equals the passed in UUID. The reason why we're instantiating a
         // new string array instead of directly placing the uuidString there is mitigate possible
         // SQL injection attacks because the uuidString could itself contain a query. By using a new
-        // string array, then the uuidString would always be treated as a string value. 
+        // string array, then the uuidString would always be treated as a string value.
         mDatabase.update(CrimeTable.NAME, contentValues, CrimeTable.Columns.UUID + " = ? ", new String[] { uuidString });
     }
 

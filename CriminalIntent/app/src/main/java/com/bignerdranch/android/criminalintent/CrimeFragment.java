@@ -72,6 +72,14 @@ public class CrimeFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+    // Crime instances get modified in CrimeFragment and will need to be written out when CrimeFragment
+    // finishes. This implementation of onPause will update CrimeLab's copy of our Crime. 
+    @Override
+    public void onPause() {
+        super.onPause();
+        CrimeLab.get(getActivity()).updateCrime(mCrime);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if (resultCode != Activity.RESULT_OK) {
