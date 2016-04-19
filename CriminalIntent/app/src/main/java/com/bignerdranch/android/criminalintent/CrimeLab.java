@@ -1,9 +1,11 @@
 package com.bignerdranch.android.criminalintent;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.bignerdranch.android.criminalintent.database.CrimeBaseHelper;
+import com.bignerdranch.android.criminalintent.database.CrimeDbSchema.CrimeTable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,10 +77,35 @@ public class CrimeLab {
     }
 
     public void addCrime(Crime crime) {
+        ContentValues contentValues = getContentValues(crime);
+        // Insert's first argument is the table we want to insert into. The third argument is the data
+        // we want to put in. The second argument is called nullColumnHack. In the event when empty
+        // ContentValues wants to be inserted, normally this insert would fail, but since we input
+        // null as the nullColumnHack, the empty ContentValues would be ignored and a ContentValues
+        // with uuid set to null would be inserted instead. 
+        mDatabase.insert(CrimeTable.NAME, null, contentValues);
+
         //mCrimes.add(crime);
     }
 
     public void deleteCrime(Crime crime) {
         //mCrimes.remove(crime);
+    }
+
+    // Writes and updates to databases are done with a class called ContentValues. It's a key-value
+    // store class, similar to HashMap or Bundle. However, unlike those two, ContentValues is specifically
+    // designed to store the kinds of data SQLite can hold.
+    private static ContentValues getContentValues(Crime crime) {
+        ContentValues values = new ContentValues();
+
+        // We use our column names for our keys. The names are important as they specify the columns
+        // that we want to insert or update. If we misspell anything, the insert or update will fail.
+        // Every column is listed here except for _id, which is automatically created as a unique row ID.
+        values.put(CrimeTable.Columns.UUID, crime.getId().toString());
+        values.put(CrimeTable.Columns.TITLE, crime.getTitle());
+        values.put(CrimeTable.Columns.DATE, crime.getDate().getTime());
+        values.put(CrimeTable.Columns.SOLVED, crime.isSolved() ? 1 : 0);
+
+        return values;
     }
 }
