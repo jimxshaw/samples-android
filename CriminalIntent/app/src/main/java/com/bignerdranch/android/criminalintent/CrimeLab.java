@@ -23,7 +23,7 @@ public class CrimeLab {
 
     // Android static variables start with a lower case s.
     private static CrimeLab sCrimeLab;
-    private List<Crime> mCrimes;
+    //private List<Crime> mCrimes;
 
     private Context mContext;
     private SQLiteDatabase mDatabase;
@@ -41,7 +41,7 @@ public class CrimeLab {
 
         // List is an interface that ArrayList implements from. If we ever need to switch to another
         // List implementation like LinkedList then we can do so easily.
-        mCrimes = new ArrayList<>();
+        //mCrimes = new ArrayList<>();
 
 //        // Pre-populate our list of crimes for testing purposes.
 //        for (int i = 0; i < 100; i++) {
@@ -61,23 +61,24 @@ public class CrimeLab {
     }
 
     public List<Crime> getCrimes() {
-        return mCrimes;
+        //return mCrimes;
+        return new ArrayList<>();
     }
 
     public Crime getCrime(UUID id) {
-        for (Crime crime : mCrimes) {
-            if (crime.getId().equals(id)) {
-                return crime;
-            }
-        }
+//        for (Crime crime : mCrimes) {
+//            if (crime.getId().equals(id)) {
+//                return crime;
+//            }
+//        }
         return null;
     }
 
     public void addCrime(Crime crime) {
-        mCrimes.add(crime);
+        //mCrimes.add(crime);
     }
 
     public void deleteCrime(Crime crime) {
-        mCrimes.remove(crime);
+        //mCrimes.remove(crime);
     }
 }
