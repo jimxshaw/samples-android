@@ -73,7 +73,7 @@ public class CrimeFragment extends Fragment {
     }
 
     // Crime instances get modified in CrimeFragment and will need to be written out when CrimeFragment
-    // finishes. This implementation of onPause will update CrimeLab's copy of our Crime. 
+    // finishes. This implementation of onPause will update CrimeLab's copy of our Crime.
     @Override
     public void onPause() {
         super.onPause();
