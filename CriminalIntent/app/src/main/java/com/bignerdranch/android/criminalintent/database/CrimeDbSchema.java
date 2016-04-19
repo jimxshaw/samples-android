@@ -1,4 +1,4 @@
-package com.bignerdranch.android.criminalintent;
+package com.bignerdranch.android.criminalintent.database;
 
 // A database schema is a way to logically group objects such as tables, views,
 // stored procedures and so on. Think of a schema as a container of objects.
