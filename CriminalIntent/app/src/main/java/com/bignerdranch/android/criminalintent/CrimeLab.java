@@ -1,6 +1,9 @@
 package com.bignerdranch.android.criminalintent;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+
+import com.bignerdranch.android.criminalintent.database.CrimeBaseHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +25,20 @@ public class CrimeLab {
     private static CrimeLab sCrimeLab;
     private List<Crime> mCrimes;
 
+    private Context mContext;
+    private SQLiteDatabase mDatabase;
+
     private CrimeLab(Context context) {
+        mContext = context.getApplicationContext();
+        // When we call getWritableDatabase method, CrimeBaseHelper will do the following:
+        // 1) Open up data/data/com.bignerdranch.android.criminalintent/databases/crimeBase.db,
+        //      creating a new database file if it does not already exist.
+        // 2) If this is the first time the database has been created, call onCreate(SQLiteDatabase),
+        //      then save out the latest version number.
+        // 3) If this is not the first time, check the version number in the database. If the version
+        //      number in CrimeOpenHelper is higher, call onUpgrade(SQLiteDatabase, int, int).
+        mDatabase = new CrimeBaseHelper(mContext).getWritableDatabase();
+
         // List is an interface that ArrayList implements from. If we ever need to switch to another
         // List implementation like LinkedList then we can do so easily.
         mCrimes = new ArrayList<>();
