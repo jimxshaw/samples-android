@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.bignerdranch.android.criminalintent.database.CrimeBaseHelper;
+import com.bignerdranch.android.criminalintent.database.CrimeCursorWrapper;
 import com.bignerdranch.android.criminalintent.database.CrimeDbSchema.CrimeTable;
 
 import java.util.ArrayList;
@@ -64,17 +65,43 @@ public class CrimeLab {
     }
 
     public List<Crime> getCrimes() {
-        //return mCrimes;
-        return new ArrayList<>();
+        List<Crime> crimes = new ArrayList<>();
+        CrimeCursorWrapper cursor = queryCrimes(null, null);
+
+        // A database cursor always has its finger on a particular place in a query. So to pull the data
+        // out of a cursor, we move it to the first element by calling moveToFirst and then reading
+        // in row data. Each time we want to advance to a new row, we call moveToNext until finally
+        // isAfterLast tells us that our pointer is off the end of the dataset. Last, we close the cursor.
+        try {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                crimes.add(cursor.getCrime());
+                cursor.moveToNext();
+            }
+        }
+        finally {
+            cursor.close();
+        }
+
+        return crimes;
     }
 
     public Crime getCrime(UUID id) {
-//        for (Crime crime : mCrimes) {
-//            if (crime.getId().equals(id)) {
-//                return crime;
-//            }
-//        }
-        return null;
+        CrimeCursorWrapper cursor = queryCrimes(
+                CrimeTable.Columns.UUID + " = ?",
+                new String[] { id.toString() }
+        );
+
+        try {
+            if (cursor.getCount() == 0) {
+                return null;
+            }
+            cursor.moveToFirst();
+            return cursor.getCrime();
+        }
+        finally {
+            cursor.close();
+        }
     }
 
     public void addCrime(Crime crime) {
@@ -125,7 +152,7 @@ public class CrimeLab {
 
     // Reading in data from SQLite is done using the SQLiteDatabase.query method. It has many overloads.
     // Most of the arguments for the method are those that are typical for a select statement.
-    private Cursor queryCrimes(String whereClause, String[] whereArgs) {
+    private CrimeCursorWrapper queryCrimes(String whereClause, String[] whereArgs) {
         // The table argument is the table to query. The columns argument names which columns we want
         // values for and what order we want to receive them in. The whereClause and whereArgs operate
         // the same as what takes place in the SQLiteDatabase.update method.
@@ -143,6 +170,6 @@ public class CrimeLab {
         // try to retrieve some data using the query method, then the database will first create
         // a cursor object and return its reference to you.
 
-        return cursor;
+        return new CrimeCursorWrapper(cursor);
     }
 }
