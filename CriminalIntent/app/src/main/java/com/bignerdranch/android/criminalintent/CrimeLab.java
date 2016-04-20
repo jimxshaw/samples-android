@@ -2,6 +2,7 @@ package com.bignerdranch.android.criminalintent;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.bignerdranch.android.criminalintent.database.CrimeBaseHelper;
@@ -120,5 +121,28 @@ public class CrimeLab {
         values.put(CrimeTable.Columns.SOLVED, crime.isSolved() ? 1 : 0);
 
         return values;
+    }
+
+    // Reading in data from SQLite is done using the SQLiteDatabase.query method. It has many overloads.
+    // Most of the arguments for the method are those that are typical for a select statement.
+    private Cursor queryCrimes(String whereClause, String[] whereArgs) {
+        // The table argument is the table to query. The columns argument names which columns we want
+        // values for and what order we want to receive them in. The whereClause and whereArgs operate
+        // the same as what takes place in the SQLiteDatabase.update method.
+        Cursor cursor = mDatabase.query(
+                CrimeTable.NAME,
+                null, // Columns - null selects all columns
+                whereClause,
+                whereArgs,
+                null, // groupBy
+                null, // having
+                null // orderBy
+        );
+
+        // Cursor is the class which represents a 2 dimensional table of any database. When you
+        // try to retrieve some data using the query method, then the database will first create
+        // a cursor object and return its reference to you.
+
+        return cursor;
     }
 }
