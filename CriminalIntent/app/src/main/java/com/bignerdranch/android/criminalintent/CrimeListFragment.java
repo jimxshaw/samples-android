@@ -178,6 +178,7 @@ public class CrimeListFragment extends Fragment {
             mCrimeRecyclerView.setAdapter(mAdapter);
         }
         else {
+            mAdapter.setCrimes(crimes);
             // Using the adapter's notifyDataSetChanged method means the entire list of crimes would
             // update even though we only changed something on one particular crime. To update the UI
             // solely for the crime that was changed, use the notifyItemChanged method with the adapter
@@ -276,6 +277,10 @@ public class CrimeListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mCrimes.size();
+        }
+
+        public void setCrimes(List<Crime> crimes) {
+            mCrimes = crimes;
         }
     }
 }
