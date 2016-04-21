@@ -130,7 +130,9 @@ public class CrimeLab {
     }
 
     public void deleteCrime(Crime crime) {
-        //mCrimes.remove(crime);
+        String uuidString = crime.getId().toString();
+
+        mDatabase.delete(CrimeTable.NAME, CrimeTable.Columns.UUID + " = ? ", new String[] { uuidString });
     }
 
     // Writes and updates to databases are done with a class called ContentValues. It's a key-value
