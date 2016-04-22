@@ -13,9 +13,33 @@ public class CardContentFragment extends Fragment {
         return inflater.inflate(R.layout.item_card, null);
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ViewHolder(LayoutInflater inflater, ViewGroup parent) {
+    public static class CardViewHolder extends RecyclerView.ViewHolder {
+        public CardViewHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.item_card, parent, false));
+        }
+    }
+
+    public static class CardContentAdapter extends RecyclerView.Adapter<CardViewHolder> {
+        // Set numbers of Card in RecyclerView.
+        private static final int LENGTH = 18;
+
+        public CardContentAdapter() {
+
+        }
+
+        @Override
+        public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new CardViewHolder(LayoutInflater.from(parent.getContext()), parent);
+        }
+
+        @Override
+        public void onBindViewHolder(CardViewHolder holder, int position) {
+            // no-op
+        }
+
+        @Override
+        public int getItemCount() {
+            return LENGTH;
         }
     }
 }

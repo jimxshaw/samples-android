@@ -13,9 +13,28 @@ public class TileContentFragment extends Fragment {
         return inflater.inflate(R.layout.item_tile, null);
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ViewHolder(LayoutInflater inflater, ViewGroup parent) {
+    public static class TileViewHolder extends RecyclerView.ViewHolder {
+        public TileViewHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.item_tile, parent, false));
+        }
+    }
+
+    public static class TileContentAdapter extends RecyclerView.Adapter<TileViewHolder> {
+        // Set number of Tile in RecyclerView.
+        private static final int LENGTH = 18;
+
+        public TileViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new TileViewHolder(LayoutInflater.from(parent.getContext()), parent);
+        }
+
+        @Override
+        public void onBindViewHolder(TileViewHolder holder, int positoin) {
+            // no-op
+        }
+
+        @Override
+        public int getItemCount() {
+            return LENGTH;
         }
     }
 }
