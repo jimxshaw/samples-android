@@ -37,14 +37,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Adding the Toolbar to the Main Screen
+        // Adding the Toolbar to the Main Screen.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Setting ViewPager for each Tabs.
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+
+        // Set Tabs inside Toolbar
         TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
-        tabs.addTab(tabs.newTab().setText("Tab 1"));
-        tabs.addTab(tabs.newTab().setText("Tab 2"));
-        tabs.addTab(tabs.newTab().setText("Tab 3"));
+        tabs.setupWithViewPager(viewPager);
+
     }
 
     // Add fragments to tabs.
@@ -53,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new ListContentFragment(), "List");
         adapter.addFragment(new ListContentFragment(), "Tile");
         adapter.addFragment(new ListContentFragment(), "Card");
+        viewPager.setAdapter(adapter);
     }
 
     static class Adapter extends FragmentPagerAdapter {
