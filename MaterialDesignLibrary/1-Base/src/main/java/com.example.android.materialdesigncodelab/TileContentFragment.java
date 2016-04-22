@@ -1,12 +1,14 @@
 package com.example.android.materialdesigncodelab;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 public class TileContentFragment extends Fragment {
     @Override
@@ -27,6 +29,15 @@ public class TileContentFragment extends Fragment {
     public static class TileViewHolder extends RecyclerView.ViewHolder {
         public TileViewHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.item_tile, parent, false));
+
+//            // Adding Snackbar to action button inside card.
+//            Button button = (Button) itemView.findViewById(R.id.action_button);
+//            button.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Snackbar.make(v, "Action is pressed", Snackbar.LENGTH_SHORT).show();
+//                }
+//            });
         }
     }
 
