@@ -5,11 +5,15 @@
 
     </style>
 
-    <style name="ParentMaterialTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="ParentMaterialTheme" parent="Theme.AppCompat.Light">
         <!-- Parent theme for all pre-lollipop and lollipop & above versions -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="colorControlHighlight">#1EF1AB</item>
+        <item name="colorButtonNormal">#F955F3</item>
+        <item name="colorControlActivated">#0CF427</item>
     </style>
 
 </resources>
