@@ -32,8 +32,14 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="showSnackBarWithActionCallback"
+            android:onClick="showSnackbarWithActionCallback"
             android:text="Snackbar with Action Callback"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="showSnackbarWithColoredText"
+            android:text="Snackbar with Customization"/>
 
     </LinearLayout>
     
