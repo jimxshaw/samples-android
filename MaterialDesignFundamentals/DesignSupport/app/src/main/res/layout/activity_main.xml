@@ -29,6 +29,12 @@
             android:onClick="showSimpleSnackbar"
             android:text="Simple Snackbar"/>
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="showSnackBarWithActionCallback"
+            android:text="Snackbar with Action Callback"/>
+
     </LinearLayout>
     
     <android.support.design.widget.FloatingActionButton

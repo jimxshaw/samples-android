@@ -35,4 +35,14 @@ public class MainActivity extends AppCompatActivity {
     public void showSimpleSnackbar(View view) {
         Snackbar.make(mCoordinatorLayout, "Hello from simple snackbar!", Snackbar.LENGTH_SHORT).show();
     }
+
+    public void showSnackBarWithActionCallback(View view) {
+        Snackbar snackbar = Snackbar.make(mCoordinatorLayout, "Error loading file", Snackbar.LENGTH_SHORT);
+        snackbar.setAction("RETRY", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(mCoordinatorLayout, "File loaded successfully!", Snackbar.LENGTH_SHORT).show();
+            }
+        }).show();
+    }
 }
