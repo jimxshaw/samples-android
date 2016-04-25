@@ -52,6 +52,17 @@ public class MainActivity extends AppCompatActivity implements
         mTextViewMenuItem.setText(itemName);
         hideDrawer();
 
+        switch (menuItem.getItemId()) {
+            case R.id.item_android:
+                // Item specific code.
+                break;
+            case R.id.item_ios:
+                // Item specific code.
+                break;
+            default:
+                break;
+        }
+
         return true;
     }
 
