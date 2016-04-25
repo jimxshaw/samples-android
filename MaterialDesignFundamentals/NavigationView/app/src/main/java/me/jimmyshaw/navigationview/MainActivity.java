@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
                 R.string.drawer_open, R.string.drawer_close);
 
         mDrawerLayout.setDrawerListener(drawerToggle);
+        // If the syncState method is not called then the drawer toggle icon AKA "Hamburger icon"
+        // either won't synchronize with the drawer layout or the icon won't appear at all.
         drawerToggle.syncState();
     }
 }
