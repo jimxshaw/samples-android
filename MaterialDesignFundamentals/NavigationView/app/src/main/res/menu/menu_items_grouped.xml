@@ -2,7 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- This drawer menu items have been classified into groups -->
 
-    <group android:id="@+id/group_mobile">
+    <group
+        android:id="@+id/group_mobile"
+        android:checkableBehavior="single">
+
         <item
             android:id="@+id/item_android"
             android:checkable="true"
@@ -11,59 +14,56 @@
 
         <item
             android:id="@+id/item_ios"
-            android:checkable="true"
             android:icon="@drawable/ic_ios"
             android:title="iOS"/>
 
         <item
             android:id="@+id/item_ionic"
-            android:checkable="true"
             android:icon="@drawable/ic_ionic"
             android:title="Ionic"/>
 
         <item
             android:id="@+id/item_blackberry"
-            android:checkable="true"
             android:icon="@drawable/ic_blackberry"
             android:title="Blackberry"/>
     </group>
 
-    <group android:id="@+id/group_frontend_web">
+    <group
+        android:id="@+id/group_frontend_web"
+        android:checkableBehavior="single">
+
         <item
             android:id="@+id/item_html"
-            android:checkable="true"
             android:icon="@drawable/ic_html"
             android:title="HTML"/>
 
         <item
             android:id="@+id/item_css"
-            android:checkable="true"
             android:icon="@drawable/ic_css"
             android:title="CSS"/>
     </group>
 
-    <group android:id="@+id/group_backend_web">
+    <group
+        android:id="@+id/group_backend_web"
+        android:checkableBehavior="single">
+
         <item
             android:id="@+id/item_windows"
-            android:checkable="true"
             android:icon="@drawable/ic_windows"
             android:title=".NET"/>
 
         <item
             android:id="@+id/item_python"
-            android:checkable="true"
             android:icon="@drawable/ic_python"
             android:title="Python"/>
 
         <item
             android:id="@+id/item_Ruby"
-            android:checkable="true"
             android:icon="@drawable/ic_ruby"
             android:title="Ruby"/>
 
         <item
             android:id="@+id/item_php"
-            android:checkable="true"
             android:icon="@drawable/ic_php"
             android:title="PHP"/>
     </group>
