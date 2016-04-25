@@ -42,7 +42,7 @@
         app:headerLayout="@layout/header"
         app:itemIconTint="#8C000000"
         app:itemTextColor="#E6000000"
-        app:menu="@menu/menu_items_grouped"/>
+        app:menu="@menu/menu_items_grouped_with_title"/>
 
 
     <!-- Guidelines -->
