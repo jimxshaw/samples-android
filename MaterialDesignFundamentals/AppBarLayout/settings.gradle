@@ -1,1 +1,1 @@
-include ':app', ':collapsingtoolbarlayout'
+include ':AppBarLayoutToolbar', ':collapsingtoolbarlayout'
