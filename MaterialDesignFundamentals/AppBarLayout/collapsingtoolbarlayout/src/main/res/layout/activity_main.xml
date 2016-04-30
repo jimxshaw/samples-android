@@ -34,4 +34,12 @@
 
     <include layout="@layout/nested_scroll_view"/>
 
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_star"
+        app:layout_anchor="@id/appbar_layout"
+        app:layout_anchorGravity="bottom|right"/>
+
 </android.support.design.widget.CoordinatorLayout>
