@@ -1,15 +1,21 @@
 package me.jimmyshaw.restservice.webservices;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.net.Uri;
-import android.provider.SyncStateContract;
+import android.util.Base64;
 import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -80,6 +86,31 @@ public class WebServiceUtils {
                 writer.flush();
                 os.close();
             }
+
+            if (bodyValues != null) {
+                JSONObject jsonObject = new JSONObject();
+                for (String key : bodyValues.keySet()) {
+                    jsonObject.put(key, bodyValues.getAsString(key));
+                }
+                String str = jsonObject.toString();
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+                urlConnection.setRequestProperty("Accept", "application/json");
+                OutputStreamWriter osw = new OutputStreamWriter(urlConnection.getOutputStream());
+                osw.write(str);
+                osw.flush();
+                osw.close();
+            }
+
+            int statusCode = urlConnection.getResponseCode();
+            if (statusCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                Log.d(TAG, "Unauthorized Access!");
+            }
+            else if (statusCode != HttpURLConnection.HTTP_OK) {
+                Log.d(TAG, "URL Response Error");
+            }
+
+            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+            return new JSONObject(convertInputStreamToString(in));
         }
         catch (MalformedURLException e) {
             Log.d(TAG, e.getMessage());
@@ -99,5 +130,49 @@ public class WebServiceUtils {
             }
         }
         return null;
+    }
+
+    private static String convertInputStreamToString(InputStream inputStream) {
+        StringBuilder stringBuilder = new StringBuilder();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        String responseText;
+
+        try {
+            while ((responseText = bufferedReader.readLine()) != null) {
+                stringBuilder.append(responseText);
+            }
+        }
+        catch (IOException e) {
+            Log.d(TAG, "IOException in convertInputStreamToString");
+            e.printStackTrace();
+        }
+
+        return stringBuilder.toString();
+    }
+
+    private static String addParametersToUrl(String url, ContentValues urlValues) {
+        StringBuffer stringBuffer = new StringBuffer(url);
+        stringBuffer.append("?");
+        for (String key : urlValues.keySet()) {
+            stringBuffer.append(key);
+            stringBuffer.append("=");
+            stringBuffer.append(urlValues.getAsString(key));
+            stringBuffer.append("&");
+        }
+        stringBuffer.replace(stringBuffer.length() - 1, stringBuffer.length() - 1, "");
+        return stringBuffer.toString();
+    }
+
+    private static void addBasicAuthentication(HttpURLConnection urlConnection) {
+        final String basicAuth = "Basic " + Base64.encodeToString((Constants.APP_KEY + ":" + Constants.APP_SECRET).getBytes(),
+                                                                    Base64.NO_WRAP);
+        urlConnection.setRequestProperty(Constants.AUTHORIZATION, basicAuth);
+    }
+
+    public static boolean hasInternetConnection(Context context) {
+        ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager != null &&
+                connectivityManager.getActiveNetworkInfo() != null &&
+                connectivityManager.getActiveNetworkInfo().isConnected();
     }
 }
