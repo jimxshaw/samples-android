@@ -4,6 +4,7 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.FloatMath;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -15,6 +16,8 @@ import javax.microedition.khronos.opengles.GL10;
 public class MainActivity extends AppCompatActivity implements GLSurfaceView.Renderer {
 
     private int mOpenGLProgram = 0;
+
+    private double mAnimation = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +68,18 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
         // We declare a variable called position and give it a qualifier called attribute. Eventually
         // position will contain each row within our geometry float array defined in onDrawFrame. We
         // take in the input data and directly output that data.
+        // We add a uniform qualifier translate variable to serve as a constant that we pass into the program
+        // but we can change it every time we call onDrawFrame. It's a vec2 meaning x, y only.
+        // The translate vector is attached to the position vector and will move the x and y values,
+        // not z or w, by a constant number defined in the translate variable. Since position is a
+        // vec4, we must wrap translate vector in a vec4 as well.
         String vertexShaderSource = "" +
-                "" +
+                "uniform vec2 translate;" +
                 "attribute vec4 position;" +
                 "" +
                 "void main()" +
                 "{" +
-                "    gl_Position = position;" +
+                "    gl_Position = position + vec4(translate.x, translate.y, 0.0, 0.0);" +
                 "}";
 
         // The purpose of the fragment shader is similar to the vertex shader in that we want to
@@ -138,6 +146,19 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
         // What things do we want to clear. We're clearing the color buffer, which is
         // the thing we see. Buffers are bitmaps, essentially pictures.
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+
+        // Every time we draw a frame, increment the animation variable by a certain amount.
+        mAnimation += 0.01;
+        double animationDouble = Math.sin(mAnimation);
+
+        // Remember how we defined the uniform translate variable within the vertex shader GLSL
+        // program above? These are the values that will be used with that vertex shader.
+        float translateX = (float) animationDouble;
+        float translateY = 0.1f;
+        // The first parameter, location, is provided to us by the app. Itself takes in the name of
+        // the OpenGL program and the name of the vertex shader GLSL variable. What are we going to
+        // put into that translate variable? The float values of translateX and translateY.
+        GLES20.glUniform2f(GLES20.glGetUniformLocation(mOpenGLProgram, "translate"), translateX, translateY);
 
         float[] geometry = {
                 // We're defining a triangle with its center at 0,0 and has points that extend out
