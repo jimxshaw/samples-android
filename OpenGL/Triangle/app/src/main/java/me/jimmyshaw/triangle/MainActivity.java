@@ -71,10 +71,19 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
                 "" +
                 "void main()" +
                 "{" +
-                "    gl_position = position;" +
+                "    gl_Position = position;" +
                 "}";
 
-        String fragmentShaderSource = "";
+        // The purpose of the fragment shader is similar to the vertex shader in that we want to
+        // define a special variable. We're also assigning a vec4 to gl_FragColor but in this case
+        // the four values are r, g, b, a.
+        String fragmentShaderSource = "" +
+                "" +
+                "" +
+                "void main()" +
+                "{" +
+                "    gl_FragColor = vec4(0.8, 0.7, 0.6, 1.0);" +
+                "}";
 
         // First, create a shader object. OpenGL identifies a shader by its unique int value.
         int vertexShader = GLES20.glCreateShader(GLES20.GL_VERTEX_SHADER);
@@ -99,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
         // attribute location that we defined in the above vertexShaderSource GLSL program, which
         // in this case is a variable called position. Note that the value passed in to the second
         // parameter, index, must match the value passed into the first parameter of the
-        // glVertexAttribPointer method in onDrawFrame. 
+        // glVertexAttribPointer method in onDrawFrame.
         GLES20.glBindAttribLocation(mOpenGLProgram, 0, "position");
         GLES20.glLinkProgram(mOpenGLProgram);
         String openGLProgramLinkLog = GLES20.glGetProgramInfoLog(mOpenGLProgram);
@@ -159,7 +168,9 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
         // floating point numbers of 4 bytes each. Buffer is the information itself that we're
         // giving to OpenGl. We told it what the information is so now we have to pass that in.
         GLES20.glVertexAttribPointer(0, 4, GLES20.GL_FLOAT, false, 4 * 4, geometryBuffer);
-
+        // We actually have to turn on the array that we attribute the vertex shader GLSL program
+        // position variable.
+        GLES20.glEnableVertexAttribArray(0);
         // All info has been passed to OpenGL. We now can ask it to use the information.
         // It needs to know to how organize the data with the mode parameter. The second parameter
         // titled first means the starting position to begin drawing. Finally, it needs to know
