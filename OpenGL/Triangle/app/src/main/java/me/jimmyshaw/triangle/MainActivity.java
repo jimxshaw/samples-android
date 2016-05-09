@@ -14,6 +14,8 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class MainActivity extends AppCompatActivity implements GLSurfaceView.Renderer {
 
+    private int mOpenGLProgram = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +48,43 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
     // This is where OpenGL starts up essentially.
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+
+        // Here we are defining a couple of shaders.
+        // OpenGL is asking us to write two programs that OpenGL itself will compile for us during
+        // runtime. Doing this at runtime is possible because OpenGL contains a compiler and a linker.
+        // It will send these programs to the video hardware to be executed by the video hardware (GPU).
+        // The two shader programs, one for vertex and the other for fragment are actually just
+        // string data that gets put into OpenGL.
+        String vertexShaderSource = "";
+
+        String fragmentShaderSource = "";
+
+        // First, create a shader object. OpenGL identifies a shader by its unique int value.
+        int vertexShader = GLES20.glCreateShader(GLES20.GL_VERTEX_SHADER);
+        // We add the source of our string to it.
+        GLES20.glShaderSource(vertexShader, vertexShaderSource);
+        // We have to compile the shader.
+        GLES20.glCompileShader(vertexShader);
+        // Find the result of compiling the shader.
+        String vertexShaderCompileLog = GLES20.glGetShaderInfoLog(vertexShader);
+
+        int fragmentShader = GLES20.glCreateShader(GLES20.GL_FRAGMENT_SHADER);
+        GLES20.glShaderSource(fragmentShader, fragmentShaderSource);
+        GLES20.glCompileShader(fragmentShader);
+        String fragmentShaderCompileLog = GLES20.glGetShaderInfoLog(fragmentShader);
+
+        // Next, we link the two shaders into what's known as an OpenGL program. An OpenGL program
+        // is best defined as a class member variable as it will be used everywhere within the class.
+        mOpenGLProgram = GLES20.glCreateProgram();
+        GLES20.glAttachShader(mOpenGLProgram, vertexShader);
+        GLES20.glAttachShader(mOpenGLProgram, fragmentShader);
+        GLES20.glLinkProgram(mOpenGLProgram);
+        String openGLProgramLinkLog = GLES20.glGetProgramInfoLog(mOpenGLProgram);
+
+        // Assuming all goes well, we tell OpenGL to use the program to do the drawing.
+        GLES20.glUseProgram(mOpenGLProgram);
+
+        // Set the background color.
         GLES20.glClearColor(0.2f, 0.6f, 0.6f, 1.0f);
     }
 
