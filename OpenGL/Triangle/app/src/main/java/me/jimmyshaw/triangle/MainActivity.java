@@ -55,7 +55,24 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
         // It will send these programs to the video hardware to be executed by the video hardware (GPU).
         // The two shader programs, one for vertex and the other for fragment are actually just
         // string data that gets put into OpenGL.
-        String vertexShaderSource = "";
+
+        // The programming language for shaders, looks similar to C, is called GLSL. GLSL defines
+        // most things C has but with a few more extensions.
+        // The purpose of this vertex program is to set the gl_position variable. Essentially it states
+        // no matter what data comes in, make the output vertex at the specified location. The vec4
+        // parameters are x, y, z, w. In homogeneous coordinates, points have a w of 1.0 and vectors
+        // have a w of 0. Generally, use 1.0 for w.
+        // We declare a variable called position and give it a qualifier called attribute. Eventually
+        // position will contain each row within our geometry float array defined in onDrawFrame. We
+        // take in the input data and directly output that data.
+        String vertexShaderSource = "" +
+                "" +
+                "attribute vec4 position;" +
+                "" +
+                "void main()" +
+                "{" +
+                "    gl_position = position;" +
+                "}";
 
         String fragmentShaderSource = "";
 
@@ -78,6 +95,12 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
         mOpenGLProgram = GLES20.glCreateProgram();
         GLES20.glAttachShader(mOpenGLProgram, vertexShader);
         GLES20.glAttachShader(mOpenGLProgram, fragmentShader);
+        // After we attach the shaders but before we link them with our OpenGL program, we have to bind the
+        // attribute location that we defined in the above vertexShaderSource GLSL program, which
+        // in this case is a variable called position. Note that the value passed in to the second
+        // parameter, index, must match the value passed into the first parameter of the
+        // glVertexAttribPointer method in onDrawFrame. 
+        GLES20.glBindAttribLocation(mOpenGLProgram, 0, "position");
         GLES20.glLinkProgram(mOpenGLProgram);
         String openGLProgramLinkLog = GLES20.glGetProgramInfoLog(mOpenGLProgram);
 
@@ -109,7 +132,8 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
 
         float[] geometry = {
                 // We're defining a triangle with its center at 0,0 and has points that extend out
-                // by 0.5 in each direction.
+                // by 0.5 in each direction. The four coordinates are x, y, z, w. In homogeneous
+                // coordinates, points have a w of 1.0 and vectors have a w of 0. Generally, use 1.0 for w.
                 -0.5f, -0.5f, 0.0f, 1.0f,
                  0.5f, -0.5f, 0.0f, 1.0f,
                  0.0f,  0.5f, 0.0f, 1.0f
