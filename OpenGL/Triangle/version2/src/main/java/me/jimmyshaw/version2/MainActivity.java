@@ -64,21 +64,14 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
         // no matter what data comes in, make the output vertex at the specified location. The vec4
         // parameters are x, y, z, w. In homogeneous coordinates, points have a w of 1.0 and vectors
         // have a w of 0. Generally, use 1.0 for w.
-        // We declare a variable called position and give it a qualifier called attribute. Eventually
-        // position will contain each row within our geometry float array defined in onDrawFrame. We
-        // take in the input data and directly output that data.
-        // We add a uniform qualifier translate variable to serve as a constant that we pass into the program
-        // but we can change it every time we call onDrawFrame. It's a vec2 meaning x, y only.
-        // The translate vector is attached to the position vector and will move the x and y values,
-        // not z or w, by a constant number defined in the translate variable. Since position is a
-        // vec4, we must wrap translate vector in a vec4 as well.
+
         String vertexShaderSource = "" +
                 "uniform vec2 translate;" +
-                "attribute vec4 position;" +
+                "attribute vec3 position;" +
                 "" +
                 "void main()" +
                 "{" +
-                "    gl_Position = position + vec4(translate.x, translate.y, 0.0, 0.0);" +
+                "    gl_Position = vec4(position, 1.0) + vec4(translate.x, translate.y, 0.0, 0.0);" +
                 "}";
 
         // The purpose of the fragment shader is similar to the vertex shader in that we want to
@@ -164,12 +157,16 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
                 // We're defining a triangle with its center at 0,0 and has points that extend out
                 // by 0.5 in each direction. The four coordinates are x, y, z, w. In homogeneous
                 // coordinates, points have a w of 1.0 and vectors have a w of 0. Generally, use 1.0 for w.
-                -0.5f, -0.5f, 0.0f, 1.0f,
-                0.5f, -0.5f, 0.0f, 1.0f,
-                0.0f,  0.5f, 0.0f, 1.0f,
-                0.0f, -0.25f, 0.0f, 1.0f,
-                0.5f, -0.25f, 0.0f, 1.0f,
-                0.5f,  0.5f, 0.0f, 1.0f
+                // front
+                -0.5f, -0.5f,  0.5f,
+                 0.5f, -0.5f,  0.5f,
+                 0.5f,  0.5f,  0.5f,
+                -0.5f,  0.5f,  0.5f,
+                // back
+                -0.5f, -0.5f, -0.5f,
+                 0.5f, -0.5f, -0.5f,
+                 0.5f,  0.5f, -0.5f,
+                -0.5f,  0.5f, -0.5f,
         };
 
         // We have to pass in the exact bytes needed to this buffer. Allocation is calculated with
@@ -185,23 +182,13 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
         geometryBuffer.put(geometry);
         geometryBuffer.rewind();
 
-        // We hand the data to OpenGL by using glVertexAttribPointer. The size parameter means the
-        // number of points in the above array. It's 4 because we've 4 points (columns) in each point of
-        // the triangle. Normalize asks if we want our numbers to go between 0 and 1, which generally
-        // we don't. Stride is the distance between each set of data, which is 4 * 4. That's 4
-        // floating point numbers of 4 bytes each. Buffer is the information itself that we're
-        // giving to OpenGl. We told it what the information is so now we have to pass that in.
-        GLES20.glVertexAttribPointer(0, 4, GLES20.GL_FLOAT, false, 4 * 4, geometryBuffer);
+        int elements = 3;
+        // There are now 3 elements per row and the stride between them is 4 bytes times 3.
+        GLES20.glVertexAttribPointer(0, elements, GLES20.GL_FLOAT, false, 4 * elements, geometryBuffer);
         // We actually have to turn on the array that we attribute the vertex shader GLSL program
         // position variable.
         GLES20.glEnableVertexAttribArray(0);
-        // All info has been passed to OpenGL. We now can ask it to use the information.
-        // It needs to know to how organize the data with the mode parameter. The second parameter
-        // titled first means the starting position to begin drawing. Finally, it needs to know
-        // the number of items (rows) it can draw with count. A way to test if the count value is correct
-        // is that items (rows) * points (columns) should equal the total number of elements in the array.
-        // So with our geometry array above, 6 * 4 = 24 total array elements.
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 6);
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, geometry.length / elements);
     }
 }
 
