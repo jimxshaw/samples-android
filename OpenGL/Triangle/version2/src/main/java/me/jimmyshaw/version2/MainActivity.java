@@ -1,10 +1,9 @@
-package me.jimmyshaw.triangle;
+package me.jimmyshaw.version2;
 
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.FloatMath;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -155,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
         // program above? These are the values that will be used with that vertex shader.
         float translateX = (float) animationDouble;
         float translateY = 0.1f;
+
         // The first parameter, location, is provided to us by the app. Itself takes in the name of
         // the OpenGL program and the name of the vertex shader GLSL variable. What are we going to
         // put into that translate variable? The float values of translateX and translateY.
@@ -165,8 +165,11 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
                 // by 0.5 in each direction. The four coordinates are x, y, z, w. In homogeneous
                 // coordinates, points have a w of 1.0 and vectors have a w of 0. Generally, use 1.0 for w.
                 -0.5f, -0.5f, 0.0f, 1.0f,
-                 0.5f, -0.5f, 0.0f, 1.0f,
-                 0.0f,  0.5f, 0.0f, 1.0f
+                0.5f, -0.5f, 0.0f, 1.0f,
+                0.0f,  0.5f, 0.0f, 1.0f,
+                0.0f, -0.25f, 0.0f, 1.0f,
+                0.5f, -0.25f, 0.0f, 1.0f,
+                0.5f,  0.5f, 0.0f, 1.0f
         };
 
         // We have to pass in the exact bytes needed to this buffer. Allocation is calculated with
@@ -197,7 +200,8 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
         // titled first means the starting position to begin drawing. Finally, it needs to know
         // the number of items (rows) it can draw with count. A way to test if the count value is correct
         // is that items (rows) * points (columns) should equal the total number of elements in the array.
-        // So with our geometry array above, 3 * 4 = 12 total array elements.
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 3);
+        // So with our geometry array above, 6 * 4 = 24 total array elements.
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 6);
     }
 }
+
