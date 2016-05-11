@@ -68,10 +68,14 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
         String vertexShaderSource = "" +
                 "uniform vec2 translate;" +
                 "attribute vec3 position;" +
+                "attribute vec3 color;" +
+                "" +
+                "varying vec3 colorVarying;" +
                 "" +
                 "void main()" +
                 "{" +
                 "    gl_Position = vec4(position, 1.0) + vec4(translate.x, translate.y, 0.0, 0.0);" +
+                "    colorVarying = color;" +
                 "}";
 
         // The purpose of the fragment shader is similar to the vertex shader in that we want to
@@ -79,10 +83,11 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
         // the four values are r, g, b, a.
         String fragmentShaderSource = "" +
                 "" +
+                "varying vec3 colorVarying;" +
                 "" +
                 "void main()" +
                 "{" +
-                "    gl_FragColor = vec4(0.8, 0.7, 0.6, 1.0);" +
+                "    gl_FragColor = vec4(colorVarying, 1.0);" +
                 "}";
 
         // First, create a shader object. OpenGL identifies a shader by its unique int value.
@@ -110,6 +115,9 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
         // parameter, index, must match the value passed into the first parameter of the
         // glVertexAttribPointer method in onDrawFrame.
         GLES20.glBindAttribLocation(mOpenGLProgram, 0, "position");
+        // The color attribute variable in our vertex shader is associated with the designated
+        // vertex attrib pointer index number we give it onDrawFrame method below.
+        GLES20.glBindAttribLocation(mOpenGLProgram, 1, "color");
         GLES20.glLinkProgram(mOpenGLProgram);
         String openGLProgramLinkLog = GLES20.glGetProgramInfoLog(mOpenGLProgram);
 
@@ -154,19 +162,9 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
         GLES20.glUniform2f(GLES20.glGetUniformLocation(mOpenGLProgram, "translate"), translateX, translateY);
 
         float[] geometry = {
-                // We're defining a triangle with its center at 0,0 and has points that extend out
-                // by 0.5 in each direction. The four coordinates are x, y, z, w. In homogeneous
-                // coordinates, points have a w of 1.0 and vectors have a w of 0. Generally, use 1.0 for w.
-                // front
-                -0.5f, -0.5f,  0.5f,
-                 0.5f, -0.5f,  0.5f,
-                 0.5f,  0.5f,  0.5f,
-                -0.5f,  0.5f,  0.5f,
-                // back
-                -0.5f, -0.5f, -0.5f,
-                 0.5f, -0.5f, -0.5f,
-                 0.5f,  0.5f, -0.5f,
-                -0.5f,  0.5f, -0.5f,
+                -0.5f, -0.5f, 0.0f,
+                 0.5f, -0.5f, 0.0f,
+                 0.0f,  0.5f, 0.0f,
         };
 
         // We have to pass in the exact bytes needed to this buffer. Allocation is calculated with
@@ -182,13 +180,33 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
         geometryBuffer.put(geometry);
         geometryBuffer.rewind();
 
+        // The x, y, z will be associated with r, g, b color values. Line by line, for each vertex
+        // in the color array, it will be coordinated with a vertex in the geometry array.
+        float[] colors = {
+                0.0f, 0.0f, 1.0f,
+                0.0f, 1.0f, 0.0f,
+                1.0f, 0.0f, 0.0f
+        };
+
+        ByteBuffer colorsByteBuffer = ByteBuffer.allocateDirect(colors.length * 4);
+        colorsByteBuffer.order(ByteOrder.nativeOrder());
+        FloatBuffer colorsBuffer = colorsByteBuffer.asFloatBuffer();
+        colorsBuffer.put(colors);
+        colorsBuffer.rewind();
+
         int elements = 3;
         // There are now 3 elements per row and the stride between them is 4 bytes times 3.
         GLES20.glVertexAttribPointer(0, elements, GLES20.GL_FLOAT, false, 4 * elements, geometryBuffer);
         // We actually have to turn on the array that we attribute the vertex shader GLSL program
         // position variable.
         GLES20.glEnableVertexAttribArray(0);
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, geometry.length / elements);
+
+        // Another vertex attrib has to be created for the colors buffer. The index is given an
+        // arbitrary index of 1.
+        GLES20.glVertexAttribPointer(1, elements, GLES20.GL_FLOAT, false, 4 * elements, colorsBuffer);
+        GLES20.glEnableVertexAttribArray(1);
+
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, colors.length / elements);
     }
 }
 
