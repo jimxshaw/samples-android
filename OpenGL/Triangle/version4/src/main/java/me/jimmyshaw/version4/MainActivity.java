@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(mGLSurfaceView);
     }
 
-    
+
 
 
     public class CustomGLSurfaceView extends GLSurfaceView {
@@ -42,9 +42,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     public class GLRenderer implements GLSurfaceView.Renderer {
+
+        private Triangle mTriangle;
+
         @Override
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-            GLES20.glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+            GLES20.glClearColor(0.2f, 0.5f, 0.5f, 1.0f);
+
+            mTriangle = new Triangle();
         }
 
         @Override
@@ -55,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onDrawFrame(GL10 gl) {
             GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+
+            mTriangle.draw();
         }
     }
 }
