@@ -55,7 +55,6 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
         gl.glPopMatrix();
 
 
-
         // Medium Square
         // Every push matrix must have a respective pop matrix to end the block.
         gl.glPushMatrix();
