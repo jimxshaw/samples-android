@@ -9,6 +9,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class OpenGLRenderer implements GLSurfaceView.Renderer
 {
+    private Square square;
 
     public boolean onTouchEvent(MotionEvent e)
     {
@@ -28,11 +29,22 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
         gl.glDepthFunc(GL10.GL_LEQUAL);
 
         gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST);
+
+        square = new Square();
     }
 
     public void onDrawFrame(GL10 gl)
     {
+        gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 
+        gl.glLoadIdentity();
+
+        // x, y, z
+        // Anything drawn too close to the viewport won't be rendered so we're push everything back
+        // in the negative z axis direction.
+        gl.glTranslatef(0, 0, -4);
+
+        square.draw(gl);
     }
 
     public void onSurfaceChanged(GL10 gl, int width, int height)
