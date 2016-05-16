@@ -11,6 +11,8 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
 {
     private Square square;
 
+    private float angle = 1;
+
     public boolean onTouchEvent(MotionEvent e)
     {
         return true;
@@ -44,7 +46,14 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
         // in the negative z axis direction.
         gl.glTranslatef(0, 0, -4);
 
+        // Rotate the axis by some value. Rotation along x and y are for 3D objects. Rotation along
+        // z is meant for 2D objects.
+        gl.glRotatef(angle, 0, 0, 1);
+
         square.draw(gl);
+
+        // Every time the square is drawn, we increase the angle.
+        angle++;
     }
 
     public void onSurfaceChanged(GL10 gl, int width, int height)
