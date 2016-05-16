@@ -44,13 +44,23 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
         // x, y, z
         // Anything drawn too close to the viewport won't be rendered so we're push everything back
         // in the negative z axis direction.
-        gl.glTranslatef(0, 0, -4);
-
+        gl.glTranslatef(0, 0, -8);
+        // Push the matrix on to the stack, perform some action, pop it off the stack.
+        gl.glPushMatrix();
         // Rotate the axis by some value. Rotation along x and y are for 3D objects. Rotation along
         // z is meant for 2D objects.
-        gl.glRotatef(angle, 0, 0, 1);
-
+        gl.glRotatef(angle/4, 0, 0, 1);
         square.draw(gl);
+        gl.glPopMatrix();
+
+        // Every push matix must have a respective pop matrix to end the block.
+        gl.glPushMatrix();
+        gl.glRotatef(-angle, 0, 0, 1);
+        gl.glTranslatef(1, 1.5f, 0);
+        // Make the square half the size of the original square.
+        gl.glScalef(0.25f, 0.25f, 0.25f);
+        square.draw(gl);
+        gl.glPopMatrix();
 
         // Every time the square is drawn, we increase the angle.
         angle++;

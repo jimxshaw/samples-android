@@ -12,10 +12,10 @@ public class Square
     private float vertices[] =
             {
                     // x, y, z
-                    -0.5f, 0.5f, 0.0f,     // Top left, we'll call it 0.
-                    -0.5f, -0.5f, 0.0f,     // Bottom left, we'll call it 1.
-                    0.5f, -0.5f, 0.0f, // Bottom right, we'll call it 2.
-                    0.5f, 0.5f, 0.0f, // Top right, we'll call it 3.
+                    -1.0f, 1.0f, 0.0f,     // Top left, we'll call it 0.
+                    -1.0f, -1.0f, 0.0f,     // Bottom left, we'll call it 1.
+                    1.0f, -1.0f, 0.0f, // Bottom right, we'll call it 2.
+                    1.0f, 1.0f, 0.0f, // Top right, we'll call it 3.
             };
 
     // To make a square, we connect two triangles. Vertex 0 connects to vertex 1, 1 connects
