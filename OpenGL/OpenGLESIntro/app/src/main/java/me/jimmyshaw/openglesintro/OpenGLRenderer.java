@@ -36,6 +36,7 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
 
         square = new Square();
         cube = new Cube(1.0f, 1.0f, 1.0f);
+        cube.setColor(1, 0, 0, 1);
     }
 
     public void onDrawFrame(GL10 gl)
