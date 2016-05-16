@@ -11,6 +11,8 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
 {
     private Square square;
 
+    private Cube cube;
+
     private float angle = 1;
 
     public boolean onTouchEvent(MotionEvent e)
@@ -33,6 +35,7 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
         gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST);
 
         square = new Square();
+        cube = new Cube(1.0f, 1.0f, 1.0f);
     }
 
     public void onDrawFrame(GL10 gl)
@@ -41,42 +44,51 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
 
         gl.glLoadIdentity();
 
-        // Largest Square
-        // x, y, z
-        // Anything drawn too close to the viewport won't be rendered so we're push everything back
-        // in the negative z axis direction.
-        gl.glTranslatef(0, 0, -8);
-        // Push the matrix on to the stack, perform some action, pop it off the stack.
-        gl.glPushMatrix();
-        // Rotate the axis by some value. Rotation along x and y are seen as 3D. Rotation along
-        // z is seen as 2D.
+        gl.glTranslatef(0, 0, -10);
+
         gl.glRotatef(angle, 0, 0, 1);
-        square.draw(gl);
-        gl.glPopMatrix();
+        gl.glRotatef(angle, 1, 0, 0);
+
+        cube.draw(gl);
+//
+//        // Largest Square
+//        // x, y, z
+//        // Anything drawn too close to the viewport won't be rendered so we're push everything back
+//        // in the negative z axis direction.
+//        gl.glTranslatef(0, 0, -8);
+//        // Push the matrix on to the stack, perform some action, pop it off the stack.
+//        gl.glPushMatrix();
+//        // Rotate the axis by some value. Rotation along x and y are seen as 3D. Rotation along
+//        // z is seen as 2D.
+//        gl.glRotatef(angle, 0, 0, 1);
+//        square.draw(gl);
+//        gl.glPopMatrix();
+//
+//
+//        // Medium Square
+//        // Every push matrix must have a respective pop matrix to end the block.
+//        gl.glPushMatrix();
+//        gl.glRotatef(-angle, 0, 0, 1);
+//        gl.glTranslatef(2, 0, 0);
+//        // Make the square half the size of the original square.
+//        gl.glScalef(0.5f, 0.5f, 0.5f);
+//        square.draw(gl);
+//
+//        // Small Square
+//        gl.glPushMatrix();
+//        gl.glRotatef(-angle, 0, 0, 1);
+//        gl.glTranslatef(2, 0, 0);
+//        gl.glScalef(0.5f, 0.5f, 0.5f);
+//        // Rotate around its own center.
+//        gl.glRotatef(angle * 10, 0, 0, 1);
+//        square.draw(gl);
+//
+//        gl.glPopMatrix();
+//        gl.glPopMatrix();
 
 
-        // Medium Square
-        // Every push matrix must have a respective pop matrix to end the block.
-        gl.glPushMatrix();
-        gl.glRotatef(-angle, 0, 0, 1);
-        gl.glTranslatef(2, 0, 0);
-        // Make the square half the size of the original square.
-        gl.glScalef(0.5f, 0.5f, 0.5f);
-        square.draw(gl);
 
-        // Small Square
-        gl.glPushMatrix();
-        gl.glRotatef(-angle, 0, 0, 1);
-        gl.glTranslatef(2, 0, 0);
-        gl.glScalef(0.5f, 0.5f, 0.5f);
-        // Rotate around its own center.
-        gl.glRotatef(angle * 10, 0, 0, 1);
-        square.draw(gl);
-
-        gl.glPopMatrix();
-        gl.glPopMatrix();
-
-        // Every time the square is drawn, we increase the angle.
+        // Every time the shape is drawn, we increase the angle.
         angle++;
     }
 
