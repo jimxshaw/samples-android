@@ -57,7 +57,7 @@ public class Mesh
         gl.glDisable(GL10.GL_CULL_FACE);
     }
 
-    // Method to set all of our vertices.
+    // Methods to set all of our vertices.
     protected void setVertices(float[] vertices)
     {
         // A float is 4 bytes, therefore we multiply the number of vertices by 4.
