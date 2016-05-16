@@ -57,6 +57,23 @@ public class Mesh
             gl.glColorPointer(4, GL10.GL_FLOAT, 0, colorBuffer);
         }
 
+        // Our texture should only be loaded once so after the load method executes, the
+        // boolean is set to false.
+        if (shouldLoadTexture)
+        {
+            loadGLTexture(gl);
+            shouldLoadTexture = false;
+        }
+
+        if (textureId != -1 && textureBuffer != null)
+        {
+            gl.glEnable(GL10.GL_TEXTURE_2D);
+            gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+
+            gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, textureBuffer);
+            gl.glBindTexture(GL10.GL_TEXTURE_2D, textureId);
+        }
+
         gl.glTranslatef(x, y, z);
         gl.glRotatef(rx, 1, 0, 0);
         gl.glRotatef(ry, 0, 1, 0);
@@ -67,6 +84,11 @@ public class Mesh
 
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
         gl.glDisable(GL10.GL_CULL_FACE);
+
+        if (textureId != -1 && textureBuffer != null)
+        {
+            gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+        }
     }
 
     protected void setTextureCoordinates(float[] textureCoordinates)
