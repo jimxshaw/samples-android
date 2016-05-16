@@ -22,7 +22,6 @@ public class Mesh
     public float ry = 0;
     public float rz = 0;
 
-    // A field being set to -1 means it will be assigned to some other value later.
     private int textureId = -1;
 
     private Bitmap bitmap;
@@ -32,7 +31,7 @@ public class Mesh
     private FloatBuffer verticesBuffer = null;
     private ShortBuffer indicesBuffer = null;
 
-    private int numberOfIndices = -1;
+    private int numOfIndices = -1;
 
     private float[] rgba = new float[]{1.0f, 1.0f, 1.0f, 1.0f};
 
@@ -57,8 +56,6 @@ public class Mesh
             gl.glColorPointer(4, GL10.GL_FLOAT, 0, colorBuffer);
         }
 
-        // Our texture should only be loaded once so after the load method executes, the
-        // boolean is set to false.
         if (shouldLoadTexture)
         {
             loadGLTexture(gl);
@@ -79,7 +76,8 @@ public class Mesh
         gl.glRotatef(ry, 0, 1, 0);
         gl.glRotatef(rz, 0, 0, 1);
 
-        gl.glDrawElements(GL10.GL_TRIANGLES, numberOfIndices,
+
+        gl.glDrawElements(GL10.GL_TRIANGLES, numOfIndices,
                 GL10.GL_UNSIGNED_SHORT, indicesBuffer);
 
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
@@ -91,44 +89,13 @@ public class Mesh
         }
     }
 
-    protected void setTextureCoordinates(float[] textureCoordinates)
+    protected void setTextureCoordinates(float[] textureCoords)
     {
-        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(textureCoordinates.length * 4);
-        byteBuffer.order(ByteOrder.nativeOrder());
-        textureBuffer = byteBuffer.asFloatBuffer();
-        textureBuffer.put(textureCoordinates);
+        ByteBuffer byteBuf = ByteBuffer.allocateDirect(textureCoords.length * 4);
+        byteBuf.order(ByteOrder.nativeOrder());
+        textureBuffer = byteBuf.asFloatBuffer();
+        textureBuffer.put(textureCoords);
         textureBuffer.position(0);
-    }
-
-    protected void setVertices(float[] vertices)
-    {
-        // A float is 4 bytes, therefore we multiply the number of
-        // vertices vt 4.
-        ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * 4);
-        vbb.order(ByteOrder.nativeOrder());
-        verticesBuffer = vbb.asFloatBuffer();
-        verticesBuffer.put(vertices);
-        verticesBuffer.position(0);
-    }
-
-    protected void setIndices(short[] indices)
-    {
-        // A short is 2 bytes, therefore we multiply the number of
-        // vertices by 2.
-        ByteBuffer ibb = ByteBuffer.allocateDirect(indices.length * 2);
-        ibb.order(ByteOrder.nativeOrder());
-        indicesBuffer = ibb.asShortBuffer();
-        indicesBuffer.put(indices);
-        indicesBuffer.position(0);
-        numberOfIndices = indices.length;
-    }
-
-    protected void setColor(float red, float green, float blue, float alpha)
-    {
-        rgba[0] = red;
-        rgba[1] = green;
-        rgba[2] = blue;
-        rgba[3] = alpha;
     }
 
     public void loadBitmap(Bitmap bitmap)
@@ -137,26 +104,61 @@ public class Mesh
         shouldLoadTexture = true;
     }
 
+    protected void setVertices(float[] vertices)
+    {
+        // a float is 4 bytes, therefore we multiply the number if
+        // vertices with 4.
+        ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * 4);
+        vbb.order(ByteOrder.nativeOrder());
+        verticesBuffer = vbb.asFloatBuffer();
+        verticesBuffer.put(vertices);
+        verticesBuffer.position(0);
+    }
+
     private void loadGLTexture(GL10 gl)
     {
-        //Generate 1 texture pointer.
-        int[] texture = new int[1];
-        gl.glGenTextures(1, texture, 0);
-        textureId = texture[0];
+        // Generate one texture pointer...
+        int[] textures = new int[1];
+        gl.glGenTextures(1, textures, 0);
+        textureId = textures[0];
 
-        // Bind texture pointer to our array.
+        // ...and bind it to our array
         gl.glBindTexture(GL10.GL_TEXTURE_2D, textureId);
 
-        // Create nearest filtered texture.
-        gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR);
-        gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
+        // Create Nearest Filtered Texture
+        gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER,
+                GL10.GL_LINEAR);
+        gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER,
+                GL10.GL_LINEAR);
 
-        // Different possible texture parameters, e.g. GL10.GL_CLAMP_TO_EDGE.
-        gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_CLAMP_TO_EDGE);
-        gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_REPEAT);
+        // Different possible texture parameters, e.g. GL10.GL_CLAMP_TO_EDGE
+        gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S,
+                GL10.GL_CLAMP_TO_EDGE);
+        gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T,
+                GL10.GL_REPEAT);
 
-        // Use the Android GLUtils to specify a two-dimensional texture image from our bitmap.
+        // Use the Android GLUtils to specify a two-dimensional texture image
+        // from our bitmap
         GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
+    }
 
+    protected void setIndices(short[] indices)
+    {
+        // short is 2 bytes, therefore we multiply the number if
+        // vertices with 2.
+        ByteBuffer ibb = ByteBuffer.allocateDirect(indices.length * 2);
+        ibb.order(ByteOrder.nativeOrder());
+        indicesBuffer = ibb.asShortBuffer();
+        indicesBuffer.put(indices);
+        indicesBuffer.position(0);
+        numOfIndices = indices.length;
+    }
+
+    protected void setColor(float red, float green, float blue, float alpha)
+    {
+        rgba[0] = red;
+        rgba[1] = green;
+        rgba[2] = blue;
+        rgba[3] = alpha;
     }
 }

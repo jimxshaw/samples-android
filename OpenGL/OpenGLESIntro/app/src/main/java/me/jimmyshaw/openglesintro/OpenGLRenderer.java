@@ -1,5 +1,7 @@
 package me.jimmyshaw.openglesintro;
 
+import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 import android.view.MotionEvent;
@@ -13,12 +15,21 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
 
     private Cube cube;
 
+    private SimplePlane simplePlane;
+
     private float angle = 1;
+
+    public OpenGLRenderer(Context context)
+    {
+        this.context = context;
+    }
 
     public boolean onTouchEvent(MotionEvent e)
     {
         return true;
     }
+
+    Context context;
 
     public void onSurfaceCreated(GL10 gl, EGLConfig config)
     {
@@ -34,9 +45,14 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
 
         gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST);
 
-        square = new Square();
-        cube = new Cube(1.0f, 1.0f, 1.0f);
-        cube.setColor(1, 0, 0, 1);
+//        square = new Square();
+//        cube = new Cube(1.0f, 1.0f, 1.0f);
+//        cube.setColor(1, 0, 0, 1);
+
+        simplePlane = new SimplePlane();
+        simplePlane.loadBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.sample));
+
+
     }
 
     public void onDrawFrame(GL10 gl)
@@ -48,9 +64,13 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
         gl.glTranslatef(0, 0, -10);
 
         gl.glRotatef(angle, 0, 0, 1);
-        gl.glRotatef(angle, 1, 0, 0);
 
-        cube.draw(gl);
+        simplePlane.draw(gl);
+
+//        gl.glRotatef(angle, 0, 0, 1);
+//        gl.glRotatef(angle, 1, 0, 0);
+//
+//        cube.draw(gl);
 //
 //        // Largest Square
 //        // x, y, z
@@ -86,7 +106,6 @@ public class OpenGLRenderer implements GLSurfaceView.Renderer
 //
 //        gl.glPopMatrix();
 //        gl.glPopMatrix();
-
 
 
         // Every time the shape is drawn, we increase the angle.
