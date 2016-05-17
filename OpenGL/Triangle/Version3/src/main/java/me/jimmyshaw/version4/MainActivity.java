@@ -9,12 +9,14 @@ import android.os.Bundle;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+{
 
     private GLSurfaceView mGLSurfaceView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         mGLSurfaceView = new CustomGLSurfaceView(MainActivity.this);
@@ -23,13 +25,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-    public class CustomGLSurfaceView extends GLSurfaceView {
+    public class CustomGLSurfaceView extends GLSurfaceView
+    {
 
         private final GLRenderer mGLRenderer;
 
-        public CustomGLSurfaceView(Context context) {
+        public CustomGLSurfaceView(Context context)
+        {
             super(context);
             setEGLContextClientVersion(2);
             mGLRenderer = new GLRenderer();
@@ -39,26 +41,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-    public class GLRenderer implements GLSurfaceView.Renderer {
+    public class GLRenderer implements GLSurfaceView.Renderer
+    {
 
         private Triangle mTriangle;
 
         @Override
-        public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-            GLES20.glClearColor(0.2f, 0.5f, 0.5f, 1.0f);
+        public void onSurfaceCreated(GL10 gl, EGLConfig config)
+        {
+            GLES20.glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 
             mTriangle = new Triangle();
         }
 
         @Override
-        public void onSurfaceChanged(GL10 gl, int width, int height) {
+        public void onSurfaceChanged(GL10 gl, int width, int height)
+        {
             GLES20.glViewport(0, 0, width, height);
         }
 
         @Override
-        public void onDrawFrame(GL10 gl) {
+        public void onDrawFrame(GL10 gl)
+        {
             GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
 
             mTriangle.draw();
