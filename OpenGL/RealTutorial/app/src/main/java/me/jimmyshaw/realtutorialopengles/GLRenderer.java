@@ -50,9 +50,34 @@ public class GLRenderer implements GLSurfaceView.Renderer
         mLastTime = System.currentTimeMillis();
     }
 
+    public void SetupTriangle()
+    {
+        
+    }
+
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config)
     {
+        // Create the triangle.
+        SetupTriangle();
+
+        // Set the clear color to black.
+        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1);
+
+        // Create the shaders.
+        int vertexShader = riGraphicTools.loadShader(GLES20.GL_VERTEX_SHADER, riGraphicTools.vs_SolidColor);
+        int fragmentShader = riGraphicTools.loadShader(GLES20.GL_FRAGMENT_SHADER, riGraphicTools.fs_SolidColor);
+
+        // Create empty OpenGL ES Program.
+        riGraphicTools.sp_SolidColor = GLES20.glCreateProgram();
+        // Add the vertex shader to the program.
+        GLES20.glAttachShader(riGraphicTools.sp_SolidColor, vertexShader);
+        // Add the fragment shader to the program.
+        GLES20.glAttachShader(riGraphicTools.sp_SolidColor, fragmentShader);
+        // Create the program executables.
+        GLES20.glLinkProgram(riGraphicTools.sp_SolidColor);
+        // Set our shader program.
+        GLES20.glUseProgram(riGraphicTools.sp_SolidColor);
 
     }
 
