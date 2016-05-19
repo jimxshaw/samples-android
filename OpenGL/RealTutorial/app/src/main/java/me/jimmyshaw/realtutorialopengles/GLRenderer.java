@@ -111,7 +111,7 @@ public class GLRenderer implements GLSurfaceView.Renderer
         uvBuffer.put(uvs);
         uvBuffer.position(0);
 
-        // Generate textures. If more are needed, alter these numbers.
+        // Generate textures by creating a texture object. If more are needed, alter these numbers.
         int[] textureNames = new int[1];
         GLES20.glGenTextures(1, textureNames, 0);
 
@@ -125,11 +125,19 @@ public class GLRenderer implements GLSurfaceView.Renderer
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureNames[0]);
 
-        // Set filtering.
+        // Set filtering. The texture resolution is often not the same as our resulting screen
+        // resolution so we need to set a filter to let OpenGL know what to do when it needs to
+        // resize the texture. Popular filters are GL_NEAREST, which takes the closest pixels. It's
+        // fast but has visual downsides or GL_LINEAR, which calculates the pixel with taking its
+        // neighbors into account. It's slower but better looking visually.
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
 
-        // Set wrapping mode.
+        // Set wrapping mode. For OpenGL's texture coordinate system, s is x and t is y. Popular
+        // wrapping modes are GL_REPEAT, which works great with POT (powers of two) textures or
+        // GL_CLAMP_TO_EDGES, which works great with NPOT (non-powers of two) textures. Since our
+        // texture is 1, which is a NPOT, we use GL_CLAMP_TO_EDGES. We can use GL_REPEAT but it
+        // is not guaranteed to work.
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
 
