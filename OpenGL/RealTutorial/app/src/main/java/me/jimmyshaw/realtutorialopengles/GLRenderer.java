@@ -34,6 +34,7 @@ public class GLRenderer implements GLSurfaceView.Renderer
     Context mContext;
     long mLastTime;
     int mProgram;
+    private static final int COORDS_PER_VERTEX = 3;
 
     public GLRenderer(Context c)
     {
@@ -57,21 +58,28 @@ public class GLRenderer implements GLSurfaceView.Renderer
         // These are the vertices of our view.
         vertices = new float[]
                 {
-                        10.0f, 200f, 0.0f,
-                        10.0f, 100f, 0.0f,
-                        100f, 100f, 0.0f
+                        10.0f, 200f, 0.0f, // top
+                        10.0f, 100f, 0.0f, // bottom left
+                        100f, 100f, 0.0f   // bottom right
                 };
 
+        // Order to draw vertices.
         indices = new short[]{0, 1, 2};
 
         // Vertex buffer.
+        // Number of coordinate values * 4 bytes per float type.
         ByteBuffer bb = ByteBuffer.allocateDirect(vertices.length * 4);
+        // Use the device hardware's native byte order.
         bb.order(ByteOrder.nativeOrder());
+        // Create a floating point buffer from the ByteBuffer.
         vertexBuffer = bb.asFloatBuffer();
+        // Add the coordinates to the FloatBuffer.
         vertexBuffer.put(vertices);
+        // Set the buffer to read the first coordinate.
         vertexBuffer.position(0);
 
         // Initialize a byte buffer for the draw list.
+        // Number of coordinate values * 2 bytes per short type.
         ByteBuffer dlb = ByteBuffer.allocateDirect(indices.length * 2);
         dlb.order(ByteOrder.nativeOrder());
         drawListBuffer = dlb.asShortBuffer();
@@ -85,7 +93,8 @@ public class GLRenderer implements GLSurfaceView.Renderer
         // Create the triangle.
         setupTriangle();
 
-        // Set the clear color to black.
+        // Set the clear color to black. Every time OpenGL clears our screen for a new drawsession,
+        // it clears our screen to that specified color.
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1);
 
         // Create the shaders.
@@ -108,11 +117,17 @@ public class GLRenderer implements GLSurfaceView.Renderer
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height)
     {
+        // We have to take into account what happens when our surface changes. For example, when
+        // we rotate our phone and our surface rotates with it. This method is used for
+        // those occasions.
+
         // We need to know the current width and height.
         mScreenWidth = width;
         mScreenHeight = height;
 
-        // Re-do the Viewport, making it fullscreen.
+        // Re-do the Viewport, making it fullscreen. We have to re-do it every time the surface changes.
+        // Our viewport changes therefore all our matrices are no longer valid. Hence we have to
+        // clear them and fill them again.
         GLES20.glViewport(0, 0, (int) mScreenWidth, (int) mScreenHeight);
 
         // Clear our matrices.
@@ -123,7 +138,8 @@ public class GLRenderer implements GLSurfaceView.Renderer
             mtxProjectionAndView[i] = 0.0f;
         }
 
-        // Setup our screen width and height for normal sprite translation.
+        // Setup our screen width and height for normal sprite translation. The orthoM method is used
+        // so that we wouldn't have any need for a perspective view of our scene, as we have no depth.
         Matrix.orthoM(mtxProjection, 0, 0f, mScreenWidth, 0.0f, mScreenHeight, 0, 50);
 
         // Set the camera position (View matrix).
@@ -138,7 +154,10 @@ public class GLRenderer implements GLSurfaceView.Renderer
     @Override
     public void onDrawFrame(GL10 gl)
     {
-        // Get the current time.
+        // This method is called over and over again.
+
+        // Get the current time. We need to calculate how long the previous frame took.
+        // This value can also be used for animations and the sort.
         long now = System.currentTimeMillis();
 
         if (mLastTime > now)
@@ -149,7 +168,8 @@ public class GLRenderer implements GLSurfaceView.Renderer
         // Get the amount of time the last frame took.
         long elapsed = now - mLastTime;
 
-        // Update our example.
+        // Update our example. This app doesn't have any game logic but if it did then update the
+        // logic before calling render.
 
         // Render our example.
         Render(mtxProjectionAndView);
@@ -163,14 +183,15 @@ public class GLRenderer implements GLSurfaceView.Renderer
         // Clear screen and depth buffer, we have set the clear color black.
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-        // Get handle to vertex shader's vPosition member.
+        // Get handle to vertex shader's vPosition member. To pass our vertex data to our shader, we
+        // need the location of the position variable of our vertex shader.
         int mPositionHandle = GLES20.glGetAttribLocation(riGraphicTools.sp_SolidColor, "vPosition");
 
         // Enable generic vertex attribute array.
         GLES20.glEnableVertexAttribArray(mPositionHandle);
 
         // Prepare the triangle coordinate data.
-        GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 0, vertexBuffer);
+        GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, 0, vertexBuffer);
 
         // Get handle to shape's transformation matrix.
         int mtxHandle = GLES20.glGetUniformLocation(riGraphicTools.sp_SolidColor, "uMVPMatrix");
