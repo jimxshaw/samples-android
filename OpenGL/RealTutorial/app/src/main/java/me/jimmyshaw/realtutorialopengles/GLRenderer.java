@@ -23,8 +23,10 @@ public class GLRenderer implements GLSurfaceView.Renderer
     // Geometric variables.
     public static float vertices[];
     public static short indices[];
+    public static float uvs[];
     public FloatBuffer vertexBuffer;
     public ShortBuffer drawListBuffer;
+    public FloatBuffer uvBuffer;
 
     // Our screen resolution.
     float mScreenWidth = 1920;
@@ -58,13 +60,14 @@ public class GLRenderer implements GLSurfaceView.Renderer
         // These are the vertices of our view.
         vertices = new float[]
                 {
-                        10.0f, 200f, 0.0f, // top
-                        10.0f, 100f, 0.0f, // bottom left
-                        100f, 100f, 0.0f   // bottom right
+                        10.0f, 200f, 0.0f,
+                        10.0f, 100f, 0.0f,
+                        100f, 100f, 0.0f,
+                        100f, 200f, 0.0f
                 };
 
-        // Order to draw vertices.
-        indices = new short[]{0, 1, 2};
+        // The order of vertex rendering.
+        indices = new short[]{0, 1, 2, 0, 2, 3};
 
         // Vertex buffer.
         // Number of coordinate values * 4 bytes per float type.
@@ -87,17 +90,25 @@ public class GLRenderer implements GLSurfaceView.Renderer
         drawListBuffer.position(0);
     }
 
+    public void setupImage()
+    {
+
+    }
+
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config)
     {
         // Create the triangle.
         setupTriangle();
 
+        // Create the image information.
+        setupImage();
+
         // Set the clear color to black. Every time OpenGL clears our screen for a new drawsession,
         // it clears our screen to that specified color.
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1);
 
-        // Create the shaders.
+        // Create the shaders, solid color.
         int vertexShader = riGraphicTools.loadShader(GLES20.GL_VERTEX_SHADER, riGraphicTools.vs_SolidColor);
         int fragmentShader = riGraphicTools.loadShader(GLES20.GL_FRAGMENT_SHADER, riGraphicTools.fs_SolidColor);
 
@@ -111,6 +122,15 @@ public class GLRenderer implements GLSurfaceView.Renderer
         GLES20.glLinkProgram(riGraphicTools.sp_SolidColor);
         // Set our shader program.
         GLES20.glUseProgram(riGraphicTools.sp_SolidColor);
+
+        // Create the shaders, images.
+        vertexShader = riGraphicTools.loadShader(GLES20.GL_VERTEX_SHADER, riGraphicTools.vs_Image);
+        fragmentShader = riGraphicTools.loadShader(GLES20.GL_FRAGMENT_SHADER, riGraphicTools.fs_Image);
+        riGraphicTools.sp_Image = GLES20.glCreateProgram();
+        GLES20.glAttachShader(riGraphicTools.sp_Image, vertexShader);
+        GLES20.glAttachShader(riGraphicTools.sp_Image, fragmentShader);
+        GLES20.glLinkProgram(riGraphicTools.sp_Image);
+        GLES20.glUseProgram(riGraphicTools.sp_Image);
 
     }
 

@@ -6,7 +6,9 @@ public class riGraphicTools
 {
     // Program variables.
     public static int sp_SolidColor;
+    public static int sp_Image;
 
+    // SHADER Solid Color
     // Vertex shaders control what is done to vertices and how they should be rendered.
     // They do nothing more than translate our modelspace coordinates to screen coordinates.
     public static final String vs_SolidColor = "" +
@@ -25,6 +27,10 @@ public class riGraphicTools
             "void main() {" +
             "   gl_FragColor = vec4(0.5, 0, 0, 1);" +
             "}";
+
+    // SHADER Image
+    public static final String vs_Image = "";
+    public static final String fs_Image = "";
 
     public static int loadShader(int type, String shaderCode)
     {
