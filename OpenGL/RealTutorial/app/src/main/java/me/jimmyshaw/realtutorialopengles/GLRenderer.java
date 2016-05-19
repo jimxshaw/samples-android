@@ -5,6 +5,8 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
@@ -50,16 +52,38 @@ public class GLRenderer implements GLSurfaceView.Renderer
         mLastTime = System.currentTimeMillis();
     }
 
-    public void SetupTriangle()
+    public void setupTriangle()
     {
-        
+        // These are the vertices of our view.
+        vertices = new float[]
+                {
+                        10.0f, 200f, 0.0f,
+                        10.0f, 100f, 0.0f,
+                        100f, 100f, 0.0f
+                };
+
+        indices = new short[]{0, 1, 2};
+
+        // Vertex buffer.
+        ByteBuffer bb = ByteBuffer.allocateDirect(vertices.length * 4);
+        bb.order(ByteOrder.nativeOrder());
+        vertexBuffer = bb.asFloatBuffer();
+        vertexBuffer.put(vertices);
+        vertexBuffer.position(0);
+
+        // Initialize a byte buffer for the draw list.
+        ByteBuffer dlb = ByteBuffer.allocateDirect(indices.length * 2);
+        dlb.order(ByteOrder.nativeOrder());
+        drawListBuffer = dlb.asShortBuffer();
+        drawListBuffer.put(indices);
+        drawListBuffer.position(0);
     }
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config)
     {
         // Create the triangle.
-        SetupTriangle();
+        setupTriangle();
 
         // Set the clear color to black.
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1);
