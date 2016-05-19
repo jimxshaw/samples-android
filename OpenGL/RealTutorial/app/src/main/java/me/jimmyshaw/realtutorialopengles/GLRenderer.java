@@ -3,6 +3,7 @@ package me.jimmyshaw.realtutorialopengles;
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
+import android.opengl.Matrix;
 
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
@@ -58,6 +59,30 @@ public class GLRenderer implements GLSurfaceView.Renderer
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height)
     {
+        // We need to know the current width and height.
+        mScreenWidth = width;
+        mScreenHeight = height;
+
+        // Re-do the Viewport, making it fullscreen.
+        GLES20.glViewport(0, 0, (int) mScreenWidth, (int) mScreenHeight);
+
+        // Clear our matrices.
+        for (int i = 0; i < 16; i++)
+        {
+            mtxProjection[i] = 0.0f;
+            mtxView[i] = 0.0f;
+            mtxProjectionAndView[i] = 0.0f;
+        }
+
+        // Setup our screen width and height for normal sprite translation.
+        Matrix.orthoM(mtxProjection, 0, 0f, mScreenWidth, 0.0f, mScreenHeight, 0, 50);
+
+        // Set the camera position (View matrix).
+        Matrix.setLookAtM(mtxView, 0, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
+
+        // Calculate the projection and view transformation.
+        Matrix.multiplyMM(mtxProjectionAndView, 0, mtxProjection, 0, mtxView, 0);
+
 
     }
 
