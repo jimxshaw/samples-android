@@ -1,8 +1,11 @@
 package me.jimmyshaw.realtutorialopengles;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
+import android.opengl.GLUtils;
 import android.opengl.Matrix;
 
 import java.nio.ByteBuffer;
@@ -92,6 +95,49 @@ public class GLRenderer implements GLSurfaceView.Renderer
 
     public void setupImage()
     {
+        // Create our UV coordinates.
+        uvs = new float[]
+                {
+                        0.0f, 0.0f,
+                        0.0f, 1.0f,
+                        1.0f, 1.0f,
+                        1.0f, 0.0f
+                };
+
+        // The texture buffer.
+        ByteBuffer bb = ByteBuffer.allocateDirect(uvs.length * 4);
+        bb.order(ByteOrder.nativeOrder());
+        uvBuffer = bb.asFloatBuffer();
+        uvBuffer.put(uvs);
+        uvBuffer.position(0);
+
+        // Generate textures. If more are needed, alter these numbers.
+        int[] textureNames = new int[1];
+        GLES20.glGenTextures(1, textureNames, 0);
+
+        // Retrieve our image from resources.
+        int id = mContext.getResources().getIdentifier("drawable/ic_launcher", null, mContext.getPackageName());
+
+        // Temporarily create a bitmap.
+        Bitmap bmp = BitmapFactory.decodeResource(mContext.getResources(), id);
+
+        // Bind texture to textureName.
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureNames[0]);
+
+        // Set filtering.
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+
+        // Set wrapping mode.
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
+
+        // Load the bitmap into the bound texture.
+        GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bmp, 0);
+
+        // We are done using the bitmap so we should recycle it.
+        bmp.recycle();
 
     }
 
