@@ -29,6 +29,8 @@ public class riGraphicTools
             "}";
 
     // SHADER Image
+    // This second vertex shader has a texture location, a_texCoord, as input and gives it to the
+    // second fragment shader.
     public static final String vs_Image = "" +
             "uniform mat4 uMVPMatrix;" +
             "attribute vec4 vPosition;" +
@@ -38,6 +40,9 @@ public class riGraphicTools
             "  gl_Position = uMVPMatrix * vPosition;" +
             "  v_texCoord = a_texCoord;" +
             "}";
+
+    // The fragment gets the texture unit id and with the help of the texture2D function, it gets
+    // the color from the texture location passed to the shader.
     public static final String fs_Image = "" +
             "precision mediump float;" +
             "varying vec2 v_texCoord;" +
