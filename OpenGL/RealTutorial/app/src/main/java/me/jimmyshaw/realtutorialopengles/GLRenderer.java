@@ -63,10 +63,10 @@ public class GLRenderer implements GLSurfaceView.Renderer
         // These are the vertices of our view.
         vertices = new float[]
                 {
-                        10.0f, 200f, 0.0f,
-                        10.0f, 100f, 0.0f,
-                        100f, 100f, 0.0f,
-                        100f, 200f, 0.0f
+                        400.0f, 800f, 0.0f,
+                        400.0f, 700f, 0.0f,
+                        500f, 700f, 0.0f,
+                        500f, 800f, 0.0f
                 };
 
         // The order of vertex rendering.
@@ -116,7 +116,7 @@ public class GLRenderer implements GLSurfaceView.Renderer
         GLES20.glGenTextures(1, textureNames, 0);
 
         // Retrieve our image from resources.
-        int id = mContext.getResources().getIdentifier("drawable/ic_launcher", null, mContext.getPackageName());
+        int id = mContext.getResources().getIdentifier("drawable/box_texture", null, mContext.getPackageName());
 
         // Temporarily create a bitmap.
         Bitmap bmp = BitmapFactory.decodeResource(mContext.getResources(), id);
