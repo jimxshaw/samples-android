@@ -254,12 +254,38 @@ public class GLRenderer implements GLSurfaceView.Renderer
 
     private void Render(float[] m)
     {
-        // Clear screen and depth buffer, we have set the clear color black.
+//        // Clear screen and depth buffer, we have set the clear color black.
+//        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
+//
+//        // Get handle to vertex shader's vPosition member. To pass our vertex data to our shader, we
+//        // need the location of the position variable of our vertex shader.
+//        int mPositionHandle = GLES20.glGetAttribLocation(riGraphicTools.sp_SolidColor, "vPosition");
+//
+//        // Enable generic vertex attribute array.
+//        GLES20.glEnableVertexAttribArray(mPositionHandle);
+//
+//        // Prepare the triangle coordinate data.
+//        GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, 0, vertexBuffer);
+//
+//        // Get handle to shape's transformation matrix.
+//        int mtxHandle = GLES20.glGetUniformLocation(riGraphicTools.sp_SolidColor, "uMVPMatrix");
+//
+//        // Apply the projection and view transformation.
+//        GLES20.glUniformMatrix4fv(mtxHandle, 1, false, m, 0);
+//
+//        // Draw the triangle.
+//        GLES20.glDrawElements(GLES20.GL_TRIANGLES, indices.length, GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
+//
+//        // Disable vertex array.
+//        GLES20.glDisableVertexAttribArray(mPositionHandle);
+
+
+        // Clear the screen and depth buffer so there's no accumulation. We have set the clear
+        // color as black.
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-        // Get handle to vertex shader's vPosition member. To pass our vertex data to our shader, we
-        // need the location of the position variable of our vertex shader.
-        int mPositionHandle = GLES20.glGetAttribLocation(riGraphicTools.sp_SolidColor, "vPosition");
+        // Get handle to vertex shader's vPosition member.
+        int mPositionHandle = GLES20.glGetAttribLocation(riGraphicTools.sp_Image, "vPosition");
 
         // Enable generic vertex attribute array.
         GLES20.glEnableVertexAttribArray(mPositionHandle);
@@ -267,17 +293,33 @@ public class GLRenderer implements GLSurfaceView.Renderer
         // Prepare the triangle coordinate data.
         GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, 0, vertexBuffer);
 
+        // Get handle to texture coordinates location.
+        int mTexCoordLoc = GLES20.glGetAttribLocation(riGraphicTools.sp_Image, "a_texCoord");
+
+        // Enable generic vertex attribute array.
+        GLES20.glEnableVertexAttribArray(mTexCoordLoc);
+
+        // Prepare the texture coordinates.
+        GLES20.glVertexAttribPointer(mTexCoordLoc, 2, GLES20.GL_FLOAT, false, 0, uvBuffer);
+
         // Get handle to shape's transformation matrix.
-        int mtxHandle = GLES20.glGetUniformLocation(riGraphicTools.sp_SolidColor, "uMVPMatrix");
+        int mtxHandle = GLES20.glGetUniformLocation(riGraphicTools.sp_Image, "uMVPMatrix");
 
         // Apply the projection and view transformation.
         GLES20.glUniformMatrix4fv(mtxHandle, 1, false, m, 0);
+
+        // Get handle to textures locations.
+        int mSamplerLoc = GLES20.glGetUniformLocation(riGraphicTools.sp_Image, "s_texture");
+
+        // Set the sampler texture unit to 0, where we have saved the texture.
+        GLES20.glUniform1i(mSamplerLoc, 0);
 
         // Draw the triangle.
         GLES20.glDrawElements(GLES20.GL_TRIANGLES, indices.length, GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
 
         // Disable vertex array.
         GLES20.glDisableVertexAttribArray(mPositionHandle);
+        GLES20.glDisableVertexAttribArray(mTexCoordLoc);
 
     }
 }
