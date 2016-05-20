@@ -3,10 +3,12 @@ package me.jimmyshaw.realtutorialopengles;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLUtils;
 import android.opengl.Matrix;
+import android.view.MotionEvent;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -30,6 +32,9 @@ public class GLRenderer implements GLSurfaceView.Renderer
     public FloatBuffer vertexBuffer;
     public ShortBuffer drawListBuffer;
     public FloatBuffer uvBuffer;
+    // A rect is just a container holding 4 boundaries: left, right, top, bottom.
+    // It's all we need to keep track of our 2D textured quad.
+    public Rect image;
 
     // Our screen resolution.
     float mScreenWidth = 1920;
@@ -60,13 +65,20 @@ public class GLRenderer implements GLSurfaceView.Renderer
 
     public void setupTriangle()
     {
+        // Initial rect.
+        image = new Rect();
+        image.left = 10;
+        image.right = 100;
+        image.top = 200;
+        image.bottom = 100;
+
         // These are the vertices of our view.
         vertices = new float[]
                 {
-                        400.0f, 800f, 0.0f,
-                        400.0f, 700f, 0.0f,
-                        500f, 700f, 0.0f,
-                        500f, 800f, 0.0f
+                        10.0f, 200f, 0.0f,
+                        10.0f, 100f, 0.0f,
+                        100f, 100f, 0.0f,
+                        100f, 200f, 0.0f,
                 };
 
         // The order of vertex rendering.
@@ -147,6 +159,64 @@ public class GLRenderer implements GLSurfaceView.Renderer
         // We are done using the bitmap so we should recycle it.
         bmp.recycle();
 
+    }
+
+    public void translateSprite()
+    {
+        // In this method we create our vertices array again with the values from the rect called
+        // image. In order to render the textured quad at the rect's position, we should recreate
+        // the float buffers whenever OpenGL needs and uses those values for the rendering process.
+        vertices = new float[]
+                {
+                        image.left, image.top, 0.0f,
+                        image.left, image.bottom, 0.0f,
+                        image.right, image.bottom, 0.0f,
+                        image.right, image.top, 0.0f
+
+                };
+
+        // The vertex buffer.
+        ByteBuffer bb = ByteBuffer.allocateDirect(vertices.length * 4);
+        bb.order(ByteOrder.nativeOrder());
+        vertexBuffer = bb.asFloatBuffer();
+        vertexBuffer.put(vertices);
+        vertexBuffer.position(0);
+    }
+
+    public void processTouchEvent(MotionEvent event)
+    {
+        // This method is being passed a MotionEvent from our GLSurf class. Depending on
+        // where the touch event is with respect to the halfs of the width and height of
+        // the device screen, the box will move accordingly.
+
+        // Get half of the screen value.
+        int screenWidthHalf = (int) (mScreenWidth / 2);
+        int screenHeightHalf = (int) (mScreenHeight / 2);
+
+        if (event.getX() < screenWidthHalf)
+        {
+            image.left -= 10;
+            image.right -= 10;
+        }
+        else
+        {
+            image.left += 10;
+            image.right += 10;
+        }
+
+        if (event.getY() > screenHeightHalf)
+        {
+            image.top -= 10;
+            image.bottom -= 10;
+        }
+        else
+        {
+            image.top += 10;
+            image.bottom += 10;
+        }
+
+        // Update the new data.
+        translateSprite();
     }
 
     @Override

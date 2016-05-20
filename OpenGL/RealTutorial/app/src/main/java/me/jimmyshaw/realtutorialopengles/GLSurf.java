@@ -2,6 +2,7 @@ package me.jimmyshaw.realtutorialopengles;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+import android.view.MotionEvent;
 
 public class GLSurf extends GLSurfaceView
 {
@@ -27,6 +28,14 @@ public class GLSurf extends GLSurfaceView
     }
 
     @Override
+    public boolean onTouchEvent(MotionEvent e)
+    {
+        // This method catches touch events and our code puts them through to the renderer.
+        mRenderer.processTouchEvent(e);
+        return true;
+    }
+
+    @Override
     public void onPause()
     {
         // TODO: auto-generated method stub.
@@ -41,4 +50,5 @@ public class GLSurf extends GLSurfaceView
         super.onResume();
         mRenderer.onResume();
     }
+
 }
