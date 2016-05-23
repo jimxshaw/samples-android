@@ -405,23 +405,29 @@ public class GLRenderer implements GLSurfaceView.Renderer
     // translated to the correct location.
     public class Sprite
     {
-        float angle;
-        float scale;
+        // Our sprite always has a base. This is the original position that we place
+        // around our origin.
         RectF base;
+        // From our base, we need values to scale, rotate (angle) and translate.
+        float scale;
+        float angle;
         PointF translation;
 
         public Sprite()
         {
-            // Initialize our initial size around the 0,0 point.
+            // Our origin, initialize our initial size around the 0,0 point.
             base = new RectF(-50f, 50f, 50f, -50f);
 
             // Initial translation.
+            // Because our image is 100 pixels by pixels in size and we have placed it
+            // around the origin, we start our translation 50 pixels in both directions so that
+            // our image is fully on our screen on the left bottom.
             translation = new PointF(50f, -50f);
 
-            // We start with out initial size.
+            // We start with out initial size. A scale factor of 1 means that it's at normal size.
             scale = 1f;
 
-            // We start in our initial angle.
+            // We start in our initial rotation angle at zero.
             angle = 0f;
         }
 
