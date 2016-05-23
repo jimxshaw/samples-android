@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="org.guildsa.firebasetest.MainActivity">
+
+    <Button
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:text="Create User"
+        android:id="@+id/createUserBtn"
+        android:onClick="onCreateUserBtn"
+        android:layout_gravity="center_horizontal"/>
+
+    <Button
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:text="Sign-In User"
+        android:id="@+id/signInUserBtn"
+        android:onClick="onSignInUserBtn"
+        android:layout_gravity="center_horizontal"/>
+
+    <Button
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:text="Create Post"
+        android:id="@+id/createPostBtn"
+        android:onClick="onCreatePostBtn"
+        android:layout_gravity="center_horizontal"/>
+
+    <Button
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:text="Fetch Posts"
+        android:id="@+id/fetchPostsBtn"
+        android:onClick="onFetchPostsBtn"
+        android:layout_gravity="center_horizontal"/>
+
+    <Button
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:text="Create Comment"
+        android:id="@+id/createCommentBtn"
+        android:onClick="onCreateCommentBtn"
+        android:layout_gravity="center_horizontal"/>
+
+    <Button
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:text="Fetch Comments"
+        android:id="@+id/fetchCommentsBtn"
+        android:onClick="onFetchCommentsBtn"
+        android:layout_gravity="center_horizontal"/>
+
+    <!--<Button-->
+        <!--android:layout_width="170dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Remove Comments"-->
+        <!--android:id="@+id/removeCommentsBtn"-->
+        <!--android:onClick="onRemoveCommentsBtn"-->
+        <!--android:layout_gravity="center_horizontal"/>-->
+
+</LinearLayout>
+
+
