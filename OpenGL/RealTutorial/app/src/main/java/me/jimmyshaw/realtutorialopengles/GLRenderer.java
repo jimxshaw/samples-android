@@ -3,7 +3,9 @@ package me.jimmyshaw.realtutorialopengles;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLUtils;
@@ -391,5 +393,36 @@ public class GLRenderer implements GLSurfaceView.Renderer
         GLES20.glDisableVertexAttribArray(mPositionHandle);
         GLES20.glDisableVertexAttribArray(mTexCoordLoc);
 
+    }
+
+
+    // A sprite is a 2D image or animation that is integrated into a larger scene. Our images are
+    // exactly that so we'll hold all the information about our image in a class called Sprite.
+    // In computer graphics, order is important when translating, scaling and rotating. For example,
+    // rotating is always done about an origin. What origin though? In our case, we'll do the
+    // transformation each frame from the base position. The order we use is scaling, rotating
+    // and translating. The result is an image being scaled, rotated around its own midpoint and then
+    // translated to the desired location.
+    public class Sprite
+    {
+        float angle;
+        float scale;
+        RectF base;
+        PointF translation;
+
+        public Sprite()
+        {
+            // Initialize our initial size around the 0,0 point.
+            base = new RectF(-50f, 50f, 50f, -50f);
+
+            // Initial translation.
+            translation = new PointF(50f, -50f);
+
+            // We start with out initial size.
+            scale = 1f;
+
+            // We start in our initial angle.
+            angle = 0f;
+        }
     }
 }
