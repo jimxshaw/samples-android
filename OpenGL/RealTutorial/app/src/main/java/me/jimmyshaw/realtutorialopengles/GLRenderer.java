@@ -424,5 +424,22 @@ public class GLRenderer implements GLSurfaceView.Renderer
             // We start in our initial angle.
             angle = 0f;
         }
+
+        public void scale(float deltas)
+        {
+            scale += deltas;
+        }
+
+        public void rotate(float deltaa)
+        {
+            angle += deltaa;
+        }
+
+        public void translate(float deltax, float deltay)
+        {
+            // Update our location.
+            translation.x += deltax;
+            translation.y += deltay;
+        }
     }
 }
