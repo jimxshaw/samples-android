@@ -123,7 +123,7 @@ public class GLRenderer implements GLSurfaceView.Renderer
         GLES20.glGenTextures(1, textureNames, 0);
 
         // Retrieve our image from resources.
-        int id = mContext.getResources().getIdentifier("drawable/box_texture", null, mContext.getPackageName());
+        int id = mContext.getResources().getIdentifier("drawable/gray_face", null, mContext.getPackageName());
 
         // Temporarily create a bitmap.
         Bitmap bmp = BitmapFactory.decodeResource(mContext.getResources(), id);
@@ -225,7 +225,7 @@ public class GLRenderer implements GLSurfaceView.Renderer
 
         // Set the clear color to black. Every time OpenGL clears our screen for a new drawsession,
         // it clears our screen to that specified color.
-        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1);
+        GLES20.glClearColor(1.0f, 1.0f, 1.0f, 1);
 
         // Create the shaders, solid color.
         int vertexShader = riGraphicTools.loadShader(GLES20.GL_VERTEX_SHADER, riGraphicTools.vs_SolidColor);
