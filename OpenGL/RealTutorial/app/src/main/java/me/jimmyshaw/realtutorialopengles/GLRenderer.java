@@ -42,8 +42,8 @@ public class GLRenderer implements GLSurfaceView.Renderer
     public Sprite sprite;
 
     // Our screen resolution.
-    float mScreenWidth = 1280;
-    float mScreenHeight = 768;
+    float mScreenWidth = 1920;
+    float mScreenHeight = 1080;
 
     // Misc.
     Context mContext;
