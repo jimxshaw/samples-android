@@ -450,7 +450,9 @@ public class GLRenderer implements GLSurfaceView.Renderer
 
         public float[] getTransformedVertices()
         {
-            // Start with scaling.
+            // Start with scaling. We pass in a delta scale value to the scale method. The actual
+            // scaling is done in this method. Because we have our base around the origin (0,0),
+            // we can simply multiple the vertex locations with the scaling factor to get a scaled sprite.
             float x1 = base.left * scale;
             float x2 = base.right * scale;
             float y1 = base.bottom * scale;
@@ -458,6 +460,16 @@ public class GLRenderer implements GLSurfaceView.Renderer
 
             // We detach from our Rect because when rotating, we need separate points. We do so in
             // OpenGL order.
+            // We rotate the sprite after scaling it. Rotating a point P around the origin O can be
+            // done using the following formula (point R is the resulting point and α is the angle
+            // of rotation).
+            // Rx = cos(α) * (Px - Ox) - sin(α) * (Py - Oy) + Ox
+            // Ry = sin(α) * (Px - Ox) + cos(α) * (Py - Oy) + Oy
+            // Since our point O is at (0,0), we can simplify the formula by filling in zeros.
+            // Rx = cos(α) * Px - sin(α) * Py
+            // Ry = sin(α) * Px + cos(α) * Py
+            // Before rotation can occur we have to create all four points from our Rect. We apply
+            // the formula on all the points.
             PointF one = new PointF(x1, y2);
             PointF two = new PointF(x1, y1);
             PointF three = new PointF(x2, y1);
@@ -468,7 +480,8 @@ public class GLRenderer implements GLSurfaceView.Renderer
             float sin = (float) Math.sin(angle);
             float cos = (float) Math.cos(angle);
 
-            // Then we rotate each point.
+            // Then we rotate each point. We now have rotated the vertices around the sprite
+            // origin (0,0).
             one.x = x1 * cos - y2 * sin;
             one.y = x1 * sin + y2 * cos;
             two.x = x1 * cos - y1 * sin;
@@ -478,7 +491,8 @@ public class GLRenderer implements GLSurfaceView.Renderer
             four.x = x2 * cos - y2 * sin;
             four.y = x2 * sin + y2 * cos;
 
-            // Finally we translate the sprite to its correct position.
+            // Finally we translate the sprite to its correct position by adding the x and y
+            // translation offset to our scale and rotated points.
             one.x += translation.x;
             one.y += translation.y;
             two.x += translation.x;
@@ -488,7 +502,8 @@ public class GLRenderer implements GLSurfaceView.Renderer
             four.x += translation.x;
             four.y += translation.y;
 
-            // We return our float array of vertices.
+            // We return a float array of vertices with all the transformed vertices that we
+            // can use in our render process.
             return new float[]
                     {
                             one.x, one.y, 0.0f,
