@@ -36,11 +36,14 @@ public class GLRenderer implements GLSurfaceView.Renderer
     public FloatBuffer uvBuffer;
     // A rect is just a container holding 4 boundaries: left, right, top, bottom.
     // It's all we need to keep track of our 2D textured quad.
-    public Rect image;
+    //public Rect image;
+
+    // A Rect isn't needed when we have a Sprite.
+    public Sprite sprite;
 
     // Our screen resolution.
-    float mScreenWidth = 1920;
-    float mScreenHeight = 1080;
+    float mScreenWidth = 1280;
+    float mScreenHeight = 768;
 
     // Misc.
     Context mContext;
@@ -52,6 +55,7 @@ public class GLRenderer implements GLSurfaceView.Renderer
     {
         mContext = c;
         mLastTime = System.currentTimeMillis() + 100;
+        sprite = new Sprite();
     }
 
     public void onPause()
@@ -67,23 +71,12 @@ public class GLRenderer implements GLSurfaceView.Renderer
 
     public void setupTriangle()
     {
-        // Initial rect.
-        image = new Rect();
-        image.left = 10;
-        image.right = 100;
-        image.top = 200;
-        image.bottom = 100;
+        // Get information of sprite. Instead of setting up all the values of our vertices,
+        // we just retrieve the transformed vertices of our sprite and assign them to our
+        // vertices float array.
+        vertices = sprite.getTransformedVertices();
 
-        // These are the vertices of our view.
-        vertices = new float[]
-                {
-                        10.0f, 200f, 0.0f,
-                        10.0f, 100f, 0.0f,
-                        100f, 100f, 0.0f,
-                        100f, 200f, 0.0f,
-                };
-
-        // The order of vertex rendering.
+        // The order of vertex rendering for a quad.
         indices = new short[]{0, 1, 2, 0, 2, 3};
 
         // Vertex buffer.
@@ -163,19 +156,10 @@ public class GLRenderer implements GLSurfaceView.Renderer
 
     }
 
-    public void translateSprite()
+    public void updateSprite()
     {
-        // In this method we create our vertices array again with the values from the rect called
-        // image. In order to render the textured quad at the rect's position, we should recreate
-        // the float buffers whenever OpenGL needs and uses those values for the rendering process.
-        vertices = new float[]
-                {
-                        image.left, image.top, 0.0f,
-                        image.left, image.bottom, 0.0f,
-                        image.right, image.bottom, 0.0f,
-                        image.right, image.top, 0.0f
-
-                };
+        // Get the new transformed vertices.
+        vertices = sprite.getTransformedVertices();
 
         // The vertex buffer.
         ByteBuffer bb = ByteBuffer.allocateDirect(vertices.length * 4);
@@ -187,38 +171,47 @@ public class GLRenderer implements GLSurfaceView.Renderer
 
     public void processTouchEvent(MotionEvent event)
     {
-        // This method is being passed a MotionEvent from our GLSurf class. Depending on
-        // where the touch event is with respect to the halfs of the width and height of
-        // the device screen, the box will move accordingly.
+        // This method is being passed a MotionEvent from our GLSurf class.
+        // Our screen is divided in to a 2x3 grid of touch areas. Each area has its
+        // own functionality: rotating, scaling and translating the sprite in both directions.
 
         // Get half of the screen value.
-        int screenWidthHalf = (int) (mScreenWidth / 2);
-        int screenHeightHalf = (int) (mScreenHeight / 2);
+        int screenHalf = (int) (mScreenWidth / 2);
+        int screenHeightPart = (int) (mScreenHeight / 3);
 
-        if (event.getX() < screenWidthHalf)
+        if (event.getX() < screenHalf)
         {
-            image.left -= 10;
-            image.right -= 10;
+            // Left screen touch
+            if (event.getY() < screenHeightPart)
+            {
+                sprite.scale(-0.01f);
+            }
+            else if (event.getY() < (screenHeightPart * 2))
+            {
+                sprite.translate(-10f, -10f);
+            }
+            else
+            {
+                sprite.rotate(0.01f);
+            }
         }
         else
         {
-            image.left += 10;
-            image.right += 10;
+            // Right screen touch
+            if (event.getY() < screenHeightPart)
+            {
+                sprite.scale(0.01f);
+            }
+            else if (event.getY() < (screenHeightPart * 2))
+            {
+                sprite.translate(10f, 10f);
+            }
+            else
+            {
+                sprite.rotate(-0.01f);
+            }
         }
 
-        if (event.getY() > screenHeightHalf)
-        {
-            image.top -= 10;
-            image.bottom -= 10;
-        }
-        else
-        {
-            image.top += 10;
-            image.bottom += 10;
-        }
-
-        // Update the new data.
-        translateSprite();
     }
 
     @Override
@@ -314,8 +307,8 @@ public class GLRenderer implements GLSurfaceView.Renderer
         // Get the amount of time the last frame took.
         long elapsed = now - mLastTime;
 
-        // Update our example. This app doesn't have any game logic but if it did then update the
-        // logic before calling render.
+        // Update our example.
+        updateSprite();
 
         // Render our example.
         Render(mtxProjectionAndView);
@@ -326,32 +319,6 @@ public class GLRenderer implements GLSurfaceView.Renderer
 
     private void Render(float[] m)
     {
-//        // Clear screen and depth buffer, we have set the clear color black.
-//        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
-//
-//        // Get handle to vertex shader's vPosition member. To pass our vertex data to our shader, we
-//        // need the location of the position variable of our vertex shader.
-//        int mPositionHandle = GLES20.glGetAttribLocation(riGraphicTools.sp_SolidColor, "vPosition");
-//
-//        // Enable generic vertex attribute array.
-//        GLES20.glEnableVertexAttribArray(mPositionHandle);
-//
-//        // Prepare the triangle coordinate data.
-//        GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, 0, vertexBuffer);
-//
-//        // Get handle to shape's transformation matrix.
-//        int mtxHandle = GLES20.glGetUniformLocation(riGraphicTools.sp_SolidColor, "uMVPMatrix");
-//
-//        // Apply the projection and view transformation.
-//        GLES20.glUniformMatrix4fv(mtxHandle, 1, false, m, 0);
-//
-//        // Draw the triangle.
-//        GLES20.glDrawElements(GLES20.GL_TRIANGLES, indices.length, GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
-//
-//        // Disable vertex array.
-//        GLES20.glDisableVertexAttribArray(mPositionHandle);
-
-
         // Clear the screen and depth buffer so there's no accumulation. We have set the clear
         // color as black.
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
@@ -422,7 +389,7 @@ public class GLRenderer implements GLSurfaceView.Renderer
             // Because our image is 100 pixels by pixels in size and we have placed it
             // around the origin, we start our translation 50 pixels in both directions so that
             // our image is fully on our screen on the left bottom.
-            translation = new PointF(50f, -50f);
+            translation = new PointF(50f, 50f);
 
             // We start with out initial size. A scale factor of 1 means that it's at normal size.
             scale = 1f;
@@ -456,7 +423,7 @@ public class GLRenderer implements GLSurfaceView.Renderer
             float x1 = base.left * scale;
             float x2 = base.right * scale;
             float y1 = base.bottom * scale;
-            float y2 = base.bottom * scale;
+            float y2 = base.top * scale;
 
             // We detach from our Rect because when rotating, we need separate points. We do so in
             // OpenGL order.
