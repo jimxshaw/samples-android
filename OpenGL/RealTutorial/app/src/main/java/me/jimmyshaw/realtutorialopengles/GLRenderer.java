@@ -52,6 +52,13 @@ public class GLRenderer implements GLSurfaceView.Renderer
     int mProgram;
     private static final int COORDS_PER_VERTEX = 3;
 
+    // Scaling factor for various screens.
+    float ssu = 1.0f;
+    float ssx = 1.0f;
+    float ssy = 1.0f;
+    float swp = 320.0f;
+    float shp = 480.0f;
+
     public GLRenderer(Context c)
     {
         mContext = c;
@@ -68,6 +75,27 @@ public class GLRenderer implements GLSurfaceView.Renderer
     {
         // Do stuff to resume the renderer.
         mLastTime = System.currentTimeMillis();
+    }
+
+    public void setupScaling()
+    {
+        // The screen resolution.
+        swp = mContext.getResources().getDisplayMetrics().widthPixels;
+        shp = mContext.getResources().getDisplayMetrics().heightPixels;
+
+        // Orientation is assumed to be portrait.
+        ssx = swp / 320.0f;
+        ssy = shp / 480.0f;
+
+        // Get our uniform scaler.
+        if (ssx > ssy)
+        {
+            ssu = ssy;
+        }
+        else
+        {
+            ssu = ssx;
+        }
     }
 
     public void setupTriangle()
@@ -218,6 +246,9 @@ public class GLRenderer implements GLSurfaceView.Renderer
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config)
     {
+        // Setup our scaling system.
+        setupScaling();
+
         // Create the triangle.
         setupTriangle();
 
