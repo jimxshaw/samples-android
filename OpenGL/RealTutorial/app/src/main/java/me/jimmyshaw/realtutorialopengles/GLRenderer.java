@@ -17,6 +17,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
+import java.util.Random;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -131,14 +132,31 @@ public class GLRenderer implements GLSurfaceView.Renderer
 
     public void setupImage()
     {
-        // Create our UV coordinates.
-        uvs = new float[]
-                {
-                        0.0f, 0.0f,
-                        0.0f, 1.0f,
-                        1.0f, 1.0f,
-                        1.0f, 0.0f
-                };
+        // We will use a randomizer for randomizing the textures from the texture atlas.
+        Random rng = new Random();
+
+        // 30 image objects x 4 vertices x (u & v). We need to create a new float array for
+        // which we need memory space equal to the amount of 30 quads, 4 vertices per quad and per
+        // vertex we need a U and V float value.
+        uvs = new float[30 * 4 * 2];
+
+        // We'll make 30 randomly textured objects.
+        for (int i = 0; i < 30; i++)
+        {
+            int random_u_offset = rng.nextInt(2);
+            int random_v_offset = rng.nextInt(2);
+
+            // Adding the UVs using the offsets. The texture atlas has 4 textures on it. With the
+            // random offset we choose a random texture from the atlas. 
+            uvs[(i * 8) + 0] = random_u_offset * 0.5f;
+            uvs[(i * 8) + 1] = random_v_offset * 0.5f;
+            uvs[(i * 8) + 2] = random_u_offset * 0.5f;
+            uvs[(i * 8) + 3] = (random_v_offset + 1) * 0.5f;
+            uvs[(i * 8) + 4] = (random_u_offset + 1) * 0.5f;
+            uvs[(i * 8) + 5] = (random_v_offset + 1) * 0.5f;
+            uvs[(i * 8) + 6] = (random_u_offset + 1) * 0.5f;
+            uvs[(i * 8) + 7] = random_v_offset * 0.5f;
+        }
 
         // The texture buffer.
         ByteBuffer bb = ByteBuffer.allocateDirect(uvs.length * 4);
@@ -152,7 +170,7 @@ public class GLRenderer implements GLSurfaceView.Renderer
         GLES20.glGenTextures(1, textureNames, 0);
 
         // Retrieve our image from resources.
-        int id = mContext.getResources().getIdentifier("drawable/gray_face", null, mContext.getPackageName());
+        int id = mContext.getResources().getIdentifier("drawable/texture_atlas", null, mContext.getPackageName());
 
         // Temporarily create a bitmap.
         Bitmap bmp = BitmapFactory.decodeResource(mContext.getResources(), id);
