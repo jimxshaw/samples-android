@@ -322,6 +322,17 @@ public class GLRenderer implements GLSurfaceView.Renderer
         // it clears our screen to that specified color.
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1);
 
+        // OpenGL by default doesn't blend anything. It copies an image over the surface. To change
+        // this, we enable blending and then tell OpenGL how it should blend. The constants we
+        // specify are the scaling factors used to multiple the source color and the destination color.
+        // GL_ONE specifies we take the incoming fragment color and multiply it by (1,1,1,1) which
+        // means take the pixel as is. The second parameter tells OpenGL that we do not want the
+        // alpha of the source taken into account for the destination pixel which is factor
+        // (1-AlphaSource,1-AlphaSource,1-AlphaSource,1-AlphaSource). Both resulting colors are
+        // then added up together and is then written back into the pixelbuffer. 
+        GLES20.glEnable(GLES20.GL_BLEND);
+        GLES20.glBlendFunc(GLES20.GL_ONE, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+
         // Create the shaders, solid color.
         int vertexShader = riGraphicTools.loadShader(GLES20.GL_VERTEX_SHADER, riGraphicTools.vs_SolidColor);
         int fragmentShader = riGraphicTools.loadShader(GLES20.GL_FRAGMENT_SHADER, riGraphicTools.fs_SolidColor);
