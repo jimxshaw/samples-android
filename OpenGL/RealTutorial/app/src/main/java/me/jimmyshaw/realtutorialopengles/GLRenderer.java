@@ -101,13 +101,58 @@ public class GLRenderer implements GLSurfaceView.Renderer
 
     public void setupTriangle()
     {
-        // Get information of sprite. Instead of setting up all the values of our vertices,
-        // we just retrieve the transformed vertices of our sprite and assign them to our
-        // vertices float array.
-        vertices = sprite.getTransformedVertices();
+        // We will need a randomizer.
+        Random rng = new Random();
 
-        // The order of vertex rendering for a quad.
-        indices = new short[]{0, 1, 2, 0, 2, 3};
+        // Our collection of vertices. We create the vertices for the 30 textured quads.
+        // That's 30 textured quads x 4 vertices x 3 components (x, y, z) of floats to be able
+        // to store that information.
+        vertices = new float[30 * 4 * 3];
+
+        // Create the vertex data. We want to randomize the locations of the textured quads so we get
+        // a random offset. With the ssu value we can ensure a squared texture at the
+        // specified locations.
+        for (int i = 0; i < 30; i++)
+        {
+            int offset_x = rng.nextInt((int) swp);
+            int offset_y = rng.nextInt((int) shp);
+
+            // Create the 2D parts of our 3D vertices, others are default to 0.0f.
+            vertices[(i * 12) + 0] = offset_x;
+            vertices[(i * 12) + 1] = offset_y + (30.0f * ssu);
+            vertices[(i * 12) + 2] = 0f;
+            vertices[(i * 12) + 3] = offset_x;
+            vertices[(i * 12) + 4] = offset_y;
+            vertices[(i * 12) + 5] = 0f;
+            vertices[(i * 12) + 6] = offset_x + (30.0f * ssu);
+            vertices[(i * 12) + 7] = offset_y;
+            vertices[(i * 12) + 8] = 0f;
+            vertices[(i * 12) + 9] = offset_x + (30.0f * ssu);
+            vertices[(i * 12) + 10] = offset_y + (30.0f * ssu);
+            vertices[(i * 12) + 11] = 0f;
+        }
+
+        // Indices for all textured quads. The indices tell us what vertices to use to build
+        // up a triangle. Just a set of {0,1,2,0,2,3} doesn't work anymore because we have more
+        // vertices now. So we loop through all the quads and create the correct indices. We
+        // store the last index so that we can use it as the base of our next iteration. This way
+        // we have a correct list of indices for all vertices.
+        indices = new short[30 * 6];
+        int last = 0;
+        for (int i = 0; i < 30; i++)
+        {
+            // Set the new indices for the new quad.
+            indices[(i * 6) + 0] = (short) (last + 0);
+            indices[(i * 6) + 1] = (short) (last + 1);
+            indices[(i * 6) + 2] = (short) (last + 2);
+            indices[(i * 6) + 3] = (short) (last + 0);
+            indices[(i * 6) + 4] = (short) (last + 2);
+            indices[(i * 6) + 5] = (short) (last + 3);
+
+            // Our indices are connected to the vertices so we need to keep them in the correct order.
+            // a normal quad = 0,1,2,0,2,3 so the next quad would be 4,5,6,4,6,7.
+            last = last + 4;
+        }
 
         // Vertex buffer.
         // Number of coordinate values * 4 bytes per float type.
@@ -147,7 +192,7 @@ public class GLRenderer implements GLSurfaceView.Renderer
             int random_v_offset = rng.nextInt(2);
 
             // Adding the UVs using the offsets. The texture atlas has 4 textures on it. With the
-            // random offset we choose a random texture from the atlas. 
+            // random offset we choose a random texture from the atlas.
             uvs[(i * 8) + 0] = random_u_offset * 0.5f;
             uvs[(i * 8) + 1] = random_v_offset * 0.5f;
             uvs[(i * 8) + 2] = random_u_offset * 0.5f;
@@ -275,7 +320,7 @@ public class GLRenderer implements GLSurfaceView.Renderer
 
         // Set the clear color to black. Every time OpenGL clears our screen for a new drawsession,
         // it clears our screen to that specified color.
-        GLES20.glClearColor(1.0f, 1.0f, 1.0f, 1);
+        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1);
 
         // Create the shaders, solid color.
         int vertexShader = riGraphicTools.loadShader(GLES20.GL_VERTEX_SHADER, riGraphicTools.vs_SolidColor);
@@ -358,7 +403,7 @@ public class GLRenderer implements GLSurfaceView.Renderer
         long elapsed = now - mLastTime;
 
         // Update our example.
-        updateSprite();
+        //updateSprite();
 
         // Render our example.
         Render(mtxProjectionAndView);
