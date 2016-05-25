@@ -53,11 +53,11 @@ public class GLRenderer implements GLSurfaceView.Renderer
     private static final int COORDS_PER_VERTEX = 3;
 
     // Scaling factor for various screens.
-    float ssu = 1.0f;
-    float ssx = 1.0f;
-    float ssy = 1.0f;
-    float swp = 320.0f;
-    float shp = 480.0f;
+    float ssu = 1.0f; // universal screen scaling.
+    float ssx = 1.0f; // screen scaling x axis.
+    float ssy = 1.0f; // screen scaling y axis.
+    float swp = 320.0f; // scaling width pixel.
+    float shp = 480.0f; // scaling height pixel.
 
     public GLRenderer(Context c)
     {
@@ -217,7 +217,7 @@ public class GLRenderer implements GLSurfaceView.Renderer
             }
             else if (event.getY() < (screenHeightPart * 2))
             {
-                sprite.translate(-10f, -10f);
+                sprite.translate(-10f * ssu, -10f * ssu);
             }
             else
             {
@@ -233,7 +233,7 @@ public class GLRenderer implements GLSurfaceView.Renderer
             }
             else if (event.getY() < (screenHeightPart * 2))
             {
-                sprite.translate(10f, 10f);
+                sprite.translate(10f * ssu, 10f * ssu);
             }
             else
             {
@@ -414,14 +414,16 @@ public class GLRenderer implements GLSurfaceView.Renderer
 
         public Sprite()
         {
-            // Our origin, initialize our initial size around the 0,0 point.
-            base = new RectF(-50f, 50f, 50f, -50f);
+            // Our origin, initialize our initial size around the 0,0 point. We multiple the base
+            // coordinates withour global scale value. This way we keep local aspect ratio but make
+            // the rectangle look the same size relative to the screen size on all devices.
+            base = new RectF(-50f * ssu, 50f * ssu, 50f * ssu, -50f * ssu);
 
             // Initial translation.
             // Because our image is 100 pixels by pixels in size and we have placed it
             // around the origin, we start our translation 50 pixels in both directions so that
             // our image is fully on our screen on the left bottom.
-            translation = new PointF(50f, 50f);
+            translation = new PointF(50f * ssu, 50f * ssu);
 
             // We start with out initial size. A scale factor of 1 means that it's at normal size.
             scale = 1f;
