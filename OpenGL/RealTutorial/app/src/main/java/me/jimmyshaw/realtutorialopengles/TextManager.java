@@ -277,6 +277,45 @@ public class TextManager
         GLES20.glDisableVertexAttribArray(mColorHandle);
     }
 
+    private int convertCharToIndex(int c_val)
+    {
+        // This method will translate the ASCII value of a character from our TextObject
+        // into an index for our texture atlas. It calculates the n-th tile (index) the
+        // character on the texture, reading from left to right.
+
+        int index = -1;
+
+        // Retrieve the index
+        if (c_val > 64 && c_val < 91) // A-Z
+            index = c_val - 65;
+        else if (c_val > 96 && c_val < 123) // a-z
+            index = c_val - 97;
+        else if (c_val > 47 && c_val < 58) // 0-9
+            index = c_val - 48 + 26;
+        else if (c_val == 43) // +
+            index = 38;
+        else if (c_val == 45) // -
+            index = 39;
+        else if (c_val == 33) // !
+            index = 36;
+        else if (c_val == 63) // ?
+            index = 37;
+        else if (c_val == 61) // =
+            index = 40;
+        else if (c_val == 58) // :
+            index = 41;
+        else if (c_val == 46) // .
+            index = 42;
+        else if (c_val == 44) // ,
+            index = 43;
+        else if (c_val == 42) // *
+            index = 44;
+        else if (c_val == 36) // $
+            index = 45;
+
+        return index;
+    }
+
     private void convertTextToTriangleInfo(TextObject value)
     {
 
