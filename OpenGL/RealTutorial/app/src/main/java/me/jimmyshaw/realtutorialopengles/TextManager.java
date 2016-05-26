@@ -42,7 +42,7 @@ public class TextManager
     private int texturenr;
 
     // This is the scale factor for rendering.
-    private float uniformscale;
+    private float uniformScale;
 
     // These are the exact widths in pixels on the texture for the letters. We store the exact
     // widths of the letters in an array so we can render the text with the correct spaces
@@ -316,8 +316,101 @@ public class TextManager
         return index;
     }
 
-    private void convertTextToTriangleInfo(TextObject value)
+    private void convertTextToTriangleInfo(TextObject val)
     {
+        // A TextObject is passed in holding all the relevant information about our piece of text.
 
+        // Get attributes from text object.
+        float x = val.x;
+        float y = val.y;
+        String text = val.text;
+
+        // Iterate through the characters of the text to create the actual images of those characters.
+        for (int j = 0; j < text.length(); j++)
+        {
+            // Get ascii value.
+            char c = text.charAt(j);
+            int c_val = (int) c;
+
+            // Get the index value for our texture.
+            int index = convertCharToIndex(c_val);
+
+            // If a character is not supported by our system, it will return this information and
+            // we render a space.
+            if (index == -1)
+            {
+                // For unknown characters, we add a space for it to be safe.
+                x += ((RI_TEXT_SPACESIZE) * uniformScale);
+                continue;
+            }
+
+            // Calculate the uv parts.
+            int row = index / 8;
+            int col = index % 8;
+
+            float v = row * RI_TEXT_UV_BOX_WIDTH;
+            float v2 = v + RI_TEXT_UV_BOX_WIDTH;
+            float u = col * RI_TEXT_UV_BOX_WIDTH;
+            float u2 = u + RI_TEXT_UV_BOX_WIDTH;
+
+            // Creating the triangle information by getting the row and column of the letter in
+            // our texture atlas.
+            float[] vec = new float[12];
+            float[] uv = new float[8];
+
+            // We calculate the render information for this character.
+            // The z value of the triangles are set to 0.99f so that it will be rendered on top.
+            vec[0] = x;
+            vec[1] = y + (RI_TEXT_WIDTH * uniformScale);
+            vec[2] = 0.99f;
+            vec[3] = x;
+            vec[4] = y;
+            vec[5] = 0.99f;
+            vec[6] = x + (RI_TEXT_WIDTH * uniformScale);
+            vec[7] = y;
+            vec[8] = 0.99f;
+            vec[9] = x + (RI_TEXT_WIDTH * uniformScale);
+            vec[10] = y + (RI_TEXT_WIDTH * uniformScale);
+            vec[11] = 0.99f;
+
+            float[] colors = new float[]
+                    {
+                            val.color[0], val.color[1], val.color[2], val.color[3],
+                            val.color[0], val.color[1], val.color[2], val.color[3],
+                            val.color[0], val.color[1], val.color[2], val.color[3],
+                            val.color[0], val.color[1], val.color[2], val.color[3]
+                    };
+
+            // 0.001f = texture bleeding hack/fix.
+            uv[0] = u + 0.001f;
+            uv[1] = v + 0.001f;
+            uv[2] = u + 0.001f;
+            uv[3] = v2 - 0.001f;
+            uv[4] = u2 - 0.001f;
+            uv[5] = v2 - 0.001f;
+            uv[6] = u2 - 0.001f;
+            uv[7] = v + 0.001f;
+
+            short[] inds = {0, 1, 2, 0, 2, 3};
+
+            // Add our triangle information to our collection for 1 render call.
+            AddCharRenderInformation(vec, colors, uv, inds);
+
+            // Calculate the new position to start the next letter, which will be when the
+            // current letter ends.
+            x += ((l_size[index] / 2) * uniformScale);
+        }
+
+
+    }
+
+    public float getUniformScale()
+    {
+        return uniformScale;
+    }
+
+    public void setUniformScale(float uniformScale)
+    {
+        this.uniformScale = uniformScale;
     }
 }
