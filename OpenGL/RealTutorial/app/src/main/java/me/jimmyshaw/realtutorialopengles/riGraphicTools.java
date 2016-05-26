@@ -66,7 +66,7 @@ public class riGraphicTools
                     "  v_texCoord = a_texCoord;" +
                     "  v_Color = a_Color;" +
                     "}";
-    
+
     public static final String fs_Text =
             "precision mediump float;" +
                     "varying vec4 v_Color;" +
