@@ -4,6 +4,7 @@ import org.w3c.dom.Text;
 
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
+import java.util.Iterator;
 import java.util.Vector;
 
 public class TextManager
@@ -88,7 +89,7 @@ public class TextManager
     {
         // We pass vertices, UV coordinates, colors and indices data and that data is stored
         // in our main data arrays. The purpose is so that we can simply pass that data in one
-        // render call when we finally render all the text. 
+        // render call when we finally render all the text.
 
         // We need a base value because the object has indices related to that object and not to
         // this collection. Basically, we need to translate the indices to align with the
@@ -117,11 +118,65 @@ public class TextManager
         }
 
         // We handle the indices
-        for (int j = 0; j < indi.length; j++)
+        for (int i = 0; i < indi.length; i++)
         {
-            indices[index_indices] = (short) (base + indi[j]);
+            indices[index_indices] = (short) (base + indi[i]);
             index_indices++;
         }
+    }
 
+    // The prepareDrawInfo and prepareDraw methods both clear all data and populate them with
+    // up to date text information.
+    public void prepareDrawInfo()
+    {
+        // Reset the indices.
+        index_vecs = 0;
+        index_uvs = 0;
+        index_colors = 0;
+        index_indices = 0;
+
+        // Get the total number of characters by looping through the collection.
+        int charCount = 0;
+        for (TextObject textObject : textCollection)
+        {
+            if (textObject != null)
+            {
+                if (!(textObject.text == null))
+                {
+                    charCount += textObject.text.length();
+                }
+            }
+        }
+
+        // Create the arrays with the correct size by calculating the total number of characters.
+        vecs = null;
+        uvs = null;
+        colors = null;
+        indices = null;
+
+        vecs = new float[charCount * 12];
+        uvs = new float[charCount * 8];
+        colors = new float[charCount * 16];
+        indices = new short[charCount * 6];
+    }
+
+    public void prepareDraw()
+    {
+        // Setup all arrays. When the setup is complete, we iterate through our collection and
+        // convert our text objects to triangle information. 
+        prepareDrawInfo();
+
+        // Using the iterator protects us from problems with concurrency.
+        for (Iterator<TextObject> iteratorObject = textCollection.iterator(); iteratorObject.hasNext(); )
+        {
+            TextObject textObject = iteratorObject.next();
+            if (textObject != null)
+            {
+                if (!(textObject.text == null))
+                {
+                    convertTextToTriangleInfo(textObject);
+                }
+            }
+        }
     }
 }
