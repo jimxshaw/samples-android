@@ -1,7 +1,11 @@
 package me.jimmyshaw.realtutorialopengles;
 
+import android.opengl.GLES20;
+
 import org.w3c.dom.Text;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 import java.util.Iterator;
@@ -163,7 +167,7 @@ public class TextManager
     public void prepareDraw()
     {
         // Setup all arrays. When the setup is complete, we iterate through our collection and
-        // convert our text objects to triangle information. 
+        // convert our text objects to triangle information.
         prepareDrawInfo();
 
         // Using the iterator protects us from problems with concurrency.
@@ -178,5 +182,103 @@ public class TextManager
                 }
             }
         }
+    }
+
+    public void draw(float[] m)
+    {
+        // This is the method to render all the information to the screen. We call this method
+        // once every iteration of our game update cycle.
+
+        // Set the correct shader for the grid object.
+        GLES20.glUseProgram(riGraphicTools.sp_Text);
+
+        // The vertex buffer.
+        ByteBuffer bb = ByteBuffer.allocateDirect(vecs.length * 4);
+        bb.order(ByteOrder.nativeOrder());
+        vertexBuffer = bb.asFloatBuffer();
+        vertexBuffer.put(vecs);
+        vertexBuffer.position(0);
+
+        // The texture buffer.
+        ByteBuffer bb2 = ByteBuffer.allocateDirect(uvs.length * 4);
+        bb2.order(ByteOrder.nativeOrder());
+        textureBuffer = bb2.asFloatBuffer();
+        textureBuffer.put(uvs);
+        textureBuffer.position(0);
+
+        // The vertex buffer.
+        ByteBuffer bb3 = ByteBuffer.allocateDirect(colors.length * 4);
+        bb3.order(ByteOrder.nativeOrder());
+        colorBuffer = bb3.asFloatBuffer();
+        colorBuffer.put(colors);
+        colorBuffer.position(0);
+
+        // Initialize byte buffer for the draw list.
+        ByteBuffer dlb = ByteBuffer.allocateDirect(indices.length * 2);
+        dlb.order(ByteOrder.nativeOrder());
+        drawListBuffer = dlb.asShortBuffer();
+        drawListBuffer.put(indices);
+        drawListBuffer.position(0);
+
+        // Get handle to the vertex shader's vPosition member.
+        int mPositionHandle = GLES20.glGetAttribLocation(riGraphicTools.sp_Text,
+                "vPosition");
+
+        // Enable a handle to the triangle vertices.
+        GLES20.glEnableVertexAttribArray(mPositionHandle);
+
+        // Prepare the background coordinate data.
+        GLES20.glVertexAttribPointer(mPositionHandle, 3,
+                GLES20.GL_FLOAT, false,
+                0, vertexBuffer);
+
+        int mTexCoordLoc = GLES20.glGetAttribLocation(riGraphicTools.sp_Text,
+                "a_texCoord");
+
+        // Prepare the texture coordinates.
+        GLES20.glVertexAttribPointer(mTexCoordLoc, 2, GLES20.GL_FLOAT,
+                false,
+                0, textureBuffer);
+
+        GLES20.glEnableVertexAttribArray(mPositionHandle);
+        GLES20.glEnableVertexAttribArray(mTexCoordLoc);
+
+        int mColorHandle = GLES20.glGetAttribLocation(riGraphicTools.sp_Text,
+                "a_Color");
+
+        // Enable a handle to the triangle vertices.
+        GLES20.glEnableVertexAttribArray(mColorHandle);
+
+        // Prepare the background coordinate data.
+        GLES20.glVertexAttribPointer(mColorHandle, 4,
+                GLES20.GL_FLOAT, false,
+                0, colorBuffer);
+
+        // Get handle to the shape's transformation matrix.
+        int mtrxhandle = GLES20.glGetUniformLocation(riGraphicTools.sp_Text,
+                "uMVPMatrix");
+
+        // Apply the projection and view transformation.
+        GLES20.glUniformMatrix4fv(mtrxhandle, 1, false, m, 0);
+
+        int mSamplerLoc = GLES20.glGetUniformLocation(riGraphicTools.sp_Text,
+                "s_texture");
+
+        // Set the sampler texture unit to our selected id.
+        GLES20.glUniform1i(mSamplerLoc, texturenr);
+
+        // Draw the triangle.
+        GLES20.glDrawElements(GLES20.GL_TRIANGLES, indices.length,
+                GLES20.GL_UNSIGNED_SHORT, drawListBuffer);
+
+        // Disable vertex arrays.
+        GLES20.glDisableVertexAttribArray(mPositionHandle);
+        GLES20.glDisableVertexAttribArray(mTexCoordLoc);
+        GLES20.glDisableVertexAttribArray(mColorHandle);
+    }
+
+    private void convertTextToTriangleInfo(TextObject value)
+    {
+
     }
 }

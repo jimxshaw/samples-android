@@ -7,6 +7,7 @@ public class riGraphicTools
     // Program variables.
     public static int sp_SolidColor;
     public static int sp_Image;
+    public static int sp_Text;
 
     // SHADER Solid Color
     // Vertex shaders control what is done to vertices and how they should be rendered.
