@@ -8,8 +8,14 @@ import java.util.Vector;
 
 public class TextManager
 {
+    // This is the step-size of our font.png texture atlas. The scale of the UV texture ranges
+    // from 0.0f to 1.0f. Since we have 8 box tiles with the same width, our step-size will be
+    // 1.0f / 8 = 0.125f.
     private static final float RI_TEXT_UV_BOX_WIDTH = 0.125f;
+    // The tile's width on the texture is 64 pixels but that'll be rendered too big so we
+    // use half of that for our size in this app.
     private static final float RI_TEXT_WIDTH = 32.0f;
+    // This is the width of a space between letters.
     private static final float RI_TEXT_SPACESIZE = 20.0f;
 
     private FloatBuffer vertexBuffer;
@@ -27,10 +33,15 @@ public class TextManager
     private int index_colors;
     private int index_indices;
 
+    // Since we render our text from a texture, we should know what texture to use.
     private int texturenr;
 
+    // This is the scale factor for rendering.
     private float uniformscale;
 
+    // These are the exact widths in pixels on the texture for the letters. We store the exact
+    // widths of the letters in an array so we can render the text with the correct spaces
+    // between letters.
     public static int[] l_size =
             {
                     36, 29, 30, 34, 25, 25, 34, 33,
@@ -47,7 +58,8 @@ public class TextManager
 
     public TextManager()
     {
-        // Create our container.
+        // Create our container. It creates the actual vector for our collection of TextObjects and
+        // we initialize all the variables to some default values.
         textCollection = new Vector<TextObject>();
 
         // Create the arrays.
@@ -62,12 +74,54 @@ public class TextManager
 
     public void addText(TextObject obj)
     {
-        // Add text object to our collection.
+        // Add text object to our collection. // We add a TextObject by passing the object to our
+        // addText method and add it to our vector.
         textCollection.add(obj);
     }
 
     public void setTextureID(int value)
     {
         texturenr = value;
+    }
+
+    public void AddCharRenderInformation(float[] vec, float[] cs, float[] uv, short[] indi)
+    {
+        // We pass vertices, UV coordinates, colors and indices data and that data is stored
+        // in our main data arrays. The purpose is so that we can simply pass that data in one
+        // render call when we finally render all the text. 
+
+        // We need a base value because the object has indices related to that object and not to
+        // this collection. Basically, we need to translate the indices to align with the
+        // vertexlocation in our vecs array of vectors.
+        short base = (short) (index_vecs / 3);
+
+        // We add the vec, translating the indices to our saved vector.
+        for (int i = 0; i < vec.length; i++)
+        {
+            vecs[index_vecs] = vec[i];
+            index_vecs++;
+        }
+
+        // We add the uvs.
+        for (int i = 0; i < uv.length; i++)
+        {
+            uvs[index_uvs] = uv[i];
+            index_uvs++;
+        }
+
+        // We add the colors.
+        for (int i = 0; i < cs.length; i++)
+        {
+            colors[index_colors] = cs[i];
+            index_colors++;
+        }
+
+        // We handle the indices
+        for (int j = 0; j < indi.length; j++)
+        {
+            indices[index_indices] = (short) (base + indi[j]);
+            index_indices++;
+        }
+
     }
 }
