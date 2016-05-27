@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Retrofit</string>
     <string name="action_settings">Settings</string>
+    <string name="company_name">Company Name: </string>
+    <string name="company_blog">Website: </string>
+    <string name="company_url">Git URL: </string>
 </resources>
