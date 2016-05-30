@@ -2,9 +2,11 @@ package me.jimmyshaw.viewpagersimple;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,6 +14,8 @@ import java.util.List;
 
 public class CustomPagerAdapter extends PagerAdapter
 {
+    private static final String TAG = "TESTING";
+
     private Context mContext;
     private List<DataModel> mItemList;
 
@@ -42,6 +46,8 @@ public class CustomPagerAdapter extends PagerAdapter
     @Override
     public Object instantiateItem(ViewGroup container, int position)
     {
+        Log.i(TAG, "instantiateItem for position " + position + " [ Item " + (position + 1) + " ]");
+
         // This method will instantiate each item at each position within the view pager.
 
         // Get the view of the single view pager item.
@@ -67,6 +73,13 @@ public class CustomPagerAdapter extends PagerAdapter
     @Override
     public void destroyItem(ViewGroup container, int position, Object object)
     {
+        // The purpose of this method is to destroy items in the view pager that are not shown on
+        // the screen so that the device's memory can be managed properly.
+        Log.i(TAG, "destroyItem for position " + position + " [ Item " + (position + 1) + " ]");
 
+        // Remove view of viewpager_item.xml from view pager container. 
+        // We know to cast this object as a FrameLayout because the parent container of every
+        // view pager item is a FrameLayout.
+        container.removeView((FrameLayout) object);
     }
 }
