@@ -1,4 +1,4 @@
-package me.jimmyshaw.fragmentpageradapter;
+package me.jimmyshaw.fragmentpageradapter.fragments;
 
 
 import android.os.Bundle;
@@ -9,16 +9,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class FragmentTwo extends Fragment {
+import me.jimmyshaw.fragmentpageradapter.R;
 
-    public FragmentTwo() {
-        Log.i("Fragment", "Fragment Two Created");
+public class FragmentThree extends Fragment {
+
+    public FragmentThree() {
+        Log.i("Fragment", "Fragment Three Created");
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_two, container, false);
+        return inflater.inflate(R.layout.fragment_three, container, false);
     }
 }
 
