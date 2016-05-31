@@ -18,6 +18,9 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
+    private TextView mTextView;
+    private Button mButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,8 +28,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Button button = (Button) findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
+        mTextView = (TextView) findViewById(R.id.text_view);
+
+        mButton = (Button) findViewById(R.id.button);
+        mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GitHubService gitHubService = GitHubService.retrofit.create(GitHubService.class);
@@ -34,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
                 new NetworkCall().execute(call);
             }
         });
+
+
     }
 
     // Android won't allow network calls on the UI thread. The UI thread should only handle user
@@ -61,8 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            final TextView textView = (TextView) findViewById(R.id.text_view);
-            textView.setText(result);
+            mTextView.setText(result);
         }
     }
 
