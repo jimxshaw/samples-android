@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         mTextView = (TextView) findViewById(R.id.text_view);
 
         mButton = (Button) findViewById(R.id.button);
+
+        /* Use Android's AsyncTask class to asynchronously issue an HTTP request */
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,6 +41,32 @@ public class MainActivity extends AppCompatActivity {
                 new NetworkCall().execute(call);
             }
         });
+
+        /* Use Retrofit's own enqueue method to asynchronously issue an HTTP request */
+//        mButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                GitHubService gitHubService = GitHubService.retrofit.create(GitHubService.class);
+//                final Call<List<Contributor>> call = gitHubService.repoContributors("guildsa", "androidstudentsamples");
+//                call.enqueue(new Callback<List<Contributor>>() {
+//                    @Override
+//                    public void onResponse(Call<List<Contributor>> call, Response<List<Contributor>> response) {
+//                        if (response.isSuccessful()) {
+//                            List<Contributor> result = response.body();
+//                            String resultString = result.toString();
+//
+//                            mTextView.setText(resultString);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<List<Contributor>> call, Throwable t) {
+//                        t.getMessage();
+//                        t.printStackTrace();
+//                    }
+//                });
+//            }
+//        });
 
 
     }

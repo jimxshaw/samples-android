@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Pojo> call, Throwable t) {
-                String err = t.getMessage();
+                t.getMessage();
+                t.printStackTrace();
             }
         });
     }
