@@ -6,15 +6,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
-    private String mUrl = "https://api.github.com";
 
     private TextView mCompany;
     private TextView mBlog;
@@ -31,9 +27,7 @@ public class MainActivity extends AppCompatActivity {
         mBlog = (TextView) findViewById(R.id.text_blog);
         mHtmlUrl = (TextView) findViewById(R.id.text_hurl);
 
-        Retrofit restAdapter = new Retrofit.Builder().baseUrl(mUrl).addConverterFactory(GsonConverterFactory.create()).build();
-
-        MInterface restInterface = restAdapter.create(MInterface.class);
+        MInterface restInterface = MInterface.restAdapter.create(MInterface.class);
 
         Call<Pojo> call = restInterface.getUser();
         call.enqueue(new Callback<Pojo>() {
