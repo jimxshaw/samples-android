@@ -1,13 +1,12 @@
 package me.jimmyshaw.retrofit;
 
-import javax.annotation.Generated;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import javax.annotation.Generated;
+
 @Generated("org.jsonschema2pojo")
-public class Pojo
-{
+public class Pojo {
 
     @SerializedName("login")
     @Expose
@@ -103,480 +102,420 @@ public class Pojo
     /**
      * @return The login
      */
-    public String getLogin()
-    {
+    public String getLogin() {
         return login;
     }
 
     /**
      * @param login The login
      */
-    public void setLogin(String login)
-    {
+    public void setLogin(String login) {
         this.login = login;
     }
 
     /**
      * @return The id
      */
-    public Integer getId()
-    {
+    public Integer getId() {
         return id;
     }
 
     /**
      * @param id The id
      */
-    public void setId(Integer id)
-    {
+    public void setId(Integer id) {
         this.id = id;
     }
 
     /**
      * @return The avatarUrl
      */
-    public String getAvatarUrl()
-    {
+    public String getAvatarUrl() {
         return avatarUrl;
     }
 
     /**
      * @param avatarUrl The avatar_url
      */
-    public void setAvatarUrl(String avatarUrl)
-    {
+    public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
     }
 
     /**
      * @return The gravatarId
      */
-    public String getGravatarId()
-    {
+    public String getGravatarId() {
         return gravatarId;
     }
 
     /**
      * @param gravatarId The gravatar_id
      */
-    public void setGravatarId(String gravatarId)
-    {
+    public void setGravatarId(String gravatarId) {
         this.gravatarId = gravatarId;
     }
 
     /**
      * @return The url
      */
-    public String getUrl()
-    {
+    public String getUrl() {
         return url;
     }
 
     /**
      * @param url The url
      */
-    public void setUrl(String url)
-    {
+    public void setUrl(String url) {
         this.url = url;
     }
 
     /**
      * @return The htmlUrl
      */
-    public String getHtmlUrl()
-    {
+    public String getHtmlUrl() {
         return htmlUrl;
     }
 
     /**
      * @param htmlUrl The html_url
      */
-    public void setHtmlUrl(String htmlUrl)
-    {
+    public void setHtmlUrl(String htmlUrl) {
         this.htmlUrl = htmlUrl;
     }
 
     /**
      * @return The followersUrl
      */
-    public String getFollowersUrl()
-    {
+    public String getFollowersUrl() {
         return followersUrl;
     }
 
     /**
      * @param followersUrl The followers_url
      */
-    public void setFollowersUrl(String followersUrl)
-    {
+    public void setFollowersUrl(String followersUrl) {
         this.followersUrl = followersUrl;
     }
 
     /**
      * @return The followingUrl
      */
-    public String getFollowingUrl()
-    {
+    public String getFollowingUrl() {
         return followingUrl;
     }
 
     /**
      * @param followingUrl The following_url
      */
-    public void setFollowingUrl(String followingUrl)
-    {
+    public void setFollowingUrl(String followingUrl) {
         this.followingUrl = followingUrl;
     }
 
     /**
      * @return The gistsUrl
      */
-    public String getGistsUrl()
-    {
+    public String getGistsUrl() {
         return gistsUrl;
     }
 
     /**
      * @param gistsUrl The gists_url
      */
-    public void setGistsUrl(String gistsUrl)
-    {
+    public void setGistsUrl(String gistsUrl) {
         this.gistsUrl = gistsUrl;
     }
 
     /**
      * @return The starredUrl
      */
-    public String getStarredUrl()
-    {
+    public String getStarredUrl() {
         return starredUrl;
     }
 
     /**
      * @param starredUrl The starred_url
      */
-    public void setStarredUrl(String starredUrl)
-    {
+    public void setStarredUrl(String starredUrl) {
         this.starredUrl = starredUrl;
     }
 
     /**
      * @return The subscriptionsUrl
      */
-    public String getSubscriptionsUrl()
-    {
+    public String getSubscriptionsUrl() {
         return subscriptionsUrl;
     }
 
     /**
      * @param subscriptionsUrl The subscriptions_url
      */
-    public void setSubscriptionsUrl(String subscriptionsUrl)
-    {
+    public void setSubscriptionsUrl(String subscriptionsUrl) {
         this.subscriptionsUrl = subscriptionsUrl;
     }
 
     /**
      * @return The organizationsUrl
      */
-    public String getOrganizationsUrl()
-    {
+    public String getOrganizationsUrl() {
         return organizationsUrl;
     }
 
     /**
      * @param organizationsUrl The organizations_url
      */
-    public void setOrganizationsUrl(String organizationsUrl)
-    {
+    public void setOrganizationsUrl(String organizationsUrl) {
         this.organizationsUrl = organizationsUrl;
     }
 
     /**
      * @return The reposUrl
      */
-    public String getReposUrl()
-    {
+    public String getReposUrl() {
         return reposUrl;
     }
 
     /**
      * @param reposUrl The repos_url
      */
-    public void setReposUrl(String reposUrl)
-    {
+    public void setReposUrl(String reposUrl) {
         this.reposUrl = reposUrl;
     }
 
     /**
      * @return The eventsUrl
      */
-    public String getEventsUrl()
-    {
+    public String getEventsUrl() {
         return eventsUrl;
     }
 
     /**
      * @param eventsUrl The events_url
      */
-    public void setEventsUrl(String eventsUrl)
-    {
+    public void setEventsUrl(String eventsUrl) {
         this.eventsUrl = eventsUrl;
     }
 
     /**
      * @return The receivedEventsUrl
      */
-    public String getReceivedEventsUrl()
-    {
+    public String getReceivedEventsUrl() {
         return receivedEventsUrl;
     }
 
     /**
      * @param receivedEventsUrl The received_events_url
      */
-    public void setReceivedEventsUrl(String receivedEventsUrl)
-    {
+    public void setReceivedEventsUrl(String receivedEventsUrl) {
         this.receivedEventsUrl = receivedEventsUrl;
     }
 
     /**
      * @return The type
      */
-    public String getType()
-    {
+    public String getType() {
         return type;
     }
 
     /**
      * @param type The type
      */
-    public void setType(String type)
-    {
+    public void setType(String type) {
         this.type = type;
     }
 
     /**
      * @return The siteAdmin
      */
-    public Boolean getSiteAdmin()
-    {
+    public Boolean getSiteAdmin() {
         return siteAdmin;
     }
 
     /**
      * @param siteAdmin The site_admin
      */
-    public void setSiteAdmin(Boolean siteAdmin)
-    {
+    public void setSiteAdmin(Boolean siteAdmin) {
         this.siteAdmin = siteAdmin;
     }
 
     /**
      * @return The name
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
     /**
      * @param name The name
      */
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
     /**
      * @return The company
      */
-    public Object getCompany()
-    {
+    public Object getCompany() {
         return company;
     }
 
     /**
      * @param company The company
      */
-    public void setCompany(Object company)
-    {
+    public void setCompany(Object company) {
         this.company = company;
     }
 
     /**
      * @return The blog
      */
-    public String getBlog()
-    {
+    public String getBlog() {
         return blog;
     }
 
     /**
      * @param blog The blog
      */
-    public void setBlog(String blog)
-    {
+    public void setBlog(String blog) {
         this.blog = blog;
     }
 
     /**
      * @return The location
      */
-    public Object getLocation()
-    {
+    public Object getLocation() {
         return location;
     }
 
     /**
      * @param location The location
      */
-    public void setLocation(Object location)
-    {
+    public void setLocation(Object location) {
         this.location = location;
     }
 
     /**
      * @return The email
      */
-    public Object getEmail()
-    {
+    public Object getEmail() {
         return email;
     }
 
     /**
      * @param email The email
      */
-    public void setEmail(Object email)
-    {
+    public void setEmail(Object email) {
         this.email = email;
     }
 
     /**
      * @return The hireable
      */
-    public Boolean getHireable()
-    {
+    public Boolean getHireable() {
         return hireable;
     }
 
     /**
      * @param hireable The hireable
      */
-    public void setHireable(Boolean hireable)
-    {
+    public void setHireable(Boolean hireable) {
         this.hireable = hireable;
     }
 
     /**
      * @return The bio
      */
-    public Object getBio()
-    {
+    public Object getBio() {
         return bio;
     }
 
     /**
      * @param bio The bio
      */
-    public void setBio(Object bio)
-    {
+    public void setBio(Object bio) {
         this.bio = bio;
     }
 
     /**
      * @return The publicRepos
      */
-    public Integer getPublicRepos()
-    {
+    public Integer getPublicRepos() {
         return publicRepos;
     }
 
     /**
      * @param publicRepos The public_repos
      */
-    public void setPublicRepos(Integer publicRepos)
-    {
+    public void setPublicRepos(Integer publicRepos) {
         this.publicRepos = publicRepos;
     }
 
     /**
      * @return The publicGists
      */
-    public Integer getPublicGists()
-    {
+    public Integer getPublicGists() {
         return publicGists;
     }
 
     /**
      * @param publicGists The public_gists
      */
-    public void setPublicGists(Integer publicGists)
-    {
+    public void setPublicGists(Integer publicGists) {
         this.publicGists = publicGists;
     }
 
     /**
      * @return The followers
      */
-    public Integer getFollowers()
-    {
+    public Integer getFollowers() {
         return followers;
     }
 
     /**
      * @param followers The followers
      */
-    public void setFollowers(Integer followers)
-    {
+    public void setFollowers(Integer followers) {
         this.followers = followers;
     }
 
     /**
      * @return The following
      */
-    public Integer getFollowing()
-    {
+    public Integer getFollowing() {
         return following;
     }
 
     /**
      * @param following The following
      */
-    public void setFollowing(Integer following)
-    {
+    public void setFollowing(Integer following) {
         this.following = following;
     }
 
     /**
      * @return The createdAt
      */
-    public String getCreatedAt()
-    {
+    public String getCreatedAt() {
         return createdAt;
     }
 
     /**
      * @param createdAt The created_at
      */
-    public void setCreatedAt(String createdAt)
-    {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
     /**
      * @return The updatedAt
      */
-    public String getUpdatedAt()
-    {
+    public String getUpdatedAt() {
         return updatedAt;
     }
 
     /**
      * @param updatedAt The updated_at
      */
-    public void setUpdatedAt(String updatedAt)
-    {
+    public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
 

@@ -13,8 +13,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity
-{
+public class MainActivity extends AppCompatActivity {
     private String mUrl = "https://api.github.com";
 
     private TextView mCompany;
@@ -22,8 +21,7 @@ public class MainActivity extends AppCompatActivity
     private TextView mHtmlUrl;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -38,47 +36,42 @@ public class MainActivity extends AppCompatActivity
         MInterface restInterface = restAdapter.create(MInterface.class);
 
         Call<Pojo> call = restInterface.getUser();
-        call.enqueue(new Callback<Pojo>()
-        {
+        call.enqueue(new Callback<Pojo>() {
             @Override
-            public void onResponse(Call<Pojo> call, Response<Pojo> response)
-            {
-                if (response.isSuccessful())
-                {
+            public void onResponse(Call<Pojo> call, Response<Pojo> response) {
+                if (response.isSuccessful()) {
                     Pojo result = response.body();
-                    mCompany.setText(R.string.company_name + result.getName());
-                    mBlog.setText(R.string.company_blog + result.getBlog());
-                    mHtmlUrl.setText(R.string.company_url + result.getHtmlUrl());
+
+                    mCompany.setText(getString(R.string.company_name, result.getName()));
+                    mBlog.setText(getString(R.string.company_blog, result.getBlog()));
+                    mHtmlUrl.setText(getString(R.string.company_url, result.getHtmlUrl()));
+
                 }
             }
 
             @Override
-            public void onFailure(Call<Pojo> call, Throwable t)
-            {
+            public void onFailure(Call<Pojo> call, Throwable t) {
                 String err = t.getMessage();
             }
         });
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings)
-        {
+        if (id == R.id.action_settings) {
             return true;
         }
 
