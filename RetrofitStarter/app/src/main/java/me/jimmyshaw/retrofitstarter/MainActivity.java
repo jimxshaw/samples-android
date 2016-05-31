@@ -1,13 +1,20 @@
 package me.jimmyshaw.retrofitstarter;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import java.io.IOException;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,14 +25,45 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "TESTING!!!!", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        Button button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GitHubService gitHubService = GitHubService.retrofit.create(GitHubService.class);
+                final Call<List<Contributor>> call = gitHubService.repoContributors("guildsa", "androidstudentsamples");
+                new NetworkCall().execute(call);
+            }
+        });
+    }
+
+    // Android won't allow network calls on the UI thread. The UI thread should only handle user
+    // input. Performing any long blocking operations on this thread will simply make the user
+    // experience lethargic.
+    // We need to move our network call to a background thread by using an AsyncTask, the default
+    // way to perform expensive computations on Android. It's not the most efficient way, as it
+    // creates our Retrofit object every time we push the button, but it works.
+    private class NetworkCall extends AsyncTask<Call, Void, String> {
+
+        @Override
+        protected String doInBackground(Call... params) {
+            try {
+                Call<List<Contributor>> call = params[0];
+                Response<List<Contributor>> response = call.execute();
+
+                return response.body().toString();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            final TextView textView = (TextView) findViewById(R.id.text_view);
+            textView.setText(result);
+        }
     }
 
     @Override
