@@ -8,7 +8,7 @@ import retrofit2.http.Path;
 
 /*
     This interface has one method and it's to request the repositories for a given user.
-    We're replacing the path parameter placehold {user} with the actual value of the user
+    We're replacing the path parameter placeholder {user} with the actual value of the user
     when calling this method.
 */
 public interface GitHubService {

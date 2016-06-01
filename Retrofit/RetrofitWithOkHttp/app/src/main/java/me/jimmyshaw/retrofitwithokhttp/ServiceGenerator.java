@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  The reason why all the class members are static is because we want to use the same OkHttpClient
  throughout the app. We just open one socket connection that handles all requests and responses,
  including caching. To do this, we either have to inject OkHttpClient into this class via dependency
- injector or use statics. It's simpler to use statics.
+ injection or use statics. It's simpler to use statics.
 */
 public class ServiceGenerator {
 

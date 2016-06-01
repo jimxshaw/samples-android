@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         GitHubService service = ServiceGenerator.createService(GitHubService.class);
 
         // Retrieve and print a list of repositories for a particular user.
-        Call<List<GitHubRepo>> call = service.reposForUser("lvwiuhv");
+        Call<List<GitHubRepo>> call = service.reposForUser("jimxshaw");
         call.enqueue(new Callback<List<GitHubRepo>>() {
             @Override
             public void onResponse(Call<List<GitHubRepo>> call, Response<List<GitHubRepo>> response) {
