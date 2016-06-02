@@ -41,7 +41,7 @@
             android:text="Scrollable Tabs"/>
 
         <Button
-            android:id="@+id/btnTabsCustomView"
+            android:id="@+id/btnTabsCustomViews"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"

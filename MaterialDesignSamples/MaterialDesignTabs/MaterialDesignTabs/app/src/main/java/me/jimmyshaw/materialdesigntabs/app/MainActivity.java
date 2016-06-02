@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import me.jimmyshaw.materialdesigntabs.R;
+import me.jimmyshaw.materialdesigntabs.tabs.TabsCustomViews;
 import me.jimmyshaw.materialdesigntabs.tabs.TabsIcons;
 import me.jimmyshaw.materialdesigntabs.tabs.TabsScroll;
 import me.jimmyshaw.materialdesigntabs.tabs.TabsText;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBtnTabsText = (Button) findViewById(R.id.btnTabsText);
         mBtnTabsIcons = (Button) findViewById(R.id.btnTabsIcons);
         mBtnTabsScrollable = (Button) findViewById(R.id.btnTabsScrollable);
-        mBtnTabsCustomViews = (Button) findViewById(R.id.btnTabsCustomView);
+        mBtnTabsCustomViews = (Button) findViewById(R.id.btnTabsCustomViews);
 
         mBtnTabsText.setOnClickListener(this);
         mBtnTabsIcons.setOnClickListener(this);
@@ -48,22 +49,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.btnTabsText:
                 intent = new Intent(MainActivity.this, TabsText.class);
-                startActivity(intent);
                 break;
             case R.id.btnTabsIcons:
                 intent = new Intent(MainActivity.this, TabsIcons.class);
-                startActivity(intent);
                 break;
             case R.id.btnTabsScrollable:
                 intent = new Intent(MainActivity.this, TabsScroll.class);
-                startActivity(intent);
                 break;
-            case R.id.btnTabsCustomView:
-
+            case R.id.btnTabsCustomViews:
+                intent = new Intent(MainActivity.this, TabsCustomViews.class);
                 break;
             default:
-
+                intent = null;
                 break;
         }
+
+        startActivity(intent);
     }
 }
