@@ -21,6 +21,8 @@
 
         <activity android:name=".tabs.TabsIcons"/>
 
+        <activity android:name=".tabs.TabsScroll"/>
+
     </application>
 
 </manifest>

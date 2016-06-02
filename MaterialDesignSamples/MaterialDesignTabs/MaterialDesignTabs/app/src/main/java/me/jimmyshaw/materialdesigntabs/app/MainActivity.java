@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import me.jimmyshaw.materialdesigntabs.R;
 import me.jimmyshaw.materialdesigntabs.tabs.TabsIcons;
+import me.jimmyshaw.materialdesigntabs.tabs.TabsScroll;
 import me.jimmyshaw.materialdesigntabs.tabs.TabsText;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -54,7 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.btnTabsScrollable:
-
+                intent = new Intent(MainActivity.this, TabsScroll.class);
+                startActivity(intent);
                 break;
             case R.id.btnTabsCustomView:
 
