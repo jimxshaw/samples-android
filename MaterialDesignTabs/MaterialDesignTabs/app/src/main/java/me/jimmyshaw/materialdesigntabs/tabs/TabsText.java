@@ -43,6 +43,15 @@ public class TabsText extends AppCompatActivity {
         // instantiated and 2) the viewpager itself has already been bound with the adapter or
         // otherwise the app will crash.
         mTabLayout.setupWithViewPager(mViewPager);
+
+        setTabsWithIcons();
+    }
+
+    // This method will set the text tabs with icons on top.
+    private void setTabsWithIcons() {
+        mTabLayout.getTabAt(0).setIcon(R.drawable.facebook);
+        mTabLayout.getTabAt(1).setIcon(R.drawable.instagram);
+        mTabLayout.getTabAt(2).setIcon(R.drawable.twitter);
     }
 
     private void initialize() {
