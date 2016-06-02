@@ -19,6 +19,8 @@
 
         <activity android:name=".tabs.TabsText"/>
 
+        <activity android:name=".tabs.TabsIcons"/>
+
     </application>
 
 </manifest>

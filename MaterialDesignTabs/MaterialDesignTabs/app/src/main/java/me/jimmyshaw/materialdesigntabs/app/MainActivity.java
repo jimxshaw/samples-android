@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import me.jimmyshaw.materialdesigntabs.R;
+import me.jimmyshaw.materialdesigntabs.tabs.TabsIcons;
 import me.jimmyshaw.materialdesigntabs.tabs.TabsText;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -40,13 +41,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
+
+        Intent intent;
+
         switch (view.getId()) {
             case R.id.btnTabsText:
-                Intent intent = new Intent(MainActivity.this, TabsText.class);
+                intent = new Intent(MainActivity.this, TabsText.class);
                 startActivity(intent);
                 break;
             case R.id.btnTabsIcons:
-
+                intent = new Intent(MainActivity.this, TabsIcons.class);
+                startActivity(intent);
                 break;
             case R.id.btnTabsScrollable:
 
