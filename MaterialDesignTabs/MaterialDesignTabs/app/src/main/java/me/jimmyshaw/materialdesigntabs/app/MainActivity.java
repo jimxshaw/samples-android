@@ -1,10 +1,14 @@
-package me.jimmyshaw.materialdesigntabs;
+package me.jimmyshaw.materialdesigntabs.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+
+import me.jimmyshaw.materialdesigntabs.R;
+import me.jimmyshaw.materialdesigntabs.tabs.TabsText;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -38,7 +42,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnTabsText:
-
+                Intent intent = new Intent(MainActivity.this, TabsText.class);
+                startActivity(intent);
                 break;
             case R.id.btnTabsIcons:
 
