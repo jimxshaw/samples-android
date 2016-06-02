@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="me.jimmyshaw.materialdesigntabs.MainActivity">
+    android:background="@android:color/white">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -21,28 +20,28 @@
         android:layout_centerInParent="true">
 
         <Button
-            android:id="@+id/btnSimpleTabsText"
+            android:id="@+id/btnTabsText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="Tabs with Text"/>
 
         <Button
-            android:id="@+id/btnSimpleTabsIcons"
+            android:id="@+id/btnTabsIcons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="Tabs with Icons"/>
 
         <Button
-            android:id="@+id/btnSimpleTabsScrollable"
+            android:id="@+id/btnTabsScrollable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="Scrollable Tabs"/>
 
         <Button
-            android:id="@+id/btnSimpleTabsCustomView"
+            android:id="@+id/btnTabsCustomView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
