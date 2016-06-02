@@ -2,6 +2,7 @@ package me.jimmyshaw.materialdesigntabs.tabs;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import me.jimmyshaw.materialdesigntabs.fragments.FragmentTwo;
 
 public class TabsText extends AppCompatActivity {
 
+    private TabLayout mTabLayout;
     private ViewPager mViewPager;
 
     private List<Fragment> mFragmentList = new ArrayList<>();
@@ -32,9 +34,15 @@ public class TabsText extends AppCompatActivity {
 
         prepareDataResource();
 
+        // Instantiate the adapter and bind the adapter with the viewpager. Then bind the viewpager
+        // with the tab layout.
         TabsTextAdapter adapter = new TabsTextAdapter(getSupportFragmentManager(), mFragmentList, mTitleList);
-
         mViewPager.setAdapter(adapter);
+
+        // The viewpager must be bound with the tab layout AFTER 1) the viewpager adapter has been
+        // instantiated and 2) the viewpager itself has already been bound with the adapter or
+        // otherwise the app will crash.
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 
     private void initialize() {
@@ -42,6 +50,7 @@ public class TabsText extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Tabs with Text Example");
 
+        mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
     }
 
