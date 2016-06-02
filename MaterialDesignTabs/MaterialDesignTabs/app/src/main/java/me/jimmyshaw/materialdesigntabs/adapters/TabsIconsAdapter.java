@@ -7,8 +7,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.List;
 
 // The adapter holds data and inflates data. The data to be used for this particular adapter are
-// our fragmentList and titleList from the TabsText data source class. The adapter will then inflate
-// them to be used in our viewpager items.
+// our fragmentList from the TabsText data source class. The adapter will then inflate
+// the list to be used in our viewpager items.
 public class TabsIconsAdapter extends FragmentPagerAdapter {
 
     private List<Fragment> mFragmentList;
