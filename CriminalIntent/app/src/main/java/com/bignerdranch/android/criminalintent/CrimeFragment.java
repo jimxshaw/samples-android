@@ -2,6 +2,7 @@ package com.bignerdranch.android.criminalintent;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -270,6 +271,17 @@ public class CrimeFragment extends Fragment {
 
         if (mCrime.getSuspect() != null) {
             mSuspectButton.setText(mCrime.getSuspect());
+        }
+
+        // The pickContact intent launches the contacts list app on the user's phone but not all phones
+        // will have the contacts app. Our app will crash if the intent is issued but no contacts
+        // app exists. The PackageManager knows about all components on the device. It attempts to
+        // find an activity that matches the intent. If the search is successful, it returns an
+        // instance of ResolveInfo stating which activity it found. If the search returns null, no
+        // contacts app exists and we disable the suspect button.
+        PackageManager packageManager = getActivity().getPackageManager();
+        if (packageManager.resolveActivity(pickContact, PackageManager.MATCH_DEFAULT_ONLY) == null) {
+            mSuspectButton.setEnabled(false);
         }
 
         return v;
