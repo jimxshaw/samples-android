@@ -2,7 +2,10 @@ package com.bignerdranch.android.criminalintent;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
@@ -31,6 +34,7 @@ public class CrimeFragment extends Fragment {
     private static final String DIALOG_DATE = "DialogDate";
 
     private static final int REQUEST_DATE = 0;
+    private static final int REQUEST_CONTACT = 1;
 
     // The mCrime object is the Crime retrieved by ID from within onCreate.
     private Crime mCrime;
@@ -38,6 +42,7 @@ public class CrimeFragment extends Fragment {
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
     private Button mReportButton;
+    private Button mSuspectButton;
 
     // Every fragment instance can have a Bundle object attached to it. This bundle contains key-value
     // pairs that work just like the intent of an Activity. Each pair is known as an argument.
@@ -90,6 +95,36 @@ public class CrimeFragment extends Fragment {
             Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mCrime.setDate(date);
             updateDate();
+        }
+        else if (requestCode == REQUEST_CONTACT && data != null) {
+            // We create a query that asks for all the display names of the contacts in the returned
+            // data. Then we query the contacts database and get a Cursor object to work with.
+            // Since we know that the cursor contains only one item, we move to the first item and
+            // get it as a string. This string will be the name of the suspect and we use it to set
+            // the Crime's suspect and the text of the Choose Suspect button.
+            Uri contactUri = data.getData();
+            // Specify which fields we want our query to return values for.
+            String[] queryFields = new String[]{
+                    ContactsContract.Contacts.DISPLAY_NAME
+            };
+            // Perform our query - the contactUri is like a "where" clause here.
+            Cursor c = getActivity().getContentResolver().query(contactUri, queryFields, null, null, null);
+
+            try {
+                // Double-check that we actually got results.
+                if (c.getCount() == 0) {
+                    return;
+                }
+
+                // Extract the first column of the first row of data - that's our suspect's name.
+                c.moveToFirst();
+                String suspect = c.getString(0);
+                mCrime.setSuspect(suspect);
+                mSuspectButton.setText(suspect);
+            }
+            finally {
+                c.close();
+            }
         }
     }
 
@@ -207,14 +242,35 @@ public class CrimeFragment extends Fragment {
                 // Here's an implicit intent. With an implicit intent, we describe to the OS what job
                 // we want done. The OS then starts the activity that has advertised itself as
                 // capable of doing that job. If the OS finds more than one capable activity, then
-                // the user is offered choices. 
+                // the user is offered choices.
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("text/plain");
                 i.putExtra(Intent.EXTRA_TEXT, getCrimeReport());
                 i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.crime_report_subject));
+                // Sometimes the chooser will not show up because we already have a default set for
+                // an identical implicit intent or our device has only a single activity that can
+                // respond to this intent. In this case, we always want a chooser to appear so we
+                // use the createChooser method.
+                i = Intent.createChooser(i, getString(R.string.send_report));
                 startActivity(i);
             }
         });
+
+        // Since we started the activity for a result with ACTION_PICK, we'll receive an intent via
+        // onActivityResult(). This intent includes a data URI. The URI is a locator that points at
+        // the single contact the user picked.
+        final Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+        mSuspectButton = (Button) v.findViewById(R.id.crime_suspect);
+        mSuspectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(pickContact, REQUEST_CONTACT);
+            }
+        });
+
+        if (mCrime.getSuspect() != null) {
+            mSuspectButton.setText(mCrime.getSuspect());
+        }
 
         return v;
     }
