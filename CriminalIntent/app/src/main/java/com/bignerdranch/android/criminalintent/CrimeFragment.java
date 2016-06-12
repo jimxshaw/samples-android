@@ -37,6 +37,7 @@ public class CrimeFragment extends Fragment {
     private EditText mTitleField;
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
+    private Button mReportButton;
 
     // Every fragment instance can have a Bundle object attached to it. This bundle contains key-value
     // pairs that work just like the intent of an Activity. Each pair is known as an argument.
@@ -199,6 +200,21 @@ public class CrimeFragment extends Fragment {
             }
         });
 
+        mReportButton = (Button) v.findViewById(R.id.crime_report);
+        mReportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Here's an implicit intent. With an implicit intent, we describe to the OS what job
+                // we want done. The OS then starts the activity that has advertised itself as
+                // capable of doing that job. If the OS finds more than one capable activity, then
+                // the user is offered choices. 
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("text/plain");
+                i.putExtra(Intent.EXTRA_TEXT, getCrimeReport());
+                i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.crime_report_subject));
+                startActivity(i);
+            }
+        });
 
         return v;
     }
