@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.ShareCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -240,20 +241,30 @@ public class CrimeFragment extends Fragment {
         mReportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Here's an implicit intent. With an implicit intent, we describe to the OS what job
-                // we want done. The OS then starts the activity that has advertised itself as
-                // capable of doing that job. If the OS finds more than one capable activity, then
-                // the user is offered choices.
-                Intent i = new Intent(Intent.ACTION_SEND);
-                i.setType("text/plain");
-                i.putExtra(Intent.EXTRA_TEXT, getCrimeReport());
-                i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.crime_report_subject));
-                // Sometimes the chooser will not show up because we already have a default set for
-                // an identical implicit intent or our device has only a single activity that can
-                // respond to this intent. In this case, we always want a chooser to appear so we
-                // use the createChooser method.
-                i = Intent.createChooser(i, getString(R.string.send_report));
-                startActivity(i);
+//                // Here's an implicit intent. With an implicit intent, we describe to the OS what job
+//                // we want done. The OS then starts the activity that has advertised itself as
+//                // capable of doing that job. If the OS finds more than one capable activity, then
+//                // the user is offered choices.
+//                Intent i = new Intent(Intent.ACTION_SEND);
+//                i.setType("text/plain");
+//                i.putExtra(Intent.EXTRA_TEXT, getCrimeReport());
+//                i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.crime_report_subject));
+//                // Sometimes the chooser will not show up because we already have a default set for
+//                // an identical implicit intent or our device has only a single activity that can
+//                // respond to this intent. In this case, we always want a chooser to appear so we
+//                // use the createChooser method.
+//                i = Intent.createChooser(i, getString(R.string.send_report));
+
+                Intent intent = ShareCompat.IntentBuilder.from(getActivity())
+                        .getIntent()
+                        .setType("text/plain")
+                        .setAction(Intent.ACTION_SEND)
+                        .putExtra(Intent.EXTRA_TEXT, getCrimeReport())
+                        .putExtra(Intent.EXTRA_SUBJECT, getString(R.string.crime_report_subject));
+
+                intent = Intent.createChooser(intent, getString(R.string.send_report));
+
+                startActivity(intent);
             }
         });
 
