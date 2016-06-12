@@ -4,9 +4,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.bignerdranch.android.criminalintent.database.CrimeDbSchema.CrimeTable;
+
 // The following class has to be imported in order to let us refer to the String constants in
 // CrimeDbSchema.CrimeTable by typing CrimeTable.Columns.UUID instead of the fully qualified notation.
-import com.bignerdranch.android.criminalintent.database.CrimeDbSchema.CrimeTable;
 
 // With a database schema defined, we're ready to create the database itself. We'll always follow
 // a few basic steps.
@@ -30,11 +31,12 @@ public class CrimeBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + CrimeTable.NAME + "(" +
-                    CrimeTable.Columns.UUID + ", " +
-                    CrimeTable.Columns.TITLE + ", " +
-                    CrimeTable.Columns.DATE + ", " +
-                    CrimeTable.Columns.SOLVED + ")"
-                    );
+                CrimeTable.Columns.UUID + ", " +
+                CrimeTable.Columns.TITLE + ", " +
+                CrimeTable.Columns.DATE + ", " +
+                CrimeTable.Columns.SOLVED + ", " +
+                CrimeTable.Columns.SUSPECT + ")"
+        );
     }
 
     @Override
