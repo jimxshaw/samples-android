@@ -9,7 +9,7 @@ public class PictureUtils {
 
     // This method checks to see how big the screen is and then scales the image down to that size.
     // The ImageView we load into will always be smaller than this size so it's a very conservative
-    // estimate. 
+    // estimate.
     public static Bitmap getScaledBitmap(String path, Activity activity) {
         Point size = new Point();
         activity.getWindowManager().getDefaultDisplay().getSize(size);
