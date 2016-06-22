@@ -1,8 +1,8 @@
 package com.bignerdranch.android.criminalintent;
 
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
@@ -16,10 +16,15 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     // an instance of CrimeFragment. With CrimeListActivity, we get an instance of CrimeListFragment.
     protected abstract Fragment createFragment();
 
+    @LayoutRes
+    protected int getLayoutResId() {
+        return R.layout.content_fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_fragment);
+        setContentView(getLayoutResId());
 
         // We set the activity's view to be inflated from content_fragment.xml. Then we look for the
         // fragment in the FragmentManager in that container, creating and adding it if it doesn't exist.
