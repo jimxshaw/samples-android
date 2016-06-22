@@ -24,7 +24,8 @@
         android:paddingLeft="60dp"
         android:paddingRight="60dp"
         android:paddingTop="8dp"
-        android:text="@string/str_add_drop"
+        android:text="@string/string_add_a_drop"
+        android:textColor="@color/button_add_a_drop"
         android:textAllCaps="false"
         android:textSize="28sp"/>
 

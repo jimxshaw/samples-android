@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Drop Bucket List</string>
-    <string name="str_add_drop">Add a drop</string>
+    <string name="string_add_a_drop">Add a drop</string>
 </resources>
