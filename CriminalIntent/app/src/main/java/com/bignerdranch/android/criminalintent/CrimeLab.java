@@ -4,11 +4,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 
 import com.bignerdranch.android.criminalintent.database.CrimeBaseHelper;
 import com.bignerdranch.android.criminalintent.database.CrimeCursorWrapper;
 import com.bignerdranch.android.criminalintent.database.CrimeDbSchema.CrimeTable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -89,7 +91,7 @@ public class CrimeLab {
     public Crime getCrime(UUID id) {
         CrimeCursorWrapper cursor = queryCrimes(
                 CrimeTable.Columns.UUID + " = ?",
-                new String[] { id.toString() }
+                new String[]{id.toString()}
         );
 
         try {
@@ -102,6 +104,19 @@ public class CrimeLab {
         finally {
             cursor.close();
         }
+    }
+
+    public File getPhotoFile(Crime crime) {
+        // This code doesn't create any files on the file system. It only returns File objects that
+        // point to the right locations. It does one check by verifying that there is external storage
+        // to save them to. If there's no external storage, a null is returned.
+        File externalFilesDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+        if (externalFilesDir == null) {
+            return null;
+        }
+
+        return new File(externalFilesDir, crime.getPhotoFilename());
     }
 
     public void addCrime(Crime crime) {
@@ -126,13 +141,13 @@ public class CrimeLab {
         // new string array instead of directly placing the uuidString there is mitigate possible
         // SQL injection attacks because the uuidString could itself contain a query. By using a new
         // string array, then the uuidString would always be treated as a string value.
-        mDatabase.update(CrimeTable.NAME, contentValues, CrimeTable.Columns.UUID + " = ? ", new String[] { uuidString });
+        mDatabase.update(CrimeTable.NAME, contentValues, CrimeTable.Columns.UUID + " = ? ", new String[]{uuidString});
     }
 
     public void deleteCrime(Crime crime) {
         String uuidString = crime.getId().toString();
 
-        mDatabase.delete(CrimeTable.NAME, CrimeTable.Columns.UUID + " = ? ", new String[] { uuidString });
+        mDatabase.delete(CrimeTable.NAME, CrimeTable.Columns.UUID + " = ? ", new String[]{uuidString});
     }
 
     // Writes and updates to databases are done with a class called ContentValues. It's a key-value
