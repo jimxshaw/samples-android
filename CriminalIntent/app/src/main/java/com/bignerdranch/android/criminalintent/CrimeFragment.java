@@ -139,6 +139,9 @@ public class CrimeFragment extends Fragment {
                 c.close();
             }
         }
+        else if (requestCode == REQUEST_PHOTO) {
+            updatePhotoView();
+        }
     }
 
     private void updateDate() {
@@ -335,6 +338,7 @@ public class CrimeFragment extends Fragment {
         });
 
         mPhotoView = (ImageView) v.findViewById(R.id.crime_photo);
+        updatePhotoView();
 
         return v;
     }
