@@ -10,7 +10,6 @@ public class FlickrFetchr {
 
     private byte[] getUrlBytes(String urlSpec) throws IOException {
         URL url = new URL(urlSpec);
-
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
         try {
