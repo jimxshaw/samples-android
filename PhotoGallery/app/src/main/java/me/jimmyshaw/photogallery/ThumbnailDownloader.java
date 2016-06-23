@@ -1,9 +1,13 @@
 package me.jimmyshaw.photogallery;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Message;
 import android.util.Log;
 
+import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -33,6 +37,20 @@ public class ThumbnailDownloader<T> extends HandlerThread {
     }
 
     @Override
+    protected void onLooperPrepared() {
+        mRequestHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                if (msg.what == MESSAGE_DOWNLOAD) {
+                    T target = (T) msg.obj;
+                    Log.i(TAG, "Got a request for URL: " + mRequestMap.get(target));
+                    handleRequest(target);
+                }
+            }
+        };
+    }
+
+    @Override
     public boolean quit() {
         mHasQuit = true;
         return super.quit();
@@ -50,6 +68,23 @@ public class ThumbnailDownloader<T> extends HandlerThread {
             mRequestHandler.obtainMessage(MESSAGE_DOWNLOAD, target).sendToTarget();
         }
 
+    }
+
+    private void handleRequest(final T target) {
+        try {
+            final String url = mRequestMap.get(target);
+
+            if (url == null) {
+                return;
+            }
+
+            byte[] bitmapBytes = new FlickrFetchr().getUrlBytes(url);
+            final Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
+            Log.i(TAG, "Bitmap created");
+        }
+        catch (IOException e) {
+            Log.e(TAG, "Error downloading image", e);
+        }
     }
 
 }
