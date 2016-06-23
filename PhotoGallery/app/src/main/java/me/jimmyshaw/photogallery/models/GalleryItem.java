@@ -1,4 +1,4 @@
-package me.jimmyshaw.photogallery;
+package me.jimmyshaw.photogallery.models;
 
 public class GalleryItem {
 

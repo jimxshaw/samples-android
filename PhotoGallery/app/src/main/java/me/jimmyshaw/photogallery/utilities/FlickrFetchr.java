@@ -1,4 +1,4 @@
-package me.jimmyshaw.photogallery;
+package me.jimmyshaw.photogallery.utilities;
 
 import android.net.Uri;
 import android.util.Log;
@@ -14,6 +14,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import me.jimmyshaw.photogallery.models.GalleryItem;
 
 public class FlickrFetchr {
 

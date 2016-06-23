@@ -1,4 +1,4 @@
-package me.jimmyshaw.photogallery;
+package me.jimmyshaw.photogallery.fragments;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -21,6 +21,12 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import me.jimmyshaw.photogallery.models.GalleryItem;
+import me.jimmyshaw.photogallery.R;
+import me.jimmyshaw.photogallery.utilities.FlickrFetchr;
+import me.jimmyshaw.photogallery.utilities.QueryPreferences;
+import me.jimmyshaw.photogallery.utilities.ThumbnailDownloader;
 
 public class PhotoGalleryFragment extends Fragment {
 

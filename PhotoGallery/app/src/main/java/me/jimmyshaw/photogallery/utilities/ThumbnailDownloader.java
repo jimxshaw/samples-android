@@ -1,4 +1,4 @@
-package me.jimmyshaw.photogallery;
+package me.jimmyshaw.photogallery.utilities;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,6 +10,8 @@ import android.util.Log;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
+import me.jimmyshaw.photogallery.utilities.FlickrFetchr;
 
 /*
     The user, PhotoGalleryFragment, will use this class. It'll need to use some object to identify

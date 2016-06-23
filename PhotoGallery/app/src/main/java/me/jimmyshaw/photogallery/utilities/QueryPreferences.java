@@ -1,4 +1,4 @@
-package me.jimmyshaw.photogallery;
+package me.jimmyshaw.photogallery.utilities;
 
 import android.content.Context;
 import android.preference.PreferenceManager;
