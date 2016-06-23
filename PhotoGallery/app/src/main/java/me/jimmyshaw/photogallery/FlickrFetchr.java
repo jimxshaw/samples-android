@@ -26,10 +26,10 @@ public class FlickrFetchr {
         URL url = new URL(urlSpec);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-        try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            InputStream in = connection.getInputStream();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        InputStream in = connection.getInputStream();
 
+        try {
             if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 throw new IOException(connection.getResponseMessage() + ": with " + urlSpec);
             }
@@ -41,12 +41,12 @@ public class FlickrFetchr {
                 out.write(buffer, 0, bytesRead);
             }
 
-            out.close();
-
             return out.toByteArray();
         }
         finally {
             connection.disconnect();
+            out.close();
+            in.close();
         }
     }
 
