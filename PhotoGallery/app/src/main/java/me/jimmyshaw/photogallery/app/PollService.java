@@ -6,6 +6,12 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.util.Log;
 
+import java.util.List;
+
+import me.jimmyshaw.photogallery.models.GalleryItem;
+import me.jimmyshaw.photogallery.utilities.FlickrFetchr;
+import me.jimmyshaw.photogallery.utilities.QueryPreferences;
+
 /*
     Services are like activities in that they are contexts and responds to intents. A service's intents
     are called commands. Each command is an instruction to the service to do something. An intent
@@ -31,7 +37,32 @@ public class PollService extends IntentService {
         if (!isNetworkAvailableAndConnected()) {
             return;
         }
-        Log.i(TAG, "Received an intent: " + intent);
+
+        String query = QueryPreferences.getStoredQuery(this);
+        String lastResultId = QueryPreferences.getLastResultId(this);
+
+        List<GalleryItem> items;
+
+        if (query == null) {
+            items = new FlickrFetchr().fetchRecentPhotos();
+        }
+        else {
+            items = new FlickrFetchr().searchPhotos(query);
+        }
+
+        if (items.size() == 0) {
+            return;
+        }
+
+        String resultId = items.get(0).getId();
+        if (resultId.equals(lastResultId)) {
+            Log.i(TAG, "Got an old result: " + resultId);
+        }
+        else {
+            Log.i(TAG, "Got a new result: " + resultId);
+        }
+
+        QueryPreferences.setLastResultId(this, resultId);
     }
 
     private boolean isNetworkAvailableAndConnected() {
