@@ -1,5 +1,6 @@
 package me.jimmyshaw.photogallery.fragments;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -22,8 +23,9 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.jimmyshaw.photogallery.models.GalleryItem;
 import me.jimmyshaw.photogallery.R;
+import me.jimmyshaw.photogallery.app.PollService;
+import me.jimmyshaw.photogallery.models.GalleryItem;
 import me.jimmyshaw.photogallery.utilities.FlickrFetchr;
 import me.jimmyshaw.photogallery.utilities.QueryPreferences;
 import me.jimmyshaw.photogallery.utilities.ThumbnailDownloader;
@@ -51,6 +53,9 @@ public class PhotoGalleryFragment extends Fragment {
         setHasOptionsMenu(true);
 
         updateItems();
+
+        Intent i = PollService.newIntent(getActivity());
+        getActivity().startService(i);
 
         Handler responseHandler = new Handler();
         mThumbnailDownloader = new ThumbnailDownloader<>(responseHandler);
