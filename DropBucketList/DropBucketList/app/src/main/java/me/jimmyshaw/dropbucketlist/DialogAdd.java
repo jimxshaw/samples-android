@@ -10,6 +10,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import io.realm.Realm;
+
 public class DialogAdd extends DialogFragment {
 
     private ImageButton mButtonClose;
@@ -36,6 +38,8 @@ public class DialogAdd extends DialogFragment {
         // Get the value of the goal or task item. Get the time of when it was added.
         String goal = mInputEditText.getText().toString();
         long time = System.currentTimeMillis();
+
+        Realm realm = Realm.getDefaultInstance();
     }
 
     public DialogAdd() {

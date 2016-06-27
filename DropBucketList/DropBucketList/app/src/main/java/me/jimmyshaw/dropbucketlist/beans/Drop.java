@@ -1,11 +1,26 @@
 package me.jimmyshaw.dropbucketlist.beans;
 
-public class Drop {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-    private String goal;
+public class Drop extends RealmObject {
+
+    @PrimaryKey
     private long dateAdded;
     private long dateDue;
+    private String goal;
     private boolean completed;
+
+    public Drop() {
+
+    }
+
+    public Drop(long dateAdded, long dateDue, String goal, boolean completed) {
+        this.dateAdded = dateAdded;
+        this.dateDue = dateDue;
+        this.goal = goal;
+        this.completed = completed;
+    }
 
     public String getGoal() {
         return goal;
