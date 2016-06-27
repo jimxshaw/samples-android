@@ -17,6 +17,27 @@ public class DialogAdd extends DialogFragment {
     private DatePicker mInputDatePicker;
     private Button mButtonAdd;
 
+    private View.OnClickListener mButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            int id = view.getId();
+
+            switch (id) {
+                case R.id.button_add_it:
+                    addAction();
+                    break;
+            }
+
+            dismiss();
+        }
+    };
+
+    private void addAction() {
+        // Get the value of the goal or task item. Get the time of when it was added.
+        String goal = mInputEditText.getText().toString();
+        long time = System.currentTimeMillis();
+    }
+
     public DialogAdd() {
 
     }
@@ -31,15 +52,11 @@ public class DialogAdd extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         mButtonClose = (ImageButton) view.findViewById(R.id.button_close);
-        mButtonClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss();
-            }
-        });
+        mButtonClose.setOnClickListener(mButtonClickListener);
         mInputEditText = (EditText) view.findViewById(R.id.edit_text_drop);
         mInputDatePicker = (DatePicker) view.findViewById(R.id.date_picker_view_date);
         mButtonAdd = (Button) view.findViewById(R.id.button_add_it);
+        mButtonAdd.setOnClickListener(mButtonClickListener);
 
     }
 }
