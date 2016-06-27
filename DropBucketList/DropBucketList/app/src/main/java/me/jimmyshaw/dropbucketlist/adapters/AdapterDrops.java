@@ -2,6 +2,7 @@ package me.jimmyshaw.dropbucketlist.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +14,20 @@ import me.jimmyshaw.dropbucketlist.models.Drop;
 
 public class AdapterDrops extends RecyclerView.Adapter<AdapterDrops.DropHolder> {
 
+    private static final String TAG = "Jim";
+
     private LayoutInflater mLayoutInflater;
 
     private RealmResults<Drop> mResults;
 
     public AdapterDrops(Context context, RealmResults<Drop> results) {
         mLayoutInflater = LayoutInflater.from(context);
+        update(results);
+    }
+
+    public void update(RealmResults<Drop> results) {
         mResults = results;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -34,8 +42,8 @@ public class AdapterDrops extends RecyclerView.Adapter<AdapterDrops.DropHolder> 
     @Override
     public void onBindViewHolder(DropHolder holder, int position) {
         Drop drop = mResults.get(position);
-
         holder.mTextViewGoal.setText(drop.getGoal());
+        Log.d(TAG, "onBindViewHolder: " + position);
     }
 
     @Override
