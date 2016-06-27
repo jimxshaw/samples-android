@@ -2,6 +2,7 @@ package me.jimmyshaw.dropbucketlist;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -13,8 +14,10 @@ public class ActivityMain extends AppCompatActivity {
 
     private static final String TAG = "Add";
 
-    Toolbar mToolbar;
-    Button mButtonAdd;
+    private Toolbar mToolbar;
+    private Button mButtonAdd;
+
+    private RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,8 @@ public class ActivityMain extends AppCompatActivity {
                 showDialogAdd();
             }
         });
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_drops);
 
         initBackgroundImage();
 
