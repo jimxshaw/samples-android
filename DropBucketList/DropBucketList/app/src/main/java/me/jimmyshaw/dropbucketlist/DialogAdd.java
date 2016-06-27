@@ -2,6 +2,7 @@ package me.jimmyshaw.dropbucketlist;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import me.jimmyshaw.dropbucketlist.beans.Drop;
 
 public class DialogAdd extends DialogFragment {
 
@@ -34,12 +37,24 @@ public class DialogAdd extends DialogFragment {
         }
     };
 
+    // TODO: Process the date field.
     private void addAction() {
         // Get the value of the goal or task item. Get the time of when it was added.
         String goal = mInputEditText.getText().toString();
-        long time = System.currentTimeMillis();
+        long dateAdded = System.currentTimeMillis();
 
+        // To use Realm, we have to configure it and then add the configuration to a Realm instance.
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(getActivity()).build();
+        Realm.setDefaultConfiguration(realmConfiguration);
         Realm realm = Realm.getDefaultInstance();
+        // Create a fake drop as a test with Realm.
+        Drop drop = new Drop(dateAdded, 0, goal, false);
+        // Since copyToRealm is a write instruction, it must be used with a transaction.
+        realm.beginTransaction();
+        realm.copyToRealm(drop);
+        realm.commitTransaction();
+        realm.close();
+        Log.i("addAction", "Inside addAction");
     }
 
     public DialogAdd() {
@@ -56,10 +71,11 @@ public class DialogAdd extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         mButtonClose = (ImageButton) view.findViewById(R.id.button_close);
-        mButtonClose.setOnClickListener(mButtonClickListener);
         mInputEditText = (EditText) view.findViewById(R.id.edit_text_drop);
         mInputDatePicker = (DatePicker) view.findViewById(R.id.date_picker_view_date);
         mButtonAdd = (Button) view.findViewById(R.id.button_add_it);
+
+        mButtonClose.setOnClickListener(mButtonClickListener);
         mButtonAdd.setOnClickListener(mButtonClickListener);
 
     }
