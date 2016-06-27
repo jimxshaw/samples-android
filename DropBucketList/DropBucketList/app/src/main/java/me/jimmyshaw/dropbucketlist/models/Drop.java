@@ -1,4 +1,4 @@
-package me.jimmyshaw.dropbucketlist.beans;
+package me.jimmyshaw.dropbucketlist.models;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
