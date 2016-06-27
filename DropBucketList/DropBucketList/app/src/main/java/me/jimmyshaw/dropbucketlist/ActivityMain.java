@@ -12,7 +12,9 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import me.jimmyshaw.dropbucketlist.adapters.AdapterDrops;
+import me.jimmyshaw.dropbucketlist.models.Drop;
 
 public class ActivityMain extends AppCompatActivity {
 
@@ -31,6 +33,7 @@ public class ActivityMain extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mRealm = Realm.getDefaultInstance();
+        RealmResults<Drop> results = mRealm.where(Drop.class).findAllAsync();
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -45,7 +48,7 @@ public class ActivityMain extends AppCompatActivity {
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_drops);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new AdapterDrops(this));
+        mRecyclerView.setAdapter(new AdapterDrops(this, results));
 
         initBackgroundImage();
 
