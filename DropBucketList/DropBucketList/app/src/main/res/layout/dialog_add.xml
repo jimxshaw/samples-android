@@ -1,47 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/text_view_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/text_view_title_vertical_margin"
-        android:layout_marginTop="@dimen/text_view_title_vertical_margin"
-        android:text="@string/string_add_a_drop"
-        android:textSize="@dimen/text_view_title_font_size"/>
-
-    <ImageButton
-        android:id="@+id/button_close"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/text_view_title"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_close"/>
-
-    <EditText
-        android:id="@+id/edit_text_drop"
+    android:layout_height="match_parent"
+>
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/text_view_title"
-        android:hint="@string/hint_edit_text_drop"
-        android:padding="16dp"/>
+        android:layout_height="wrap_content">
 
-    <DatePicker
-        android:id="@+id/date_picker_view_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/edit_text_drop"/>
+        <TextView
+            android:id="@+id/text_view_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/text_view_title_vertical_margin"
+            android:layout_marginTop="@dimen/text_view_title_vertical_margin"
+            android:text="@string/string_add_a_drop"
+            android:textSize="@dimen/text_view_title_font_size"/>
 
-    <Button
-        android:id="@+id/button_add_it"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/date_picker_view_date"
-        android:text="@string/string_add_it"
-        android:textAllCaps="false"/>
+        <ImageButton
+            android:id="@+id/button_close"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/text_view_title"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_close"/>
 
-</RelativeLayout>
+        <EditText
+            android:id="@+id/edit_text_drop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_view_title"
+            android:hint="@string/hint_edit_text_drop"
+            android:padding="16dp"
+            android:singleLine="true"/>
+
+        <DatePicker
+            android:id="@+id/date_picker_view_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edit_text_drop"/>
+
+        <Button
+            android:id="@+id/button_add_it"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/date_picker_view_date"
+            android:text="@string/string_add_it"
+            android:textAllCaps="false"/>
+
+    </RelativeLayout>
+
+</ScrollView>

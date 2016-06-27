@@ -6,11 +6,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
 public class ActivityMain extends AppCompatActivity {
+
+    private static final String TAG = "Add";
 
     Toolbar mToolbar;
     Button mButtonAdd;
@@ -27,12 +28,17 @@ public class ActivityMain extends AppCompatActivity {
         mButtonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ActivityMain.this, "Button was clicked", Toast.LENGTH_SHORT).show();
+                showDialogAdd();
             }
         });
 
         initBackgroundImage();
 
+    }
+
+    private void showDialogAdd() {
+        DialogAdd dialog = new DialogAdd();
+        dialog.show(getSupportFragmentManager(), TAG);
     }
 
     private void initBackgroundImage() {
