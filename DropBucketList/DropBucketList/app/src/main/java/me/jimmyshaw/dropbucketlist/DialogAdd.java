@@ -44,8 +44,8 @@ public class DialogAdd extends DialogFragment {
         long dateAdded = System.currentTimeMillis();
 
         // To use Realm, we have to configure it and then add the configuration to a Realm instance.
-        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(getActivity()).build();
-        Realm.setDefaultConfiguration(realmConfiguration);
+        // Since we already configured Realm on start up in the AppDropBucketList class we can
+        // simply get a Realm instance without issue.
         Realm realm = Realm.getDefaultInstance();
         // Create a fake drop as a test with Realm.
         Drop drop = new Drop(dateAdded, 0, goal, false);
@@ -54,7 +54,6 @@ public class DialogAdd extends DialogFragment {
         realm.copyToRealm(drop);
         realm.commitTransaction();
         realm.close();
-        Log.i("addAction", "Inside addAction");
     }
 
     public DialogAdd() {

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
+import io.realm.Realm;
 import me.jimmyshaw.dropbucketlist.adapters.AdapterDrops;
 
 public class ActivityMain extends AppCompatActivity {
@@ -22,10 +23,14 @@ public class ActivityMain extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
 
+    private Realm mRealm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mRealm = Realm.getDefaultInstance();
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
