@@ -3,7 +3,6 @@ package me.jimmyshaw.dropbucketlist;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +16,7 @@ import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import me.jimmyshaw.dropbucketlist.adapters.AdapterDrops;
 import me.jimmyshaw.dropbucketlist.models.Drop;
+import me.jimmyshaw.dropbucketlist.widgets.DropRecyclerView;
 
 public class ActivityMain extends AppCompatActivity {
 
@@ -25,7 +25,9 @@ public class ActivityMain extends AppCompatActivity {
     private Toolbar mToolbar;
     private Button mButtonAdd;
 
-    private RecyclerView mRecyclerView;
+    private DropRecyclerView mRecyclerView;
+
+    private View mEmptyDropsView;
 
     private AdapterDrops mAdapterDrops;
 
@@ -56,13 +58,17 @@ public class ActivityMain extends AppCompatActivity {
         mRealm = Realm.getDefaultInstance();
         mResults = mRealm.where(Drop.class).findAllAsync();
 
+        mEmptyDropsView = (View) findViewById(R.id.empty_drops);
+
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
         mButtonAdd = (Button) findViewById(R.id.button_add_a_drop);
         mButtonAdd.setOnClickListener(mButtonAddListener);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_drops);
+        mRecyclerView = (DropRecyclerView) findViewById(R.id.recycler_view_drops);
+        mRecyclerView.hideIfEmpty(mToolbar);
+        mRecyclerView.showIfEmpty(mEmptyDropsView);
         mAdapterDrops = new AdapterDrops(this, mResults);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapterDrops);

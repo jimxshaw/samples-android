@@ -4,9 +4,19 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.View;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 // This is a custom recycler view class that behaves differently from the normal recycler view.
 public class DropRecyclerView extends RecyclerView {
+
+    // Using empty list will allow us to make a list with zero items. This is the only way to initialize
+    // an empty list and to avoid null pointer exceptions.
+    private List<View> mNonEmptyViews = Collections.emptyList();
+    private List<View> mEmptyViews = Collections.emptyList();
 
     // Our app's main activity includes a recycler view and a tool bar. The vision is that the
     // recycler view and tool bar will only appear when the recycler view has data to display.
@@ -71,5 +81,20 @@ public class DropRecyclerView extends RecyclerView {
         }
 
         mAdapterDataObserver.onChanged();
+    }
+
+    // When the adapter data observer determines our recycler view contains no data, the hideIfEmpty
+    // method that takes in a view(s) will execute and hide the view(s). We'll use this method to hide
+    // our tool bar but we could pass in other view widgets and they will be hidden.
+    public void hideIfEmpty(View... viewsToHide) {
+        mNonEmptyViews = Arrays.asList(viewsToHide);
+    }
+
+    // When the adapter data observer determines our recycler view contains no data, the showIfEmpty
+    // method that takes in a custom view(s) will execute and display that custom view(s).
+    // What we will pass in is the empty drops view that will display nothing but the app logo and
+    // the Add a drop button but we could pass in other views to show them if we want.
+    public void showIfEmpty(View... viewsToShow) {
+        mEmptyViews = Arrays.asList(viewsToShow);
     }
 }

@@ -17,12 +17,14 @@
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"/>
 
-    <android.support.v7.widget.RecyclerView
+    <me.jimmyshaw.dropbucketlist.widgets.DropRecyclerView
         android:id="@+id/recycler_view_drops"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"/>
 
-    <include layout="@layout/empty_drops"/>
+    <include
+        android:id="@+id/empty_drops"
+        layout="@layout/empty_drops"/>
 
 </RelativeLayout>
