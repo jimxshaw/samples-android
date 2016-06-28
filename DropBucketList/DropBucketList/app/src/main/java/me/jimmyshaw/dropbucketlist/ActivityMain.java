@@ -58,10 +58,9 @@ public class ActivityMain extends AppCompatActivity {
         mRealm = Realm.getDefaultInstance();
         mResults = mRealm.where(Drop.class).findAllAsync();
 
-        mEmptyDropsView = (View) findViewById(R.id.empty_drops);
+        mEmptyDropsView = findViewById(R.id.empty_drops);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
 
         mButtonAdd = (Button) findViewById(R.id.button_add_a_drop);
         mButtonAdd.setOnClickListener(mButtonAddListener);
@@ -73,6 +72,7 @@ public class ActivityMain extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapterDrops);
 
+        setSupportActionBar(mToolbar);
         initBackgroundImage();
 
     }
