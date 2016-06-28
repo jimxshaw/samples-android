@@ -10,6 +10,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import me.jimmyshaw.dropbucketlist.utilities.Util;
+
 // This is a custom recycler view class that behaves differently from the normal recycler view.
 public class DropRecyclerView extends RecyclerView {
 
@@ -108,31 +110,23 @@ public class DropRecyclerView extends RecyclerView {
                 // When the adapter item count is 0 then the recycler view is empty with no goals to
                 // display so we set the visibility of this recycler view to gone and then display
                 // whichever views we'd like to show when the recycler view is empty.
-                for (View view : mViewsToShowIfRecyclerViewIsEmpty) {
-                    view.setVisibility(View.VISIBLE);
-                }
+                Util.showViews(mViewsToShowIfRecyclerViewIsEmpty);
 
                 // Hide the recycler view.
                 setVisibility(View.GONE);
 
                 // Hide all other views that are meant to be hidden.
-                for (View view : mViewsToShowIfRecyclerViewIsNotEmpty) {
-                    view.setVisibility(View.GONE);
-                }
+                Util.hideViews(mViewsToShowIfRecyclerViewIsNotEmpty);
             }
             else {
-                // Hide all if empty views.
-                for (View view : mViewsToShowIfRecyclerViewIsEmpty) {
-                    view.setVisibility(View.GONE);
-                }
+                // Show all other views that are meant to be shown.
+                Util.showViews(mViewsToShowIfRecyclerViewIsNotEmpty);
 
                 // Show the recycler view.
                 setVisibility(View.VISIBLE);
 
-                // Show all other views that are meant to be shown.
-                for (View view : mViewsToShowIfRecyclerViewIsNotEmpty) {
-                    view.setVisibility(View.VISIBLE);
-                }
+                // Hide all if empty views.
+                Util.hideViews(mViewsToShowIfRecyclerViewIsEmpty);
             }
         }
     }
