@@ -15,8 +15,8 @@ public class DropRecyclerView extends RecyclerView {
 
     // Using empty list will allow us to make a list with zero items. This is the only way to initialize
     // an empty list and to avoid null pointer exceptions.
-    private List<View> mNonEmptyViews = Collections.emptyList();
-    private List<View> mEmptyViews = Collections.emptyList();
+    private List<View> mViewsToShowIfRecyclerViewIsNotEmpty = Collections.emptyList();
+    private List<View> mViewsToShowIfRecyclerViewIsEmpty = Collections.emptyList();
 
     // Our app's main activity includes a recycler view and a tool bar. The vision is that the
     // recycler view and tool bar will only appear when the recycler view has data to display.
@@ -26,32 +26,32 @@ public class DropRecyclerView extends RecyclerView {
     private AdapterDataObserver mAdapterDataObserver = new AdapterDataObserver() {
         @Override
         public void onChanged() {
-
+            updateUI();
         }
 
         @Override
         public void onItemRangeChanged(int positionStart, int itemCount) {
-
+            updateUI();
         }
 
         @Override
         public void onItemRangeChanged(int positionStart, int itemCount, Object payload) {
-
+            updateUI();
         }
 
         @Override
         public void onItemRangeInserted(int positionStart, int itemCount) {
-
+            updateUI();
         }
 
         @Override
         public void onItemRangeRemoved(int positionStart, int itemCount) {
-
+            updateUI();
         }
 
         @Override
         public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
-
+            updateUI();
         }
     };
 
@@ -87,7 +87,7 @@ public class DropRecyclerView extends RecyclerView {
     // method that takes in a view(s) will execute and hide the view(s). We'll use this method to hide
     // our tool bar but we could pass in other view widgets and they will be hidden.
     public void hideIfEmpty(View... viewsToHide) {
-        mNonEmptyViews = Arrays.asList(viewsToHide);
+        mViewsToShowIfRecyclerViewIsNotEmpty = Arrays.asList(viewsToHide);
     }
 
     // When the adapter data observer determines our recycler view contains no data, the showIfEmpty
@@ -95,6 +95,45 @@ public class DropRecyclerView extends RecyclerView {
     // What we will pass in is the empty drops view that will display nothing but the app logo and
     // the Add a drop button but we could pass in other views to show them if we want.
     public void showIfEmpty(View... viewsToShow) {
-        mEmptyViews = Arrays.asList(viewsToShow);
+        mViewsToShowIfRecyclerViewIsEmpty = Arrays.asList(viewsToShow);
+    }
+
+    private void updateUI() {
+        // This recycler view must always have an adapter or our functionality that derives from
+        // the adapter data observer won't work. Our lists of if empty views and if non-empty views
+        // cannot be empty because then we wouldn't have any views for this method to update.
+        if (getAdapter() != null && !mViewsToShowIfRecyclerViewIsEmpty.isEmpty() && !mViewsToShowIfRecyclerViewIsNotEmpty.isEmpty()) {
+
+            if (getAdapter().getItemCount() == 0) {
+                // When the adapter item count is 0 then the recycler view is empty with no goals to
+                // display so we set the visibility of this recycler view to gone and then display
+                // whichever views we'd like to show when the recycler view is empty.
+                for (View view : mViewsToShowIfRecyclerViewIsEmpty) {
+                    view.setVisibility(View.VISIBLE);
+                }
+
+                // Hide the recycler view.
+                setVisibility(View.GONE);
+
+                // Hide all other views that are meant to be hidden.
+                for (View view : mViewsToShowIfRecyclerViewIsNotEmpty) {
+                    view.setVisibility(View.GONE);
+                }
+            }
+            else {
+                // Hide all if empty views.
+                for (View view : mViewsToShowIfRecyclerViewIsEmpty) {
+                    view.setVisibility(View.GONE);
+                }
+
+                // Show the recycler view.
+                setVisibility(View.VISIBLE);
+
+                // Show all other views that are meant to be shown.
+                for (View view : mViewsToShowIfRecyclerViewIsNotEmpty) {
+                    view.setVisibility(View.VISIBLE);
+                }
+            }
+        }
     }
 }
