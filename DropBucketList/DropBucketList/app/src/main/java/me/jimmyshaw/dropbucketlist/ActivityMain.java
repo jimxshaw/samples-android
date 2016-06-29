@@ -52,6 +52,7 @@ public class ActivityMain extends AppCompatActivity {
         }
     };
 
+    // Implementation of the AddListener interface's add method.
     private AddListener mAddListener = new AddListener() {
         @Override
         public void add() {
@@ -79,8 +80,7 @@ public class ActivityMain extends AppCompatActivity {
         mRecyclerView.addItemDecoration(new Divider(this, LinearLayoutManager.VERTICAL));
         mRecyclerView.hideIfEmpty(mToolbar);
         mRecyclerView.showIfEmpty(mEmptyDropsView);
-        mAdapterDrops = new AdapterDrops(this, mResults);
-        mAdapterDrops.setAddListener(mAddListener);
+        mAdapterDrops = new AdapterDrops(this, mResults, mAddListener);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapterDrops);
 

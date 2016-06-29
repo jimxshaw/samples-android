@@ -33,8 +33,10 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         update(results);
     }
 
-    public void setAddListener(AddListener listener) {
+    public AdapterDrops(Context context, RealmResults<Drop> results, AddListener listener) {
+        mLayoutInflater = LayoutInflater.from(context);
         mAddListener = listener;
+        update(results);
     }
 
     public void update(RealmResults<Drop> results) {
@@ -61,7 +63,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         // to inflater two different layouts depending on which int gets passed in.
         if (viewType == FOOTER) {
             View view = mLayoutInflater.inflate(R.layout.footer, parent, false);
-            return new FooterHolder(view);
+            return new FooterHolder(view, mAddListener);
         }
         else {
             View view = mLayoutInflater.inflate(R.layout.row_drop, parent, false);
@@ -104,9 +106,10 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    public class FooterHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class FooterHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         Button mButtonAdd;
+        AddListener mListener;
 
         public FooterHolder(View itemView) {
             super(itemView);
@@ -115,9 +118,18 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             mButtonAdd.setOnClickListener(this);
         }
 
+        public FooterHolder(View itemView, AddListener listener) {
+            super(itemView);
+
+            mButtonAdd = (Button) itemView.findViewById(R.id.button_footer);
+            mButtonAdd.setOnClickListener(this);
+
+            mListener = listener;
+        }
+
         @Override
         public void onClick(View view) {
-            mAddListener.add();
+            mListener.add();
         }
     }
 }
