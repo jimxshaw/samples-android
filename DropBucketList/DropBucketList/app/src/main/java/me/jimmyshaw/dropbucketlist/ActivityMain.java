@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,7 @@ import io.realm.RealmResults;
 import me.jimmyshaw.dropbucketlist.adapters.AdapterDrops;
 import me.jimmyshaw.dropbucketlist.adapters.AddListener;
 import me.jimmyshaw.dropbucketlist.adapters.Divider;
+import me.jimmyshaw.dropbucketlist.adapters.SimpleTouchCallback;
 import me.jimmyshaw.dropbucketlist.models.Drop;
 import me.jimmyshaw.dropbucketlist.widgets.DropRecyclerView;
 
@@ -80,9 +82,15 @@ public class ActivityMain extends AppCompatActivity {
         mRecyclerView.addItemDecoration(new Divider(this, LinearLayoutManager.VERTICAL));
         mRecyclerView.hideIfEmpty(mToolbar);
         mRecyclerView.showIfEmpty(mEmptyDropsView);
-        mAdapterDrops = new AdapterDrops(this, mResults, mAddListener);
+        mAdapterDrops = new AdapterDrops(this, mRealm, mResults, mAddListener);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapterDrops);
+
+        // The recycler view adapter is passed in as it implements the SwipeListener interface.
+        // The callback is passed into the ItemTouchHelper, which will be attached to our recycler view.
+        SimpleTouchCallback simpleTouchCallback = new SimpleTouchCallback(mAdapterDrops);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleTouchCallback);
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
         setSupportActionBar(mToolbar);
         initBackgroundImage();

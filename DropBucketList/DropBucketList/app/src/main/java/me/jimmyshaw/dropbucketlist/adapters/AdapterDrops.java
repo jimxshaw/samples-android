@@ -8,11 +8,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import io.realm.Realm;
 import io.realm.RealmResults;
 import me.jimmyshaw.dropbucketlist.R;
 import me.jimmyshaw.dropbucketlist.models.Drop;
 
-public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements SwipeListener {
 
     // ITEM represents the position of a particular goal in the recycler view. The footer, which
     // is also part of the recycler view is always at a position one greater than the last goal's
@@ -26,15 +27,18 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private LayoutInflater mLayoutInflater;
 
+    private Realm mRealm;
     private RealmResults<Drop> mResults;
 
-    public AdapterDrops(Context context, RealmResults<Drop> results) {
+    public AdapterDrops(Context context, Realm realm, RealmResults<Drop> results) {
         mLayoutInflater = LayoutInflater.from(context);
+        mRealm = realm;
         update(results);
     }
 
-    public AdapterDrops(Context context, RealmResults<Drop> results, AddListener listener) {
+    public AdapterDrops(Context context, Realm realm, RealmResults<Drop> results, AddListener listener) {
         mLayoutInflater = LayoutInflater.from(context);
+        mRealm = realm;
         mAddListener = listener;
         update(results);
     }
@@ -92,7 +96,25 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         // The results collection does not encompass the footer. We must add 1 to the collection size
         // for the recycler view to show goals and the footer. Using only the collection's size,
         // we'll just see the goals.
-        return mResults.size() + 1;
+        if (mResults == null || mResults.isEmpty()) {
+            return 0;
+        }
+        else {
+            return mResults.size() + 1;
+        }
+    }
+
+    @Override
+    public void onSwipe(int position) {
+        // Since deletion is a write command, we have to begin and commit a Realm transaction.
+        // We add an if conditional to make sure we don't try to delete the footer.
+        if (position < mResults.size()) {
+            mRealm.beginTransaction();
+            mResults.get(position).deleteFromRealm();
+            mRealm.commitTransaction();
+
+            notifyItemRemoved(position);
+        }
     }
 
     public static class DropHolder extends RecyclerView.ViewHolder {
