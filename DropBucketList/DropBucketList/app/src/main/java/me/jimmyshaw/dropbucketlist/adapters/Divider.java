@@ -47,26 +47,36 @@ public class Divider extends RecyclerView.ItemDecoration {
         int right;
         int bottom;
 
+        // Force the divider to respect each row item's padding.
         left = parent.getPaddingLeft();
         right = parent.getWidth() - parent.getPaddingRight();
 
         int count = parent.getChildCount();
         for (int i = 0; i < count; i++) {
-            View currentChild = parent.getChildAt(i);
-            top = currentChild.getTop();
-            bottom = top + mDivider.getIntrinsicHeight();
-            // After determining the boundaries values, we set the bounds of the divider and then
-            // draw it.
-            mDivider.setBounds(left, top, right, bottom);
-            mDivider.draw(c);
+            // If our recycler view item is the footer then we don't draw the divider.
+            if (AdapterDrops.FOOTER != parent.getAdapter().getItemViewType(i)) {
+                View currentChild = parent.getChildAt(i);
+                // Force the divider to respect the child view's margins by using LayoutParams.
+                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) currentChild.getLayoutParams();
+                top = currentChild.getBottom() - params.bottomMargin;
+                bottom = top + mDivider.getIntrinsicHeight();
+                // After determining the boundaries values, we set the bounds of the divider and then
+                // draw it.
+                mDivider.setBounds(left, top, right, bottom);
+                mDivider.draw(c);
 
-            Log.d(TAG, "drawHorizontalDivider: " + left + ", " + top + ", " + right + ", " + bottom);
+                Log.d(TAG, "drawHorizontalDivider: " + left + ", " + top + ", " + right + ", " + bottom);
+            }
         }
 
     }
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        super.getItemOffsets(outRect, view, parent, state);
+        if (mOrientation == LinearLayoutManager.VERTICAL) {
+            outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
+        }
+
+
     }
 }
