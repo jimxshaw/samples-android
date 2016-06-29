@@ -15,6 +15,7 @@ import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import me.jimmyshaw.dropbucketlist.adapters.AdapterDrops;
+import me.jimmyshaw.dropbucketlist.adapters.AddListener;
 import me.jimmyshaw.dropbucketlist.adapters.Divider;
 import me.jimmyshaw.dropbucketlist.models.Drop;
 import me.jimmyshaw.dropbucketlist.widgets.DropRecyclerView;
@@ -51,6 +52,13 @@ public class ActivityMain extends AppCompatActivity {
         }
     };
 
+    private AddListener mAddListener = new AddListener() {
+        @Override
+        public void add() {
+            showDialogAdd();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,10 +75,12 @@ public class ActivityMain extends AppCompatActivity {
         mButtonAdd.setOnClickListener(mButtonAddListener);
 
         mRecyclerView = (DropRecyclerView) findViewById(R.id.recycler_view_drops);
+        // Add a divider between each row item.
         mRecyclerView.addItemDecoration(new Divider(this, LinearLayoutManager.VERTICAL));
         mRecyclerView.hideIfEmpty(mToolbar);
         mRecyclerView.showIfEmpty(mEmptyDropsView);
         mAdapterDrops = new AdapterDrops(this, mResults);
+        mAdapterDrops.setAddListener(mAddListener);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapterDrops);
 

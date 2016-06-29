@@ -36,16 +36,11 @@ public class Divider extends RecyclerView.ItemDecoration {
         if (mOrientation == LinearLayoutManager.VERTICAL) {
             drawHorizontalDivider(c, parent, state);
         }
-
-
     }
 
     private void drawHorizontalDivider(Canvas c, RecyclerView parent, RecyclerView.State state) {
         // Four boundary values are needed to draw our divider.
-        int left;
-        int top;
-        int right;
-        int bottom;
+        int left, top, right, bottom;
 
         // Force the divider to respect each row item's padding.
         left = parent.getPaddingLeft();
@@ -68,15 +63,14 @@ public class Divider extends RecyclerView.ItemDecoration {
                 Log.d(TAG, "drawHorizontalDivider: " + left + ", " + top + ", " + right + ", " + bottom);
             }
         }
-
     }
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+        // Modify the boundary values to change spacing between row items.
         if (mOrientation == LinearLayoutManager.VERTICAL) {
+            // left, top, right, bottom
             outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
         }
-
-
     }
 }
