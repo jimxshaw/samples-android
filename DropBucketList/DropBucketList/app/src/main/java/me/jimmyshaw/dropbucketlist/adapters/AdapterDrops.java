@@ -14,6 +14,12 @@ import me.jimmyshaw.dropbucketlist.models.Drop;
 
 public class AdapterDrops extends RecyclerView.Adapter<AdapterDrops.DropHolder> {
 
+    // ITEM represents the position of a particular goal in the recycler view. The footer, which
+    // is also part of the recycler view is always at a position one greater than the last goal's
+    // position. If the final goal were at position n then the footer would be at position n+1.
+    public static final int ITEM = 0;
+    public static final int FOOTER = 1;
+
     private static final String TAG = "Jim";
 
     private LayoutInflater mLayoutInflater;
@@ -28,6 +34,20 @@ public class AdapterDrops extends RecyclerView.Adapter<AdapterDrops.DropHolder> 
     public void update(RealmResults<Drop> results) {
         mResults = results;
         notifyDataSetChanged();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        // We add a conditional to capture the null scenario to prevent null pointer exceptions.
+        // Since collections always start at position 0, our footer will always be equal to the
+        // size of the collection. If the position is less than the collection size then it will
+        // be a goal.
+        if (mResults == null || position < mResults.size()) {
+            return ITEM;
+        }
+        else {
+            return FOOTER;
+        }
     }
 
     @Override
