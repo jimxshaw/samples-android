@@ -15,6 +15,7 @@ import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import me.jimmyshaw.dropbucketlist.adapters.AdapterDrops;
+import me.jimmyshaw.dropbucketlist.adapters.Divider;
 import me.jimmyshaw.dropbucketlist.models.Drop;
 import me.jimmyshaw.dropbucketlist.widgets.DropRecyclerView;
 
@@ -66,6 +67,7 @@ public class ActivityMain extends AppCompatActivity {
         mButtonAdd.setOnClickListener(mButtonAddListener);
 
         mRecyclerView = (DropRecyclerView) findViewById(R.id.recycler_view_drops);
+        mRecyclerView.addItemDecoration(new Divider(this, LinearLayoutManager.VERTICAL));
         mRecyclerView.hideIfEmpty(mToolbar);
         mRecyclerView.showIfEmpty(mEmptyDropsView);
         mAdapterDrops = new AdapterDrops(this, mResults);
