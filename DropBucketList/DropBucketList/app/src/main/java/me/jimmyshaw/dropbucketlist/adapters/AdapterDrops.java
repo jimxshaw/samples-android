@@ -96,6 +96,8 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         // The results collection does not encompass the footer. We must add 1 to the collection size
         // for the recycler view to show goals and the footer. Using only the collection's size,
         // we'll just see the goals.
+        // When the collection is null or empty we return 0 so that the footer won't be shown. What
+        // will be shown is the main activity screen with the app logo and add button.
         if (mResults == null || mResults.isEmpty()) {
             return 0;
         }

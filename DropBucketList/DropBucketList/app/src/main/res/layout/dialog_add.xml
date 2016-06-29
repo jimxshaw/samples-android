@@ -3,10 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
->
+    android:background="@color/dark_blue">
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dialog_add_padding">
 
         <TextView
             android:id="@+id/text_view_title"
@@ -23,7 +25,7 @@
             android:layout_height="12dp"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@id/text_view_title"
-            android:background="@android:color/transparent"
+            android:background="@null"
             android:src="@drawable/ic_close"/>
 
         <EditText

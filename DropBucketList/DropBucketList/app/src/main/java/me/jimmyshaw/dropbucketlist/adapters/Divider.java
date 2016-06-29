@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import me.jimmyshaw.dropbucketlist.R;
@@ -59,8 +58,6 @@ public class Divider extends RecyclerView.ItemDecoration {
                 // draw it.
                 mDivider.setBounds(left, top, right, bottom);
                 mDivider.draw(c);
-
-                Log.d(TAG, "drawHorizontalDivider: " + left + ", " + top + ", " + right + ", " + bottom);
             }
         }
     }
