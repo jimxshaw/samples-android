@@ -8,6 +8,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -16,6 +17,7 @@ import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import me.jimmyshaw.dropbucketlist.adapters.AdapterDrops;
 import me.jimmyshaw.dropbucketlist.adapters.AddListener;
+import me.jimmyshaw.dropbucketlist.adapters.CompleteListener;
 import me.jimmyshaw.dropbucketlist.adapters.DetailListener;
 import me.jimmyshaw.dropbucketlist.adapters.Divider;
 import me.jimmyshaw.dropbucketlist.adapters.SimpleTouchCallback;
@@ -62,6 +64,13 @@ public class ActivityMain extends AppCompatActivity {
         @Override
         public void onClick(int position) {
             showDialogDetail(position);
+        }
+    };
+
+    private CompleteListener mCompleteListener = new CompleteListener() {
+        @Override
+        public void onComplete(int position) {
+            Toast.makeText(ActivityMain.this, "Completed item at position: " + position, Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -122,6 +131,7 @@ public class ActivityMain extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_ROW_ITEM_POSITION, position);
         dialog.setArguments(bundle);
+        dialog.setCompleteListener(mCompleteListener);
         dialog.show(getSupportFragmentManager(), "Detail");
     }
 

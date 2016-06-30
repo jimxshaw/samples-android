@@ -7,7 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
+
+import me.jimmyshaw.dropbucketlist.adapters.CompleteListener;
 
 public class DialogDetail extends DialogFragment {
 
@@ -16,6 +17,8 @@ public class DialogDetail extends DialogFragment {
     private ImageButton mButtonClose;
     private Button mButtonCompleted;
 
+    private CompleteListener mCompleteListener;
+
     // The widgets on the detail dialog can have their click functions dictated by a
     // single on click listener that differentiates between the widgets by their ids.
     private View.OnClickListener mButtonClickListener = new View.OnClickListener() {
@@ -23,7 +26,7 @@ public class DialogDetail extends DialogFragment {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.button_mark_completed:
-                    // TODO: Handle the action to mark the item as completed.
+                    markAsCompleted();
                     break;
                 default:
                     break;
@@ -31,6 +34,24 @@ public class DialogDetail extends DialogFragment {
             dismiss();
         }
     };
+
+    private void markAsCompleted() {
+        // This method finds out which row item in the recycler view adapter was clicked and then
+        // mark that row item as completed. We need to know the row item drop object at the exact
+        // position where the dialog is being shown. We have to communicate between this detail
+        // fragment and AdapterDrops in some way. As usual, we'll use a listener interface this time
+        // called CompleteListener that has a method called onComplete that actually marks the row
+        // item as completed. The implementation for onComplete takes place in ActivityMain but
+        // we get access to it because we pass this listener in with the setCompleteListener method.
+
+        // The bundle arguments that we're getting is the recycler view row item's position integer.
+        // We'll use this position int to be able to mark that particular row item as completed.
+        Bundle args = getArguments();
+        if (mCompleteListener != null && args != null) {
+            int position = args.getInt(ARG_ROW_ITEM_POSITION);
+            mCompleteListener.onComplete(position);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,13 +67,9 @@ public class DialogDetail extends DialogFragment {
         mButtonCompleted = (Button) view.findViewById(R.id.button_mark_completed);
         mButtonCompleted.setOnClickListener(mButtonClickListener);
 
-        // The bundle arguments that we're getting is the recycler view row item's position integer.
-        // We'll use this position int to be able to mark that particular row item as completed.
-        Bundle args = getArguments();
-        if (args != null) {
-            int position = args.getInt(ARG_ROW_ITEM_POSITION);
-            Toast.makeText(getActivity(), "Row item position: " + position, Toast.LENGTH_SHORT).show();
-        }
+    }
 
+    public void setCompleteListener(CompleteListener listener) {
+        mCompleteListener = listener;
     }
 }
