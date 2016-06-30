@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -39,9 +38,21 @@ public class ActivityMain extends AppCompatActivity {
 
     private RealmResults<Drop> mResults;
 
-    private View.OnClickListener mButtonAddListener = new View.OnClickListener() {
+    // This specific add listener is only used with the add button that's on this main activity.
+    // The below add listener is used when the recycler view appears, which is a separate view
+    // altogether. 
+    private View.OnClickListener mButtonActivityMainAddListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            showDialogAdd();
+        }
+    };
+
+    // Implementation of the AddListener interface's add method that will be used in conjunction
+    // with our recycler view adapter.
+    private AddListener mAddListener = new AddListener() {
+        @Override
+        public void add() {
             showDialogAdd();
         }
     };
@@ -49,16 +60,7 @@ public class ActivityMain extends AppCompatActivity {
     private RealmChangeListener mRealmChangeListener = new RealmChangeListener() {
         @Override
         public void onChange(Object element) {
-            Log.d(TAG, "onChange: was called");
             mAdapterDrops.update(mResults);
-        }
-    };
-
-    // Implementation of the AddListener interface's add method.
-    private AddListener mAddListener = new AddListener() {
-        @Override
-        public void add() {
-            showDialogAdd();
         }
     };
 
@@ -75,7 +77,7 @@ public class ActivityMain extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
         mButtonAdd = (Button) findViewById(R.id.button_add_a_drop);
-        mButtonAdd.setOnClickListener(mButtonAddListener);
+        mButtonAdd.setOnClickListener(mButtonActivityMainAddListener);
 
         mRecyclerView = (DropRecyclerView) findViewById(R.id.recycler_view_drops);
         // Add a divider between each row item.
