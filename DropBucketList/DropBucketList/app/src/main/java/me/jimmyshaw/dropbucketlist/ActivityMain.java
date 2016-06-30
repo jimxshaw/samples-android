@@ -16,6 +16,7 @@ import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import me.jimmyshaw.dropbucketlist.adapters.AdapterDrops;
 import me.jimmyshaw.dropbucketlist.adapters.AddListener;
+import me.jimmyshaw.dropbucketlist.adapters.DetailListener;
 import me.jimmyshaw.dropbucketlist.adapters.Divider;
 import me.jimmyshaw.dropbucketlist.adapters.SimpleTouchCallback;
 import me.jimmyshaw.dropbucketlist.models.Drop;
@@ -40,7 +41,7 @@ public class ActivityMain extends AppCompatActivity {
 
     // This specific add listener is only used with the add button that's on this main activity.
     // The below add listener is used when the recycler view appears, which is a separate view
-    // altogether. 
+    // altogether.
     private View.OnClickListener mButtonActivityMainAddListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -54,6 +55,13 @@ public class ActivityMain extends AppCompatActivity {
         @Override
         public void add() {
             showDialogAdd();
+        }
+    };
+
+    private DetailListener mDetailListener = new DetailListener() {
+        @Override
+        public void onClick(int position) {
+            showDialogDetail();
         }
     };
 
@@ -84,7 +92,7 @@ public class ActivityMain extends AppCompatActivity {
         mRecyclerView.addItemDecoration(new Divider(this, LinearLayoutManager.VERTICAL));
         mRecyclerView.hideIfEmpty(mToolbar);
         mRecyclerView.showIfEmpty(mEmptyDropsView);
-        mAdapterDrops = new AdapterDrops(this, mRealm, mResults, mAddListener);
+        mAdapterDrops = new AdapterDrops(this, mRealm, mResults, mAddListener, mDetailListener);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapterDrops);
 

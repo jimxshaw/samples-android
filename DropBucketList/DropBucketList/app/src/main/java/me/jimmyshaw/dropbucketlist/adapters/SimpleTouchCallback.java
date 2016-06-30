@@ -40,6 +40,6 @@ public class SimpleTouchCallback extends ItemTouchHelper.Callback {
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
         // This method has to communicate with the recycler view adapter in order to delete the row
         // item that has been swiped.
-        mSwipeListener.onSwipe(viewHolder.getLayoutPosition());
+        mSwipeListener.onSwipe(viewHolder.getAdapterPosition());
     }
 }

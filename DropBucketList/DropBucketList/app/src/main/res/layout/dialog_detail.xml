@@ -19,6 +19,7 @@
         android:fontFamily="@string/font_family"
         android:text="@string/string_mark_completed"
         android:textAllCaps="false"
+        android:textColor="@android:color/white"
         android:textSize="@dimen/button_mark_completed_font_size"/>
 
     <ImageButton

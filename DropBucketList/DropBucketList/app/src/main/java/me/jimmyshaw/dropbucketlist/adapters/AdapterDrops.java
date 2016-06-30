@@ -24,6 +24,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private static final String TAG = "Jim";
 
     private AddListener mAddListener;
+    private DetailListener mDetailListener;
 
     private LayoutInflater mLayoutInflater;
 
@@ -36,10 +37,11 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         update(results);
     }
 
-    public AdapterDrops(Context context, Realm realm, RealmResults<Drop> results, AddListener listener) {
+    public AdapterDrops(Context context, Realm realm, RealmResults<Drop> results, AddListener addListener, DetailListener detailListener) {
         mLayoutInflater = LayoutInflater.from(context);
         mRealm = realm;
-        mAddListener = listener;
+        mAddListener = addListener;
+        mDetailListener = detailListener;
         update(results);
     }
 
@@ -71,7 +73,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
         else {
             View view = mLayoutInflater.inflate(R.layout.row_drop, parent, false);
-            return new DropHolder(view);
+            return new DropHolder(view, mDetailListener);
         }
 
     }
@@ -123,18 +125,20 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         TextView mTextViewGoal;
         TextView mTextViewDateDue;
+        DetailListener mDetailListener;
 
-        public DropHolder(View itemView) {
+        public DropHolder(View itemView, DetailListener listener) {
             super(itemView);
 
             itemView.setOnClickListener(this);
             mTextViewGoal = (TextView) itemView.findViewById(R.id.text_view_goal);
             mTextViewDateDue = (TextView) itemView.findViewById(R.id.text_view_date_due);
+            mDetailListener = listener;
         }
 
         @Override
         public void onClick(View view) {
-
+            mDetailListener.onClick(getAdapterPosition());
         }
     }
 
