@@ -116,8 +116,18 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             mRealm.beginTransaction();
             mResults.get(position).deleteFromRealm();
             mRealm.commitTransaction();
-
+            // Refreshes the data set.
             notifyItemRemoved(position);
+        }
+    }
+
+    public void markAsComplete(int position) {
+        if (position < mResults.size()) {
+            mRealm.beginTransaction();
+            mResults.get(position).setCompleted(true);
+            mRealm.commitTransaction();
+            // Refreshes the data set.
+            notifyItemChanged(position);
         }
     }
 

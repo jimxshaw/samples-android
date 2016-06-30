@@ -26,7 +26,7 @@ public class DialogDetail extends DialogFragment {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.button_mark_completed:
-                    markAsCompleted();
+                    markAsComplete();
                     break;
                 default:
                     break;
@@ -35,7 +35,7 @@ public class DialogDetail extends DialogFragment {
         }
     };
 
-    private void markAsCompleted() {
+    private void markAsComplete() {
         // This method finds out which row item in the recycler view adapter was clicked and then
         // mark that row item as completed. We need to know the row item drop object at the exact
         // position where the dialog is being shown. We have to communicate between this detail

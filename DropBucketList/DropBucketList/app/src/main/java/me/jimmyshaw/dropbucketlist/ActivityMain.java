@@ -67,10 +67,16 @@ public class ActivityMain extends AppCompatActivity {
         }
     };
 
+    // The instance of this listener will passed into our DetailDialog when ActivityMain calls showDetailDialog.
+    // The DetailDialog fragment will use this listener's implementation of onComplete in order
+    // to mark the row item at its particular position as complete when the user clicks on the
+    // Mark completed button inside the fragment.
     private CompleteListener mCompleteListener = new CompleteListener() {
         @Override
         public void onComplete(int position) {
-            Toast.makeText(ActivityMain.this, "Completed item at position: " + position, Toast.LENGTH_SHORT).show();
+            // Since marking a row item as complete involves hitting the Realm database, the actual
+            // implementation takes place in our recycler view adapter.
+            mAdapterDrops.markAsComplete(position);
         }
     };
 
@@ -131,6 +137,9 @@ public class ActivityMain extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_ROW_ITEM_POSITION, position);
         dialog.setArguments(bundle);
+        // We pass in the CompleteListener and its implemented onComplete method to DialogDetail so
+        // that when the user clicks the Mark completed button, the row item at its position can
+        // be marked as complete.
         dialog.setCompleteListener(mCompleteListener);
         dialog.show(getSupportFragmentManager(), "Detail");
     }
