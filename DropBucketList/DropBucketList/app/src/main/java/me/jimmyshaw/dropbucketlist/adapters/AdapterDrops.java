@@ -1,6 +1,8 @@
 package me.jimmyshaw.dropbucketlist.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,7 +90,11 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (holder instanceof DropHolder) {
             DropHolder dropHolder = (DropHolder) holder;
             Drop drop = mResults.get(position);
-            dropHolder.mTextViewGoal.setText(drop.getGoal());
+            dropHolder.setGoal(drop.getGoal());
+            // Completed goals have a different background color. The isCompleted property of each
+            // drop, a boolean, will determine whether a goal is complete. The only way the isCompleted
+            // property is set is through this adapter's markAsComplete method being called.
+            dropHolder.setBackground(drop.isCompleted());
         }
 
     }
@@ -136,14 +142,37 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         TextView mTextViewGoal;
         TextView mTextViewDateDue;
         DetailListener mDetailListener;
+        Context mContext;
+        View mItemView;
 
         public DropHolder(View itemView, DetailListener listener) {
             super(itemView);
-
+            // We need access to the context in order to get our drawable resources and set the
+            // background color of completed row items.
+            mContext = itemView.getContext();
+            mItemView = itemView;
             itemView.setOnClickListener(this);
             mTextViewGoal = (TextView) itemView.findViewById(R.id.text_view_goal);
             mTextViewDateDue = (TextView) itemView.findViewById(R.id.text_view_date_due);
             mDetailListener = listener;
+        }
+
+        public void setGoal(String goal) {
+            mTextViewGoal.setText(goal);
+        }
+
+        public void setBackground(boolean isCompleted) {
+            // Depending on whether or not the row item is complete, a different drawable will be
+            // returned. The returned drawable has to be set to a view and that view is the row item's
+            // view that's passed in to DropHolder's constructor every time the constructor is called.
+            Drawable drawable;
+            if (isCompleted) {
+                drawable = ContextCompat.getDrawable(mContext, R.color.background_drop_completed);
+            }
+            else {
+                drawable = ContextCompat.getDrawable(mContext, R.drawable.background_row_drop);
+            }
+            mItemView.setBackground(drawable);
         }
 
         @Override
