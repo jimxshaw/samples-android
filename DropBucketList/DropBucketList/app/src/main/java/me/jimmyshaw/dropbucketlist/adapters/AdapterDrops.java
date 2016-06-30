@@ -119,14 +119,22 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    public static class DropHolder extends RecyclerView.ViewHolder {
+    public static class DropHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView mTextViewGoal;
+        TextView mTextViewDateDue;
 
         public DropHolder(View itemView) {
             super(itemView);
 
+            itemView.setOnClickListener(this);
             mTextViewGoal = (TextView) itemView.findViewById(R.id.text_view_goal);
+            mTextViewDateDue = (TextView) itemView.findViewById(R.id.text_view_date_due);
+        }
+
+        @Override
+        public void onClick(View view) {
+
         }
     }
 

@@ -99,7 +99,12 @@ public class ActivityMain extends AppCompatActivity {
 
     private void showDialogAdd() {
         DialogAdd dialog = new DialogAdd();
-        dialog.show(getSupportFragmentManager(), TAG);
+        dialog.show(getSupportFragmentManager(), "Add");
+    }
+
+    private void showDialogDetail() {
+        DialogDetail dialog = new DialogDetail();
+        dialog.show(getSupportFragmentManager(), "Detail");
     }
 
     private void initBackgroundImage() {
