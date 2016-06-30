@@ -24,7 +24,7 @@ import me.jimmyshaw.dropbucketlist.widgets.DropRecyclerView;
 
 public class ActivityMain extends AppCompatActivity {
 
-    private static final String TAG = "Jim";
+    public static final String ARG_ROW_ITEM_POSITION = "row_item_position";
 
     private Toolbar mToolbar;
     private Button mButtonAdd;
@@ -61,7 +61,7 @@ public class ActivityMain extends AppCompatActivity {
     private DetailListener mDetailListener = new DetailListener() {
         @Override
         public void onClick(int position) {
-            showDialogDetail();
+            showDialogDetail(position);
         }
     };
 
@@ -112,8 +112,16 @@ public class ActivityMain extends AppCompatActivity {
         dialog.show(getSupportFragmentManager(), "Add");
     }
 
-    private void showDialogDetail() {
+    private void showDialogDetail(int position) {
+        // This method is called when the user clicks on a particular row item and wants to mark it
+        // as completed in the detail dialog fragment. How does the detail fragment know which row
+        // item to mark as completed? That's why we have to pass in to this method the row item's
+        // position as a bundle argument. Our detail fragment will get out this bundle argument and
+        // process it accordingly.
         DialogDetail dialog = new DialogDetail();
+        Bundle bundle = new Bundle();
+        bundle.putInt(ARG_ROW_ITEM_POSITION, position);
+        dialog.setArguments(bundle);
         dialog.show(getSupportFragmentManager(), "Detail");
     }
 

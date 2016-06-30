@@ -7,8 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class DialogDetail extends DialogFragment {
+
+    public static final String ARG_ROW_ITEM_POSITION = "row_item_position";
 
     private ImageButton mButtonClose;
     private Button mButtonCompleted;
@@ -42,5 +45,14 @@ public class DialogDetail extends DialogFragment {
         mButtonClose.setOnClickListener(mButtonClickListener);
         mButtonCompleted = (Button) view.findViewById(R.id.button_mark_completed);
         mButtonCompleted.setOnClickListener(mButtonClickListener);
+
+        // The bundle arguments that we're getting is the recycler view row item's position integer.
+        // We'll use this position int to be able to mark that particular row item as completed.
+        Bundle args = getArguments();
+        if (args != null) {
+            int position = args.getInt(ARG_ROW_ITEM_POSITION);
+            Toast.makeText(getActivity(), "Row item position: " + position, Toast.LENGTH_SHORT).show();
+        }
+
     }
 }
