@@ -2,7 +2,6 @@ package me.jimmyshaw.dropbucketlist;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import me.jimmyshaw.dropbucketlist.models.Drop;
 
 public class DialogAdd extends DialogFragment {
