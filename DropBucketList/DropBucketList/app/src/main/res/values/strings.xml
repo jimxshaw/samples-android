@@ -5,4 +5,9 @@
     <string name="hint_edit_text_drop">Enter a goal</string>
     <string name="font_family">sans-serif-thin</string>
     <string name="string_mark_completed">Mark completed</string>
+    <string name="action_add">Add</string>
+    <string name="action_sort_descending_date">Most time remaining</string>
+    <string name="action_sort_ascending_date">Least time remaining</string>
+    <string name="action_show_complete">Complete</string>
+    <string name="action_show_incomplete">Incomplete</string>
 </resources>
