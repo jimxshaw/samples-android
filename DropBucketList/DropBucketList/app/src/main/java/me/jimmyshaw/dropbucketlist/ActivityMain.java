@@ -103,6 +103,11 @@ public class ActivityMain extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mRealm = Realm.getDefaultInstance();
+
+        // We pull the filter from shared preferences, if any, and load a new results data set.
+        int filterOption = extractFilterFromSharedPreferences();
+        updateResults(filterOption);
+
         mResults = mRealm.where(Drop.class).findAllAsync();
 
         mEmptyDropsView = findViewById(R.id.empty_drops);
@@ -163,20 +168,54 @@ public class ActivityMain extends AppCompatActivity {
 
     }
 
-    public void savetoSharePreferences(int filterOption) {
+    public void saveFilterToSharePreferences(int filterOption) {
         // The difference between getPreferences and getSharedPreferences is the later is meant for
         // multiple shared preferences instances and it forces you to provide a file name to specify
         // the one you want.
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-        sharedPreferencesEditor.putInt("Filter", filterOption);
+        SharedPreferences.Editor Editor = sharedPreferences.edit();
+        Editor.putInt("Filter", filterOption);
         // We can commit to shared preferences using commit or apply. Apply is asynchronous and is
         // recommended.
-        sharedPreferencesEditor.apply();
+        Editor.apply();
     }
 
-    public void loadFromSharedPreferences() {
+    public int extractFilterFromSharedPreferences() {
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        // Our default filter option would be none.
+        int filterOption = sharedPreferences.getInt("Filter", Filter.NONE);
 
+        return filterOption;
+    }
+
+    public void updateResults(int filterOption) {
+        // A few things are happening here. First, we have to sort asynchronously or the
+        // operation would run on the UI thread and tie up the app. Second, we have to assign the
+        // returned results back to mResults or otherwise all our recycler view adapter operations
+        // would be using old, unsorted data. Third, previously the only other location where
+        // we notified our results data set changed is by calling addChangeListener in this
+        // activity's onStart but that's not enough. We have to notify immediately when our
+        // results changed so the UI can be updated accordingly. Thus we call addChangeListener
+        // after when a menu item action takes place.
+        switch (filterOption) {
+            case Filter.NONE:
+                mResults = mRealm.where(Drop.class).findAllAsync();
+                break;
+            case Filter.LEAST_TIME_REMAINING:
+                mResults = mRealm.where(Drop.class).findAllSortedAsync("dateDue");
+                break;
+            case Filter.MOST_TIME_REMAINING:
+                mResults = mRealm.where(Drop.class).findAllSortedAsync("dateDue", Sort.DESCENDING);
+                break;
+            case Filter.COMPLETE:
+                mResults = mRealm.where(Drop.class).equalTo("completed", true).findAllAsync();
+                break;
+            case Filter.INCOMPLETE:
+                mResults = mRealm.where(Drop.class).equalTo("completed", false).findAllAsync();
+                break;
+        }
+
+        mResults.addChangeListener(mRealmChangeListener);
     }
 
     @Override
@@ -193,44 +232,36 @@ public class ActivityMain extends AppCompatActivity {
         // We'll assume the item action was handled successfully but if not then the default switch
         // case will return false.
         boolean actionHandled = true;
+        int filterOption = Filter.NONE;
 
         switch (item.getItemId()) {
             case R.id.action_add:
                 showDialogAdd();
-                return true;
+                break;
             case R.id.action_sort_ascending_date:
-                // A few things are happening here. First, we have to sort asynchronously or the
-                // operation would run on the UI thread and tie up the app. Second, we have to assign the
-                // returned results back to mResults or otherwise all our recycler view adapter operations
-                // would be using old, unsorted data. Third, previously the only other location where
-                // we notified our results data set changed is by calling addChangeListener in this
-                // activity's onStart but that's not enough. We have to notify immediately when our
-                // results changed so the UI can be updated accordingly. Thus we call addChangeListener
-                // after every menu item action.
-                mResults = mRealm.where(Drop.class).findAllSortedAsync("dateDue");
-                mResults.addChangeListener(mRealmChangeListener);
-                savetoSharePreferences(Filter.LEAST_TIME_REMAINING);
+                filterOption = Filter.LEAST_TIME_REMAINING;
+                saveFilterToSharePreferences(Filter.LEAST_TIME_REMAINING);
                 break;
             case R.id.action_sort_descending_date:
-                mResults = mRealm.where(Drop.class).findAllSortedAsync("dateDue", Sort.DESCENDING);
-                mResults.addChangeListener(mRealmChangeListener);
-                savetoSharePreferences(Filter.MOST_TIME_REMAINING);
+                filterOption = Filter.MOST_TIME_REMAINING;
+                saveFilterToSharePreferences(Filter.MOST_TIME_REMAINING);
                 break;
             case R.id.action_complete:
-                mResults = mRealm.where(Drop.class).equalTo("completed", true).findAllAsync();
-                mResults.addChangeListener(mRealmChangeListener);
-                savetoSharePreferences(Filter.COMPLETE);
+                filterOption = Filter.COMPLETE;
+                saveFilterToSharePreferences(Filter.COMPLETE);
                 break;
             case R.id.action_incomplete:
-                mResults = mRealm.where(Drop.class).equalTo("completed", false).findAllAsync();
-                mResults.addChangeListener(mRealmChangeListener);
-                savetoSharePreferences(Filter.INCOMPLETE);
+                filterOption = Filter.INCOMPLETE;
+                saveFilterToSharePreferences(Filter.INCOMPLETE);
                 break;
             default:
                 actionHandled = false;
                 break;
         }
 
+        // We update our results data set according to which menu item action was clicked. The default
+        // filter is none.
+        updateResults(filterOption);
         return actionHandled;
     }
 
