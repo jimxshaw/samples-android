@@ -82,9 +82,15 @@ public class ActivityMain extends AppCompatActivity {
         }
     };
 
+    // This is a change listener that updates the database's data. The RealmResults' addChangeListener
+    // is called in the activity's onStart so that data changes will be notified. RealmResults'
+    // removeChangeListener must be called in the activity's onStop to prevent memory leaks. It's
+    // essentially an observer pattern. Subscribe to the data stream when the activity starts and
+    // unsubscribe to the stream when the activity stops.
     private RealmChangeListener mRealmChangeListener = new RealmChangeListener() {
         @Override
         public void onChange(Object element) {
+            // Query results are updated in real time.
             mAdapterDrops.update(mResults);
         }
     };
@@ -184,6 +190,8 @@ public class ActivityMain extends AppCompatActivity {
                 break;
         }
 
+        // This method's boolean determines who handles the menu item's action. True means our code,
+        // the developer, will handle the action. False means Android will handle the action.
         return true;
     }
 

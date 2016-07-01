@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import io.realm.Realm;
 import me.jimmyshaw.dropbucketlist.models.Drop;
@@ -39,6 +40,10 @@ public class DialogAdd extends DialogFragment {
     private void addAction() {
         // Get the value of the goal or task item. Get the time of when it was added.
         String goal = mInputEditText.getText().toString();
+
+        String date = mInputDatePicker.getMonth() + "/" + mInputDatePicker.getDayOfMonth() + "/" + mInputDatePicker.getYear();
+        Toast.makeText(getActivity(), date, Toast.LENGTH_SHORT).show();
+
         long dateAdded = System.currentTimeMillis();
 
         // To use Realm, we have to configure it and then add the configuration to a Realm instance.
