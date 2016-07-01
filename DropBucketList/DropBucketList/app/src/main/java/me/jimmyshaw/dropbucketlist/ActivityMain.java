@@ -1,5 +1,6 @@
 package me.jimmyshaw.dropbucketlist;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,18 +11,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
+import io.realm.Sort;
 import me.jimmyshaw.dropbucketlist.adapters.AdapterDrops;
 import me.jimmyshaw.dropbucketlist.adapters.AddListener;
 import me.jimmyshaw.dropbucketlist.adapters.CompleteListener;
 import me.jimmyshaw.dropbucketlist.adapters.DetailListener;
 import me.jimmyshaw.dropbucketlist.adapters.Divider;
+import me.jimmyshaw.dropbucketlist.adapters.Filter;
 import me.jimmyshaw.dropbucketlist.adapters.SimpleTouchCallback;
 import me.jimmyshaw.dropbucketlist.models.Drop;
 import me.jimmyshaw.dropbucketlist.widgets.DropRecyclerView;
@@ -161,6 +163,22 @@ public class ActivityMain extends AppCompatActivity {
 
     }
 
+    public void savetoSharePreferences(int filterOption) {
+        // The difference between getPreferences and getSharedPreferences is the later is meant for
+        // multiple shared preferences instances and it forces you to provide a file name to specify
+        // the one you want.
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+        sharedPreferencesEditor.putInt("Filter", filterOption);
+        // We can commit to shared preferences using commit or apply. Apply is asynchronous and is
+        // recommended.
+        sharedPreferencesEditor.apply();
+    }
+
+    public void loadFromSharedPreferences() {
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -170,29 +188,50 @@ public class ActivityMain extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // This method's boolean determines who handles the menu item's action. True means our code,
+        // the developer, will handle the action. False means Android will handle the action.
+        // We'll assume the item action was handled successfully but if not then the default switch
+        // case will return false.
+        boolean actionHandled = true;
+
         switch (item.getItemId()) {
             case R.id.action_add:
-                Toast.makeText(ActivityMain.this, "Add was clicked", Toast.LENGTH_SHORT).show();
+                showDialogAdd();
+                return true;
+            case R.id.action_sort_ascending_date:
+                // A few things are happening here. First, we have to sort asynchronously or the
+                // operation would run on the UI thread and tie up the app. Second, we have to assign the
+                // returned results back to mResults or otherwise all our recycler view adapter operations
+                // would be using old, unsorted data. Third, previously the only other location where
+                // we notified our results data set changed is by calling addChangeListener in this
+                // activity's onStart but that's not enough. We have to notify immediately when our
+                // results changed so the UI can be updated accordingly. Thus we call addChangeListener
+                // after every menu item action.
+                mResults = mRealm.where(Drop.class).findAllSortedAsync("dateDue");
+                mResults.addChangeListener(mRealmChangeListener);
+                savetoSharePreferences(Filter.LEAST_TIME_REMAINING);
                 break;
             case R.id.action_sort_descending_date:
-                Toast.makeText(ActivityMain.this, "Sort descending was clicked", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.action_sort_ascending_date:
-                Toast.makeText(ActivityMain.this, "Sort ascending was clicked", Toast.LENGTH_SHORT).show();
+                mResults = mRealm.where(Drop.class).findAllSortedAsync("dateDue", Sort.DESCENDING);
+                mResults.addChangeListener(mRealmChangeListener);
+                savetoSharePreferences(Filter.MOST_TIME_REMAINING);
                 break;
             case R.id.action_complete:
-                Toast.makeText(ActivityMain.this, "Show complete was clicked", Toast.LENGTH_SHORT).show();
+                mResults = mRealm.where(Drop.class).equalTo("completed", true).findAllAsync();
+                mResults.addChangeListener(mRealmChangeListener);
+                savetoSharePreferences(Filter.COMPLETE);
                 break;
             case R.id.action_incomplete:
-                Toast.makeText(ActivityMain.this, "Show incomplete was clicked", Toast.LENGTH_SHORT).show();
+                mResults = mRealm.where(Drop.class).equalTo("completed", false).findAllAsync();
+                mResults.addChangeListener(mRealmChangeListener);
+                savetoSharePreferences(Filter.INCOMPLETE);
                 break;
             default:
+                actionHandled = false;
                 break;
         }
 
-        // This method's boolean determines who handles the menu item's action. True means our code,
-        // the developer, will handle the action. False means Android will handle the action.
-        return true;
+        return actionHandled;
     }
 
     @Override
