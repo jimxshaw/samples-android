@@ -9,7 +9,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
+
+import java.util.Calendar;
 
 import io.realm.Realm;
 import me.jimmyshaw.dropbucketlist.models.Drop;
@@ -35,14 +36,23 @@ public class DialogAdd extends DialogFragment {
             dismiss();
         }
     };
-
-    // TODO: Process the date field.
+    
     private void addAction() {
         // Get the value of the goal or task item. Get the time of when it was added.
         String goal = mInputEditText.getText().toString();
 
+        // Our goal's deadline date is in MM/DD/YYYY format. We get an instance of calendar and set
+        // month, day and year with the user input values from the date picker widget. Even though
+        // our app isn't exact in specifying the time, we have to set those fields to a value anyway
+        // in order to pass in the date to our Drop object as time-in-milliseconds.
         String date = mInputDatePicker.getMonth() + "/" + mInputDatePicker.getDayOfMonth() + "/" + mInputDatePicker.getYear();
-        Toast.makeText(getActivity(), date, Toast.LENGTH_SHORT).show();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MONTH, mInputDatePicker.getMonth());
+        calendar.set(Calendar.DAY_OF_MONTH, mInputDatePicker.getDayOfMonth());
+        calendar.set(Calendar.YEAR, mInputDatePicker.getYear());
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
 
         long dateAdded = System.currentTimeMillis();
 
@@ -50,8 +60,7 @@ public class DialogAdd extends DialogFragment {
         // Since we already configured Realm on start up in the AppDropBucketList class we can
         // simply get a Realm instance without issue.
         Realm realm = Realm.getDefaultInstance();
-        // Create a fake drop as a test with Realm.
-        Drop drop = new Drop(dateAdded, 0, goal, false);
+        Drop drop = new Drop(dateAdded, calendar.getTimeInMillis(), goal, false);
         // Since copyToRealm is a write instruction, it must be used with a transaction.
         realm.beginTransaction();
         realm.copyToRealm(drop);
