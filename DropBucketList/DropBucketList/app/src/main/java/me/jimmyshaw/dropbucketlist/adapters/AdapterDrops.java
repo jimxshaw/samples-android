@@ -167,7 +167,10 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             // The third parameter of getRelativeTimeSpanString is called minResolution, which is the
             // minimum about of time period that we'd like notify the user. Day is a perfect time
             // period. When a goal is due today, the text will display today.
-            mTextViewDateDue.setText(DateUtils.getRelativeTimeSpanString(dateDue, System.currentTimeMillis(), DateUtils.DAY_IN_MILLIS, 0));
+            mTextViewDateDue.setText(DateUtils.getRelativeTimeSpanString(dateDue,
+                    System.currentTimeMillis(),
+                    DateUtils.DAY_IN_MILLIS,
+                    DateUtils.FORMAT_ABBREV_ALL));
         }
 
         public void setBackground(boolean isCompleted) {
