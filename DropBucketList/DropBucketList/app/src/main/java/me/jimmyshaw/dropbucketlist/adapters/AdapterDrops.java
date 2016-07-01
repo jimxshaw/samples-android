@@ -91,6 +91,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             DropHolder dropHolder = (DropHolder) holder;
             Drop drop = mResults.get(position);
             dropHolder.setGoal(drop.getGoal());
+            dropHolder.setDateDue(drop.getDateDue());
             // Completed goals have a different background color. The isCompleted property of each
             // drop, a boolean, will determine whether a goal is complete. The only way the isCompleted
             // property is set is through this adapter's markAsComplete method being called.
@@ -161,6 +162,10 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             mTextViewGoal.setText(goal);
         }
 
+        public void setDateDue(long dateDue) {
+            mTextViewDateDue.setText(String.valueOf(dateDue));
+        }
+
         public void setBackground(boolean isCompleted) {
             // Depending on whether or not the row item is complete, a different drawable will be
             // returned. The returned drawable has to be set to a view and that view is the row item's
@@ -179,6 +184,8 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public void onClick(View view) {
             mDetailListener.onClick(getAdapterPosition());
         }
+
+
     }
 
     public static class FooterHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

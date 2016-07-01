@@ -36,7 +36,7 @@ public class DialogAdd extends DialogFragment {
             dismiss();
         }
     };
-    
+
     private void addAction() {
         // Get the value of the goal or task item. Get the time of when it was added.
         String goal = mInputEditText.getText().toString();
