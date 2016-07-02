@@ -34,6 +34,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private AddListener mAddListener;
     private DetailListener mDetailListener;
+    private ResetListener mResetListener;
 
     private LayoutInflater mLayoutInflater;
 
@@ -51,14 +52,15 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         mRealm = realm;
     }
 
-    public AdapterDrops(Context context, Realm realm, RealmResults<Drop> results, AddListener addListener, DetailListener detailListener) {
+    public AdapterDrops(Context context, Realm realm, RealmResults<Drop> results,
+                        AddListener addListener, DetailListener detailListener, ResetListener resetListener) {
         mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
         update(results);
         mRealm = realm;
         mAddListener = addListener;
         mDetailListener = detailListener;
-
+        mResetListener = resetListener;
     }
 
     public void update(RealmResults<Drop> results) {
@@ -181,6 +183,17 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             mRealm.commitTransaction();
             // Refreshes the data set.
             notifyItemRemoved(position);
+        }
+
+        resetFilterIfNoItems();
+    }
+
+    private void resetFilterIfNoItems() {
+        // If our results data set has no items and we have a particular filter on, we'll reset the
+        // filter to none.
+        if (mResults.isEmpty() && (mFilterOption == Filter.COMPLETE ||
+                mFilterOption == Filter.INCOMPLETE)) {
+            mResetListener.onReset();
         }
     }
 

@@ -25,4 +25,7 @@
         android:id="@+id/action_incomplete"
         android:title="@string/action_show_incomplete"/>
 
+    <item android:id="@+id/action_none"
+            android:title="@string/action_none"/>
+
 </menu>

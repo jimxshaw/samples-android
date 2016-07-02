@@ -24,6 +24,7 @@ import me.jimmyshaw.dropbucketlist.adapters.CompleteListener;
 import me.jimmyshaw.dropbucketlist.adapters.DetailListener;
 import me.jimmyshaw.dropbucketlist.adapters.Divider;
 import me.jimmyshaw.dropbucketlist.adapters.Filter;
+import me.jimmyshaw.dropbucketlist.adapters.ResetListener;
 import me.jimmyshaw.dropbucketlist.adapters.SimpleTouchCallback;
 import me.jimmyshaw.dropbucketlist.models.Drop;
 import me.jimmyshaw.dropbucketlist.widgets.DropRecyclerView;
@@ -84,6 +85,14 @@ public class ActivityMain extends AppCompatActivity {
         }
     };
 
+    private ResetListener mResetListener = new ResetListener() {
+        @Override
+        public void onReset() {
+            AppDropBucketList.saveFilterToSharePreferences(ActivityMain.this, Filter.NONE);
+            updateResults(Filter.NONE);
+        }
+    };
+
     // This is a change listener that updates the database's data. The RealmResults' addChangeListener
     // is called in the activity's onStart so that data changes will be notified. RealmResults'
     // removeChangeListener must be called in the activity's onStop to prevent memory leaks. It's
@@ -126,7 +135,7 @@ public class ActivityMain extends AppCompatActivity {
         mRecyclerView.hideIfEmpty(mToolbar);
         mRecyclerView.showIfEmpty(mEmptyDropsView);
 
-        mAdapterDrops = new AdapterDrops(this, mRealm, mResults, mAddListener, mDetailListener);
+        mAdapterDrops = new AdapterDrops(this, mRealm, mResults, mAddListener, mDetailListener, mResetListener);
         // This setHasStableIds method is for optimization. It saysing when we provide a view holder,
         // its id is unique and will not change.
         mAdapterDrops.setHasStableIds(true);
@@ -237,6 +246,8 @@ public class ActivityMain extends AppCompatActivity {
             case R.id.action_incomplete:
                 filterOption = Filter.INCOMPLETE;
                 break;
+            case R.id.action_none:
+                filterOption = Filter.NONE;
             default:
                 actionHandled = false;
                 break;
