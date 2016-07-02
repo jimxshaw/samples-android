@@ -21,8 +21,11 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     // ITEM represents the position of a particular goal in the recycler view. The footer, which
     // is also part of the recycler view is always at a position one greater than the last goal's
     // position. If the final goal were at position n then the footer would be at position n+1.
+    // What if there were no items to display? Then NO_ITEMS would substitute for n and the footer
+    // would still tag behind it as normal.
     public static final int ITEM = 0;
-    public static final int FOOTER = 1;
+    public static final int NO_ITEMS = 1;
+    public static final int FOOTER = 2;
 
     private static final String TAG = "Jim";
 
@@ -69,10 +72,14 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // The viewType parameter is the int that's returned from getItemViewType. We'll use viewType
-        // to inflater two different layouts depending on which int gets passed in.
+        // to inflate any number of different layouts depending on which int gets passed in.
         if (viewType == FOOTER) {
             View view = mLayoutInflater.inflate(R.layout.footer, parent, false);
             return new FooterHolder(view, mAddListener);
+        }
+        else if (viewType == NO_ITEMS) {
+            View view = mLayoutInflater.inflate(R.layout.no_items, parent, false);
+            return new NoItemsHolder(view);
         }
         else {
             View view = mLayoutInflater.inflate(R.layout.row_drop, parent, false);
