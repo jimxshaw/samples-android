@@ -18,7 +18,8 @@
     <dimen name="text_view_title_font_size">18sp</dimen>
     <dimen name="row_drop_horizontal_padding">18dp</dimen>
     <dimen name="row_drop_vertical_padding">22dp</dimen>
-    <dimen name="image_view_drop_size">16dp</dimen>
+    <dimen name="row_drop_text_size">16sp</dimen>
+    <dimen name="image_view_drop_size">14dp</dimen>
     <dimen name="text_view_horizontal_padding">18dp</dimen>
     <dimen name="button_drawable_padding">16dp</dimen>
     <dimen name="image_button_width">25dp</dimen>
@@ -29,4 +30,5 @@
     <dimen name="dialog_detail_padding">24dp</dimen>
     <dimen name="dialog_add_padding">16dp</dimen>
     <dimen name="text_view_no_items_vertical_padding">22dp</dimen>
+    <dimen name="button_add_a_drop_vertical_margin">128dp</dimen>
 </resources>
