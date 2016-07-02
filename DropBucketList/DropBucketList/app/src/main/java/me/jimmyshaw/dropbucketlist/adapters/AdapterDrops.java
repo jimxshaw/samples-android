@@ -195,6 +195,17 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     }
 
+    // We must have a view holder to for the scenario when the user applies a filter option but there
+    // are no items to display. Without it, the user will see nothing but the main activity home
+    // screen with our app symbol. With this view holder, the user will see a message that states
+    // there are no items to display with the footer under that message.
+    public static class NoItemsHolder extends RecyclerView.ViewHolder {
+
+        public NoItemsHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
     public static class FooterHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         Button mButtonAdd;
