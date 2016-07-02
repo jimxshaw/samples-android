@@ -1,6 +1,5 @@
 package me.jimmyshaw.dropbucketlist;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -105,7 +104,7 @@ public class ActivityMain extends AppCompatActivity {
         mRealm = Realm.getDefaultInstance();
 
         // We pull the filter from shared preferences, if any, and load a new results data set.
-        int filterOption = extractFilterFromSharedPreferences();
+        int filterOption = AppDropBucketList.extractFilterFromSharedPreferences(this);
         updateResults(filterOption);
 
         mResults = mRealm.where(Drop.class).findAllAsync();
@@ -168,26 +167,6 @@ public class ActivityMain extends AppCompatActivity {
 
     }
 
-    public void saveFilterToSharePreferences(int filterOption) {
-        // The difference between getPreferences and getSharedPreferences is the later is meant for
-        // multiple shared preferences instances and it forces you to provide a file name to specify
-        // the one you want.
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor Editor = sharedPreferences.edit();
-        Editor.putInt("Filter", filterOption);
-        // We can commit to shared preferences using commit or apply. Apply is asynchronous and is
-        // recommended.
-        Editor.apply();
-    }
-
-    public int extractFilterFromSharedPreferences() {
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        // Our default filter option would be none.
-        int filterOption = sharedPreferences.getInt("Filter", Filter.NONE);
-
-        return filterOption;
-    }
-
     public void updateResults(int filterOption) {
         // A few things are happening here. First, we have to sort asynchronously or the
         // operation would run on the UI thread and tie up the app. Second, we have to assign the
@@ -214,7 +193,6 @@ public class ActivityMain extends AppCompatActivity {
                 mResults = mRealm.where(Drop.class).equalTo("completed", false).findAllAsync();
                 break;
         }
-
         mResults.addChangeListener(mRealmChangeListener);
     }
 
@@ -240,19 +218,15 @@ public class ActivityMain extends AppCompatActivity {
                 break;
             case R.id.action_sort_ascending_date:
                 filterOption = Filter.LEAST_TIME_REMAINING;
-                saveFilterToSharePreferences(Filter.LEAST_TIME_REMAINING);
                 break;
             case R.id.action_sort_descending_date:
                 filterOption = Filter.MOST_TIME_REMAINING;
-                saveFilterToSharePreferences(Filter.MOST_TIME_REMAINING);
                 break;
             case R.id.action_complete:
                 filterOption = Filter.COMPLETE;
-                saveFilterToSharePreferences(Filter.COMPLETE);
                 break;
             case R.id.action_incomplete:
                 filterOption = Filter.INCOMPLETE;
-                saveFilterToSharePreferences(Filter.INCOMPLETE);
                 break;
             default:
                 actionHandled = false;
@@ -262,6 +236,7 @@ public class ActivityMain extends AppCompatActivity {
         // We update our results data set according to which menu item action was clicked. The default
         // filter is none.
         updateResults(filterOption);
+        AppDropBucketList.saveFilterToSharePreferences(this, filterOption);
         return actionHandled;
     }
 

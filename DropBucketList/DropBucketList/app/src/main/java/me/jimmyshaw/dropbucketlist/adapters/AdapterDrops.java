@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import me.jimmyshaw.dropbucketlist.AppDropBucketList;
 import me.jimmyshaw.dropbucketlist.R;
 import me.jimmyshaw.dropbucketlist.models.Drop;
 
@@ -27,7 +28,9 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public static final int NO_ITEMS = 1;
     public static final int FOOTER = 2;
 
-    private static final String TAG = "Jim";
+    // These two int constants will be used with the getItemsCount method.
+    public static final int COUNT_FOOTER = 1;
+    public static final int COUNT_NO_ITEMS = 1;
 
     private AddListener mAddListener;
     private DetailListener mDetailListener;
@@ -37,22 +40,30 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private Realm mRealm;
     private RealmResults<Drop> mResults;
 
+    private Context mContext;
+
+    // This is the filter options that's extracted from shared preferences at app start up.
+    private int mFilterOption;
+
     public AdapterDrops(Context context, Realm realm, RealmResults<Drop> results) {
         mLayoutInflater = LayoutInflater.from(context);
-        mRealm = realm;
         update(results);
+        mRealm = realm;
     }
 
     public AdapterDrops(Context context, Realm realm, RealmResults<Drop> results, AddListener addListener, DetailListener detailListener) {
+        mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
+        update(results);
         mRealm = realm;
         mAddListener = addListener;
         mDetailListener = detailListener;
-        update(results);
+
     }
 
     public void update(RealmResults<Drop> results) {
         mResults = results;
+        mFilterOption = AppDropBucketList.extractFilterFromSharedPreferences(mContext);
         notifyDataSetChanged();
     }
 
@@ -61,11 +72,27 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         // We add a conditional to capture the null scenario to prevent null pointer exceptions.
         // Since collections always start at position 0, if the position is less than the collection size
         // then it will be a goal, otherwise it's the footer.
-        if (mResults == null || position < mResults.size()) {
-            return ITEM;
+        if (!mResults.isEmpty()) {
+            if (position < mResults.size()) {
+                return ITEM;
+            }
+            else {
+                return FOOTER;
+            }
         }
         else {
-            return FOOTER;
+            if (mFilterOption == Filter.COMPLETE ||
+                    mFilterOption == Filter.INCOMPLETE) {
+                if (position == 0) {
+                    return NO_ITEMS;
+                }
+                else {
+                    return FOOTER;
+                }
+            }
+            else {
+                return ITEM;
+            }
         }
     }
 
@@ -113,13 +140,23 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         // The results collection does not encompass the footer. We must add 1 to the collection size
         // for the recycler view to show goals and the footer. Using only the collection's size,
         // we'll just see the goals.
-        // When the collection is null or empty we return 0 so that the footer won't be shown. What
-        // will be shown is the main activity screen with the app logo and add button.
-        if (mResults == null || mResults.isEmpty()) {
-            return 0;
+        // Only after querying every single filter option and the results still being 0 then we'll
+        // shown the blank main activity screen.
+        // If the user applied a complete or incomplete filter that's stored in shared preferences
+        // and that filter produces no items then we'll show the no items layout with the footer
+        // added behind it.
+        if (!mResults.isEmpty()) {
+            return mResults.size() + COUNT_FOOTER;
         }
         else {
-            return mResults.size() + 1;
+            if (mFilterOption == Filter.LEAST_TIME_REMAINING
+                    || mFilterOption == Filter.MOST_TIME_REMAINING
+                    || mFilterOption == Filter.NONE) {
+                return 0;
+            }
+            else {
+                return COUNT_NO_ITEMS + COUNT_FOOTER;
+            }
         }
     }
 
