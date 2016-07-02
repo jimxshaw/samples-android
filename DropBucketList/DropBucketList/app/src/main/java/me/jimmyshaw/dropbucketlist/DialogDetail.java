@@ -54,6 +54,13 @@ public class DialogDetail extends DialogFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogTheme);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.dialog_detail, container, false);
     }
