@@ -2,6 +2,7 @@ package me.jimmyshaw.dropbucketlist;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -119,9 +120,17 @@ public class ActivityMain extends AppCompatActivity {
         mRecyclerView = (DropRecyclerView) findViewById(R.id.recycler_view_drops);
         // Add a divider between each row item.
         mRecyclerView.addItemDecoration(new Divider(this, LinearLayoutManager.VERTICAL));
+        // Add animations to the recycler view items.
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
         mRecyclerView.hideIfEmpty(mToolbar);
         mRecyclerView.showIfEmpty(mEmptyDropsView);
+
         mAdapterDrops = new AdapterDrops(this, mRealm, mResults, mAddListener, mDetailListener);
+        // This setHasStableIds method is for optimization. It saysing when we provide a view holder,
+        // its id is unique and will not change.
+        mAdapterDrops.setHasStableIds(true);
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapterDrops);
 

@@ -161,6 +161,17 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override
+    public long getItemId(int position) {
+        // This method is used capture a unique id of a row item so we can use it to apply animations to
+        // it. Since each row item cannot be added at the same time, we'll use the dateAdded field
+        // of each Drop object as the id.
+        if (position < mResults.size()) {
+            mResults.get(position).getDateAdded();
+        }
+        return RecyclerView.NO_ID;
+    }
+
+    @Override
     public void onSwipe(int position) {
         // Since deletion is a write command, we have to begin and commit a Realm transaction.
         // We add an if conditional to make sure we don't try to delete the footer.

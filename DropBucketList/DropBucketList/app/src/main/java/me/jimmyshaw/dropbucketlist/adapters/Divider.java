@@ -52,7 +52,7 @@ public class Divider extends RecyclerView.ItemDecoration {
                 View currentChild = parent.getChildAt(i);
                 // Force the divider to respect the child view's margins by using LayoutParams.
                 RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) currentChild.getLayoutParams();
-                top = currentChild.getBottom() - params.bottomMargin;
+                top = currentChild.getTop() - params.topMargin;
                 bottom = top + mDivider.getIntrinsicHeight();
                 // After determining the boundaries values, we set the bounds of the divider and then
                 // draw it.
