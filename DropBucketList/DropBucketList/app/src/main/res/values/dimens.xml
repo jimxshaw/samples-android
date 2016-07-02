@@ -27,4 +27,5 @@
     <dimen name="button_mark_completed_margin_bottom">96dp</dimen>
     <dimen name="dialog_detail_padding">24dp</dimen>
     <dimen name="dialog_add_padding">16dp</dimen>
+    <dimen name="text_view_no_items_vertical_padding">22dp</dimen>
 </resources>
