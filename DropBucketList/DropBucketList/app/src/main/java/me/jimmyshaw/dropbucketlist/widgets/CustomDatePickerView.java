@@ -2,7 +2,9 @@ package me.jimmyshaw.dropbucketlist.widgets;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,7 +17,7 @@ import me.jimmyshaw.dropbucketlist.R;
 
 // This class extends LinearLayout because our custom date picker layout xml file has the foot
 // element of LinearLayout.
-public class CustomDatePickerView extends LinearLayout {
+public class CustomDatePickerView extends LinearLayout implements View.OnTouchListener {
 
     private TextView mTextViewMonth;
     private TextView mTextViewDay;
@@ -68,6 +70,12 @@ public class CustomDatePickerView extends LinearLayout {
         mTextViewDay = (TextView) this.findViewById(R.id.text_view_day);
         mTextViewYear = (TextView) this.findViewById(R.id.text_view_year);
 
+        // To process the user's click of the up or down button on our custom date picker, we have to
+        // include an onTouchListener on each widget.
+        mTextViewMonth.setOnTouchListener(this);
+        mTextViewDay.setOnTouchListener(this);
+        mTextViewYear.setOnTouchListener(this);
+
         // After initializing our widgets above, we call the updateCalendar method with the
         // date parameters passed in after getting them from the calendar member variable.
         // Since our date picker doesn't take into account the hour, minute or second, we'll pass 0s.
@@ -98,5 +106,32 @@ public class CustomDatePickerView extends LinearLayout {
 
     public long getTime() {
         return mCalendar.getTimeInMillis();
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        // The passed in view is the view that was touched.
+        // ACTION_DOWN is when we first touch the screen.
+        // ACTION_MOVE takes place after ACTION_DOWN when we move our finger or we hold our finger.
+        // ACTION_UP takes place after we released our touch action.
+        // ACTION_CANCEL occurs when the current touch action is aborted.
+        switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                Log.d("DOWN", "x: " + motionEvent.getX() + " y: " + motionEvent.getY() + " true x: " + motionEvent.getRawX() + " true y: " + motionEvent.getRawY());
+                break;
+            case MotionEvent.ACTION_MOVE:
+                Log.d("MOVE", "x: " + motionEvent.getX() + " y: " + motionEvent.getY() + " true x: " + motionEvent.getRawX() + " true y: " + motionEvent.getRawY());
+                break;
+            case MotionEvent.ACTION_UP:
+                Log.d("UP", "x: " + motionEvent.getX() + " y: " + motionEvent.getY() + " true x: " + motionEvent.getRawX() + " true y: " + motionEvent.getRawY());
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                Log.d("CANCEL", "x: " + motionEvent.getX() + " y: " + motionEvent.getY() + " true x: " + motionEvent.getRawX() + " true y: " + motionEvent.getRawY());
+                break;
+        }
+
+        // The boolean specifies whether or not the touch event has been consumed. True for yes or
+        // false for no.
+        return true;
     }
 }
