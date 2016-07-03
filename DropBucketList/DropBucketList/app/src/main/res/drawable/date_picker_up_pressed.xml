@@ -12,6 +12,9 @@
             <size
                 android:width="@dimen/date_picker_shape_size"
                 android:height="@dimen/date_picker_shape_height"/>
+            <corners
+                android:topLeftRadius="@dimen/date_picker_item_corner_radius"
+                android:topRightRadius="@dimen/date_picker_item_corner_radius"/>
         </shape>
     </item>
 
