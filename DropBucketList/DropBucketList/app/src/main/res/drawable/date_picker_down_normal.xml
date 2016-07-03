@@ -7,12 +7,16 @@
     -->
     <item>
         <shape>
-            <solid android:color="@color/purple"/>
-            <size android:width="@dimen/date_picker_shape_size"/>
+            <solid
+                android:color="@color/purple"/>
+            <size
+                android:width="@dimen/date_picker_shape_size"
+                android:height="@dimen/date_picker_shape_height"/>
         </shape>
     </item>
 
     <item
+        android:height="@dimen/date_picker_shape_height"
         android:drawable="@drawable/ic_down_normal"
         android:gravity="center"/>
 </layer-list>

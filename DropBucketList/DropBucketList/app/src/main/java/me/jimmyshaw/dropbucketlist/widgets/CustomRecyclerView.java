@@ -13,7 +13,7 @@ import java.util.List;
 import me.jimmyshaw.dropbucketlist.utilities.Util;
 
 // This is a custom recycler view class that behaves differently from the normal recycler view.
-public class DropRecyclerView extends RecyclerView {
+public class CustomRecyclerView extends RecyclerView {
 
     // Using empty list will allow us to make a list with zero items. This is the only way to initialize
     // an empty list and to avoid null pointer exceptions.
@@ -59,15 +59,15 @@ public class DropRecyclerView extends RecyclerView {
 
     // Typical constructor to initialize a recycler view from code. The other two constructors are
     // to initialize the constructor from xml.
-    public DropRecyclerView(Context context) {
+    public CustomRecyclerView(Context context) {
         super(context);
     }
 
-    public DropRecyclerView(Context context, @Nullable AttributeSet attrs) {
+    public CustomRecyclerView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public DropRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyle) {
+    public CustomRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 

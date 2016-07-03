@@ -37,7 +37,11 @@
             android:padding="16dp"
             android:singleLine="true"/>
 
-        <DatePicker
+        <!--
+            To use the default Google date picker, use the DatePicker widget. We choose to use a custom
+            date picker however so we have to specify the complete package name.
+        -->
+        <me.jimmyshaw.dropbucketlist.widgets.CustomDatePickerView
             android:id="@+id/date_picker_view_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

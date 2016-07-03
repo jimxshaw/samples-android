@@ -27,7 +27,7 @@ import me.jimmyshaw.dropbucketlist.adapters.Filter;
 import me.jimmyshaw.dropbucketlist.adapters.ResetListener;
 import me.jimmyshaw.dropbucketlist.adapters.SimpleTouchCallback;
 import me.jimmyshaw.dropbucketlist.models.Drop;
-import me.jimmyshaw.dropbucketlist.widgets.DropRecyclerView;
+import me.jimmyshaw.dropbucketlist.widgets.CustomRecyclerView;
 
 public class ActivityMain extends AppCompatActivity {
 
@@ -36,7 +36,7 @@ public class ActivityMain extends AppCompatActivity {
     private Toolbar mToolbar;
     private Button mButtonAdd;
 
-    private DropRecyclerView mRecyclerView;
+    private CustomRecyclerView mRecyclerView;
 
     private View mEmptyDropsView;
 
@@ -126,7 +126,7 @@ public class ActivityMain extends AppCompatActivity {
         mButtonAdd = (Button) findViewById(R.id.button_add_a_drop);
         mButtonAdd.setOnClickListener(mButtonActivityMainAddListener);
 
-        mRecyclerView = (DropRecyclerView) findViewById(R.id.recycler_view_drops);
+        mRecyclerView = (CustomRecyclerView) findViewById(R.id.recycler_view_drops);
         // Add a divider between each row item.
         mRecyclerView.addItemDecoration(new Divider(this, LinearLayoutManager.VERTICAL));
         // Add animations to the recycler view items.

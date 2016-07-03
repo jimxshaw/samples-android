@@ -17,7 +17,7 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar"/>
 
-    <me.jimmyshaw.dropbucketlist.widgets.DropRecyclerView
+    <me.jimmyshaw.dropbucketlist.widgets.CustomRecyclerView
         android:id="@+id/recycler_view_drops"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
