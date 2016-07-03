@@ -1,8 +1,9 @@
 package me.jimmyshaw.dropbucketlist.widgets;
 
 import android.content.Context;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,6 +27,12 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
     private Calendar mCalendar;
 
     private SimpleDateFormat mSimpleDateFormat;
+
+    // These int variables represent the boundaries of our drawable text views.
+    public static final int LEFT = 0;
+    public static final int TOP = 1;
+    public static final int RIGHT = 2;
+    public static final int BOTTOM = 3;
 
     public CustomDatePickerView(Context context) {
         super(context);
@@ -110,28 +117,72 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        // The passed in view is the view that was touched.
-        // ACTION_DOWN is when we first touch the screen.
-        // ACTION_MOVE takes place after ACTION_DOWN when we move our finger or we hold our finger.
-        // ACTION_UP takes place after we released our touch action.
-        // ACTION_CANCEL occurs when the current touch action is aborted.
-        switch (motionEvent.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                Log.d("DOWN", "x: " + motionEvent.getX() + " y: " + motionEvent.getY() + " true x: " + motionEvent.getRawX() + " true y: " + motionEvent.getRawY());
+        // The passed in view is the view that was touched but which one? That's determined by a
+        // switch statement that takes in the view's id.
+        switch (view.getId()) {
+            case R.id.text_view_month:
+                processTouchEvents(mTextViewMonth, motionEvent);
                 break;
-            case MotionEvent.ACTION_MOVE:
-                Log.d("MOVE", "x: " + motionEvent.getX() + " y: " + motionEvent.getY() + " true x: " + motionEvent.getRawX() + " true y: " + motionEvent.getRawY());
+            case R.id.text_view_day:
+                processTouchEvents(mTextViewDay, motionEvent);
                 break;
-            case MotionEvent.ACTION_UP:
-                Log.d("UP", "x: " + motionEvent.getX() + " y: " + motionEvent.getY() + " true x: " + motionEvent.getRawX() + " true y: " + motionEvent.getRawY());
-                break;
-            case MotionEvent.ACTION_CANCEL:
-                Log.d("CANCEL", "x: " + motionEvent.getX() + " y: " + motionEvent.getY() + " true x: " + motionEvent.getRawX() + " true y: " + motionEvent.getRawY());
+            case R.id.text_view_year:
+                processTouchEvents(mTextViewYear, motionEvent);
                 break;
         }
 
         // The boolean specifies whether or not the touch event has been consumed. True for yes or
         // false for no.
         return true;
+    }
+
+    private void processTouchEvents(TextView textView, MotionEvent motionEvent) {
+        // To contain a touch event to a particular region of the text view drawable, we must take
+        // the boundaries and calculate with them accordingly.
+        Drawable[] drawables = textView.getCompoundDrawables();
+
+        if (hasTopDrawable(drawables) && hasBottomDrawable(drawables)) {
+            Rect boundsTop = drawables[TOP].getBounds();
+            Rect boundsBottom = drawables[BOTTOM].getBounds();
+
+            float x = motionEvent.getX();
+            float y = motionEvent.getY();
+
+            // Which drawable region was clicked? The top or the bottom?
+            // If the top drawable region was clicked, do all the motion event processing for it.
+            // The same applies to the bottom drawable region. If the click was to neither region,
+            // we reset everything.
+            if (topDrawableClicked(x, y)) {
+
+            }
+            else if (bottomDrawableClicked(x, y)) {
+
+            }
+            else {
+
+            }
+
+        }
+
+    }
+
+    private boolean hasTopDrawable(Drawable[] drawables) {
+        return drawables[TOP] != null;
+    }
+
+    private boolean topDrawableClicked(float x, float y) {
+        int minX, maxX, minY, maxY;
+
+        return false;
+    }
+
+    private boolean hasBottomDrawable(Drawable[] drawables) {
+        return drawables[BOTTOM] != null;
+    }
+
+    private boolean bottomDrawableClicked(float x, float y) {
+        int minX, maxX, minY, maxY;
+
+        return false;
     }
 }
