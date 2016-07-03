@@ -14,12 +14,15 @@ import java.util.Calendar;
 
 import io.realm.Realm;
 import me.jimmyshaw.dropbucketlist.models.Drop;
+import me.jimmyshaw.dropbucketlist.widgets.CustomDatePickerView;
 
 public class DialogAdd extends DialogFragment {
 
     private ImageButton mButtonClose;
     private EditText mInputEditText;
-    private DatePicker mInputDatePicker;
+    // We're using our own custom date picker type but if in the future we'd like to switch back to
+    // the default date picker, simply change the type to DatePicker.
+    private CustomDatePickerView mInputDatePicker;
     private Button mButtonAdd;
 
     private View.OnClickListener mButtonClickListener = new View.OnClickListener() {
@@ -41,26 +44,13 @@ public class DialogAdd extends DialogFragment {
         // Get the value of the goal or task item. Get the time of when it was added.
         String goal = mInputEditText.getText().toString();
 
-        // Our goal's deadline date is in MM/DD/YYYY format. We get an instance of calendar and set
-        // month, day and year with the user input values from the date picker widget. Even though
-        // our app isn't exact in specifying the time, we have to set those fields to a value anyway
-        // in order to pass in the date to our Drop object as time-in-milliseconds.
-        String date = mInputDatePicker.getMonth() + "/" + mInputDatePicker.getDayOfMonth() + "/" + mInputDatePicker.getYear();
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.MONTH, mInputDatePicker.getMonth());
-        calendar.set(Calendar.DAY_OF_MONTH, mInputDatePicker.getDayOfMonth());
-        calendar.set(Calendar.YEAR, mInputDatePicker.getYear());
-        calendar.set(Calendar.HOUR, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-
         long dateAdded = System.currentTimeMillis();
 
         // To use Realm, we have to configure it and then add the configuration to a Realm instance.
         // Since we already configured Realm on start up in the AppDropBucketList class we can
         // simply get a Realm instance without issue.
         Realm realm = Realm.getDefaultInstance();
-        Drop drop = new Drop(dateAdded, calendar.getTimeInMillis(), goal, false);
+        Drop drop = new Drop(dateAdded, mInputDatePicker.getTime(), goal, false);
         // Since copyToRealm is a write instruction, it must be used with a transaction.
         realm.beginTransaction();
         realm.copyToRealm(drop);
@@ -90,7 +80,7 @@ public class DialogAdd extends DialogFragment {
 
         mButtonClose = (ImageButton) view.findViewById(R.id.button_close);
         mInputEditText = (EditText) view.findViewById(R.id.edit_text_drop);
-        mInputDatePicker = (DatePicker) view.findViewById(R.id.date_picker_view_date);
+        mInputDatePicker = (CustomDatePickerView) view.findViewById(R.id.date_picker_view_date);
         mButtonAdd = (Button) view.findViewById(R.id.button_add_it);
 
         mButtonClose.setOnClickListener(mButtonClickListener);
