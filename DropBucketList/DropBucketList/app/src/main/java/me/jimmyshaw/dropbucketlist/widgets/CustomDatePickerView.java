@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import me.jimmyshaw.dropbucketlist.R;
@@ -21,6 +22,8 @@ public class CustomDatePickerView extends LinearLayout {
     private TextView mTextViewYear;
 
     private Calendar mCalendar;
+
+    private SimpleDateFormat mSimpleDateFormat;
 
     public CustomDatePickerView(Context context) {
         super(context);
@@ -47,6 +50,10 @@ public class CustomDatePickerView extends LinearLayout {
 
         // An alternative to using the default Java calendar would be the JodaTime for Android library.
         mCalendar = Calendar.getInstance();
+        // We instantiate a SimpleDateFormat class in order to set how we'd like our months to be displayed.
+        // The actual updating of the month format will take place in our updateCalendar method right
+        // before we set the text of the month text view.
+        mSimpleDateFormat = new SimpleDateFormat("MMM");
     }
 
     @Override
@@ -83,9 +90,10 @@ public class CustomDatePickerView extends LinearLayout {
         mCalendar.set(Calendar.MINUTE, minute);
         mCalendar.set(Calendar.SECOND, second);
 
-        mTextViewMonth.setText(String.valueOf(month));
+        mTextViewMonth.setText(mSimpleDateFormat.format(mCalendar.getTime()));
         mTextViewDay.setText(String.valueOf(day));
         mTextViewYear.setText(String.valueOf(year));
+
     }
 
     public long getTime() {
