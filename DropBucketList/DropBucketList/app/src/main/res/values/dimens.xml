@@ -31,4 +31,6 @@
     <dimen name="dialog_add_padding">16dp</dimen>
     <dimen name="text_view_no_items_vertical_padding">22dp</dimen>
     <dimen name="button_add_a_drop_vertical_margin">128dp</dimen>
+    <dimen name="date_picker_shape_size">96dp</dimen>
+    <dimen name="date_picker_text_view_drawable_padding">16dp</dimen>
 </resources>
