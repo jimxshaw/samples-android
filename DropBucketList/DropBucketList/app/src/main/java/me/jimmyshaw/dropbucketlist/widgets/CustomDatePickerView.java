@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -152,11 +153,11 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
             // If the top drawable region was clicked, do all the motion event processing for it.
             // The same applies to the bottom drawable region. If the click was to neither region,
             // we reset everything.
-            if (topDrawableClicked(x, y)) {
-
+            if (topDrawableClicked(textView, boundsTop.height(), x, y)) {
+                Toast.makeText(getContext(), "Top region clicked", Toast.LENGTH_SHORT).show();
             }
-            else if (bottomDrawableClicked(x, y)) {
-
+            else if (bottomDrawableClicked(textView, boundsBottom.height(), x, y)) {
+                Toast.makeText(getContext(), "Bottom region clicked", Toast.LENGTH_SHORT).show();
             }
             else {
 
@@ -170,19 +171,35 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
         return drawables[TOP] != null;
     }
 
-    private boolean topDrawableClicked(float x, float y) {
-        int minX, maxX, minY, maxY;
+    private boolean topDrawableClicked(TextView textView, int drawableHeight, float x, float y) {
+        // Width of the text view - padding right.
+        int maxX = textView.getWidth() - textView.getPaddingRight();
+        // Padding left.
+        int minX = textView.getPaddingLeft();
+        // Padding top + drawable height.
+        int maxY = textView.getPaddingTop() + drawableHeight;
+        // Padding top of the text view.
+        int minY = textView.getPaddingTop();
 
-        return false;
+        // Return true if x and y falls inside of our defined bounds.
+        return x > minX && x < maxX && y > minY && y < maxY;
     }
 
     private boolean hasBottomDrawable(Drawable[] drawables) {
         return drawables[BOTTOM] != null;
     }
 
-    private boolean bottomDrawableClicked(float x, float y) {
-        int minX, maxX, minY, maxY;
+    private boolean bottomDrawableClicked(TextView textView, int drawableHeight, float x, float y) {
+        // Width of the text view - padding right.
+        int maxX = textView.getWidth() - textView.getPaddingRight();
+        // Padding left.
+        int minX = textView.getPaddingLeft();
+        // Total height of the text view - padding bottom.
+        int maxY = textView.getHeight() - textView.getPaddingBottom();
+        // Total height of the text view - the height of the drawable region.
+        int minY = maxY - drawableHeight;
 
-        return false;
+
+        return x > minX && x < maxX && y > minY && y < maxY;
     }
 }
