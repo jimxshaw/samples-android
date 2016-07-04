@@ -3,12 +3,15 @@ package me.jimmyshaw.dropbucketlist.widgets;
 import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -33,6 +36,19 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
     public static final int TOP = 1;
     public static final int RIGHT = 2;
     public static final int BOTTOM = 3;
+
+    private boolean mIncrement;
+    private boolean mDecrement;
+
+    private Handler mHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message message) {
+            Toast.makeText(getContext(), "Message received", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+    });
+
+    private int MESSAGE_WHAT = 123;
 
     public CustomDatePickerView(Context context) {
         super(context);
@@ -154,16 +170,29 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
             // we reset everything.
             if (topDrawableClicked(textView, boundsTop.height(), x, y)) {
                 if (isActionDown(motionEvent)) {
+                    mIncrement = true;
                     increment(textView.getId());
+                    mHandler.removeMessages(MESSAGE_WHAT);
+                    mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT, 1000);
+                }
+                if (isActionUpOrCancel(motionEvent)) {
+                    mIncrement = false;
                 }
             }
             else if (bottomDrawableClicked(textView, boundsBottom.height(), x, y)) {
                 if (isActionDown(motionEvent)) {
+                    mDecrement = true;
                     decrement(textView.getId());
+                    mHandler.removeMessages(MESSAGE_WHAT);
+                    mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT, 1000);
+                }
+                if (isActionUpOrCancel(motionEvent)) {
+                    mDecrement = false;
                 }
             }
             else {
-
+                mIncrement = false;
+                mDecrement = false;
             }
 
         }
@@ -212,6 +241,10 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
         // ACTION_UP takes place after we released our touch action.
         // ACTION_CANCEL occurs when the current touch action is aborted (usually by Android itself).
         return motionEvent.getAction() == MotionEvent.ACTION_DOWN;
+    }
+
+    private boolean isActionUpOrCancel(MotionEvent event) {
+        return event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL;
     }
 
     private void increment(int id) {
