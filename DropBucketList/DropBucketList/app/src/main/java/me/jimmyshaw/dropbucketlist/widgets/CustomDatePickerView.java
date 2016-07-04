@@ -9,7 +9,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -154,10 +153,14 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
             // The same applies to the bottom drawable region. If the click was to neither region,
             // we reset everything.
             if (topDrawableClicked(textView, boundsTop.height(), x, y)) {
-                Toast.makeText(getContext(), "Top region clicked", Toast.LENGTH_SHORT).show();
+                if (isActionDown(motionEvent)) {
+                    increment(textView.getId());
+                }
             }
             else if (bottomDrawableClicked(textView, boundsBottom.height(), x, y)) {
-                Toast.makeText(getContext(), "Bottom region clicked", Toast.LENGTH_SHORT).show();
+                if (isActionDown(motionEvent)) {
+                    decrement(textView.getId());
+                }
             }
             else {
 
@@ -201,5 +204,57 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
 
 
         return x > minX && x < maxX && y > minY && y < maxY;
+    }
+
+    private boolean isActionDown(MotionEvent motionEvent) {
+        // ACTION_DOWN is when we first touch the screen.
+        // ACTION_MOVE takes place after ACTION_DOWN when we move our finger or we hold our finger.
+        // ACTION_UP takes place after we released our touch action.
+        // ACTION_CANCEL occurs when the current touch action is aborted.
+        return motionEvent.getAction() == MotionEvent.ACTION_DOWN;
+    }
+
+    private void increment(int id) {
+        // Which date field are we incrementing?
+        switch (id) {
+            case R.id.text_view_month:
+                // Get the calendar month and increment it by 1.
+                mCalendar.add(Calendar.MONTH, 1);
+                break;
+            case R.id.text_view_day:
+                mCalendar.add(Calendar.DAY_OF_MONTH, 1);
+                break;
+            case R.id.text_view_year:
+                mCalendar.add(Calendar.YEAR, 1);
+                break;
+        }
+        refreshCalendarUI(mCalendar);
+    }
+
+    private void decrement(int id) {
+        // Which date field are we decrementing?
+        switch (id) {
+            case R.id.text_view_month:
+                // Get the calendar month and decrement it by 1.
+                mCalendar.add(Calendar.MONTH, -1);
+                break;
+            case R.id.text_view_day:
+                mCalendar.add(Calendar.DAY_OF_MONTH, -1);
+                break;
+            case R.id.text_view_year:
+                mCalendar.add(Calendar.YEAR, -1);
+                break;
+        }
+        refreshCalendarUI(mCalendar);
+    }
+
+    private void refreshCalendarUI(Calendar calendar) {
+        mTextViewMonth.setText(mSimpleDateFormat.format(mCalendar.getTime()));
+
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int year = calendar.get(Calendar.YEAR);
+
+        mTextViewDay.setText(String.valueOf(day));
+        mTextViewYear.setText(String.valueOf(year));
     }
 }
