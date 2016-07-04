@@ -2,7 +2,7 @@
     <string name="app_name">Drop Bucket List</string>
     <string name="string_add_a_drop">Add a drop</string>
     <string name="string_add_it">Add it</string>
-    <string name="hint_edit_text_drop">Enter a goal</string>
+    <string name="hint_edit_text_drop">What\'s your goal?</string>
     <string name="font_family">sans-serif-thin</string>
     <string name="string_mark_completed">Mark completed</string>
     <string name="action_add">Add</string>

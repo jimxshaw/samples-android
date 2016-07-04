@@ -45,7 +45,7 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
     private boolean mIncrement;
     private boolean mDecrement;
     // The increment or decrement delay in milliseconds.
-    private static final int DELAY = 250;
+    private static final int DELAY = 200;
 
     // The purpose of using a handler is to take in to consideration long pressing on a date field's
     // up or down arrow. A message that an arrow is pressed is added to the message queue. This handler
