@@ -10,8 +10,7 @@
             <solid
                 android:color="@color/purple"/>
             <size
-                android:width="@dimen/date_picker_shape_size"
-                android:height="@dimen/date_picker_shape_height"/>
+                android:width="@dimen/date_picker_shape_size"/>
             <corners
                 android:bottomLeftRadius="@dimen/date_picker_item_corner_radius"
                 android:bottomRightRadius="@dimen/date_picker_item_corner_radius"/>
@@ -19,7 +18,6 @@
     </item>
 
     <item
-        android:height="@dimen/date_picker_shape_height"
         android:drawable="@drawable/ic_down_normal"
         android:gravity="center"/>
 </layer-list>
