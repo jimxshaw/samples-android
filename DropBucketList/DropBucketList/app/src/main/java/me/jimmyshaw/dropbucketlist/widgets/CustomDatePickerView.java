@@ -3,10 +3,13 @@ package me.jimmyshaw.dropbucketlist.widgets;
 import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,6 +25,8 @@ import me.jimmyshaw.dropbucketlist.R;
 // This class extends LinearLayout because our custom date picker layout xml file has the foot
 // element of LinearLayout.
 public class CustomDatePickerView extends LinearLayout implements View.OnTouchListener {
+
+    public static final String TAG = "Jim";
 
     private TextView mTextViewMonth;
     private TextView mTextViewDay;
@@ -70,6 +75,8 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
         }
     });
 
+    // Every message managed by the handler has to be encoded to a particular type, that type is int.
+    // The int value itself can arbitrarily be whatever int we want as long as we know what it means.
     private int MESSAGE_WHAT = 123;
     private int mActiveTextViewId;
 
@@ -107,6 +114,43 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
         mUpPressed = ContextCompat.getDrawable(context, R.drawable.ic_up_pressed);
         mDownNormal = ContextCompat.getDrawable(context, R.drawable.ic_down_normal);
         mDownPressed = ContextCompat.getDrawable(context, R.drawable.ic_down_pressed);
+    }
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        // We must save our instance state to prevent the user input values from being destroyed
+        // on rotation.
+        // The difference between Parcels and Bundles is that items in a Parcel must be read back in
+        // the same sequence they were written. Items in a Bundle are identified by a key string and
+        // can be retrieved in any order.
+        // Parcelable is an interface that our objects can implement in order to save our state to, or
+        // restore from, a Parcel. A Parcel can contain one or more Bundles. A Bundle implements the
+        // Parcelable interface.
+        super.onSaveInstanceState();
+        Bundle bundle = new Bundle();
+        // We put in the super as it contains all the data that the view is holding. This super MUST
+        // be retrieved in onRestoreInstanceState or our app will crash.
+        bundle.putParcelable("super", super.onSaveInstanceState());
+        bundle.putInt("month", mCalendar.get(Calendar.MONTH));
+        bundle.putInt("day", mCalendar.get(Calendar.DAY_OF_MONTH));
+        bundle.putInt("year", mCalendar.get(Calendar.YEAR));
+        return bundle;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        if (state instanceof Parcelable) {
+            Bundle bundle = (Bundle) state;
+            state = bundle.getParcelable("super");
+
+            int month = bundle.getInt("month");
+            int day = bundle.getInt("day");
+            int year = bundle.getInt("year");
+
+            updateCalendar(month, day, year, 0, 0, 0);
+        }
+        // we call super so that our linear layout can restore its own data.
+        super.onRestoreInstanceState(state);
     }
 
     @Override
@@ -280,7 +324,8 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
             if (mDecrement) {
                 textView.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.date_picker_up_normal, 0, R.drawable.date_picker_down_pressed);
             }
-        } else {
+        }
+        else {
             textView.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.date_picker_up_normal, 0, R.drawable.date_picker_down_normal);
         }
     }
