@@ -210,7 +210,7 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
         // ACTION_DOWN is when we first touch the screen.
         // ACTION_MOVE takes place after ACTION_DOWN when we move our finger or we hold our finger.
         // ACTION_UP takes place after we released our touch action.
-        // ACTION_CANCEL occurs when the current touch action is aborted.
+        // ACTION_CANCEL occurs when the current touch action is aborted (usually by Android itself).
         return motionEvent.getAction() == MotionEvent.ACTION_DOWN;
     }
 
