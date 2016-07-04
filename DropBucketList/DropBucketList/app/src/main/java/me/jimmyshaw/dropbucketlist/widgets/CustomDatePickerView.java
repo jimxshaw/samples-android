@@ -193,9 +193,11 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
                     increment(textView.getId());
                     mHandler.removeMessages(MESSAGE_WHAT);
                     mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT, DELAY);
+                    changeDrawable(textView, true);
                 }
                 if (isActionUpOrCancel(motionEvent)) {
                     mIncrement = false;
+                    changeDrawable(textView, false);
                 }
             }
             else if (bottomDrawableClicked(textView, boundsBottom.height(), x, y)) {
@@ -204,14 +206,17 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
                     decrement(textView.getId());
                     mHandler.removeMessages(MESSAGE_WHAT);
                     mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT, DELAY);
+                    changeDrawable(textView, true);
                 }
                 if (isActionUpOrCancel(motionEvent)) {
                     mDecrement = false;
+                    changeDrawable(textView, false);
                 }
             }
             else {
                 mIncrement = false;
                 mDecrement = false;
+                changeDrawable(textView, false);
             }
 
         }
@@ -252,6 +257,23 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
 
 
         return x > minX && x < maxX && y > minY && y < maxY;
+    }
+
+    private void changeDrawable(TextView textView, boolean isPressed) {
+        // The purpose of this method is to change the up or down arrow drawables depending on whether
+        // the they're pressed or not. Unpressed, we use the default drawable. Pressed or held, we
+        // change it to another drawable.
+        if (isPressed) {
+            if (mIncrement) {
+                // Left, Top, Right, Down regions of the text view.
+                textView.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_up_pressed, 0, R.drawable.ic_down_normal);
+            }
+            if (mDecrement) {
+                textView.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_up_normal, 0, R.drawable.ic_down_pressed);
+            }
+        } else {
+            textView.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_up_normal, 0, R.drawable.ic_down_normal);
+        }
     }
 
     private boolean isActionDown(MotionEvent motionEvent) {
