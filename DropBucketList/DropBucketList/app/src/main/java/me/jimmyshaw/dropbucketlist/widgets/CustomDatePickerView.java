@@ -11,7 +11,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -39,16 +38,34 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
 
     private boolean mIncrement;
     private boolean mDecrement;
+    // The increment or decrement delay in milliseconds.
+    private static final int DELAY = 250;
 
+    // The purpose of using a handler is to take in to consideration long pressing on a date field's
+    // up or down arrow. A message that an arrow is pressed is added to the message queue. This handler
+    // handles that message by either increment or decrement the field value after a specified delay.
+    // If the arrow press continues then a new message is sent to the queue and the cycle repeats until
+    // the user no longer clicks.
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
-            Toast.makeText(getContext(), "Message received", Toast.LENGTH_SHORT).show();
+            if (mIncrement) {
+                increment(mActiveTextViewId);
+            }
+
+            if (mDecrement) {
+                decrement(mActiveTextViewId);
+            }
+
+            if (mIncrement || mDecrement) {
+                mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT, DELAY);
+            }
             return true;
         }
     });
 
     private int MESSAGE_WHAT = 123;
+    private int mActiveTextViewId;
 
     public CustomDatePickerView(Context context) {
         super(context);
@@ -164,6 +181,8 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
             float x = motionEvent.getX();
             float y = motionEvent.getY();
 
+            mActiveTextViewId = textView.getId();
+
             // Which drawable region was clicked? The top or the bottom?
             // If the top drawable region was clicked, do all the motion event processing for it.
             // The same applies to the bottom drawable region. If the click was to neither region,
@@ -173,7 +192,7 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
                     mIncrement = true;
                     increment(textView.getId());
                     mHandler.removeMessages(MESSAGE_WHAT);
-                    mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT, 1000);
+                    mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT, DELAY);
                 }
                 if (isActionUpOrCancel(motionEvent)) {
                     mIncrement = false;
@@ -184,7 +203,7 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
                     mDecrement = true;
                     decrement(textView.getId());
                     mHandler.removeMessages(MESSAGE_WHAT);
-                    mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT, 1000);
+                    mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT, DELAY);
                 }
                 if (isActionUpOrCancel(motionEvent)) {
                     mDecrement = false;
