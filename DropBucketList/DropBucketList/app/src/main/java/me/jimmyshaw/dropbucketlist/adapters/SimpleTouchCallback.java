@@ -46,7 +46,7 @@ public class SimpleTouchCallback extends ItemTouchHelper.Callback {
         // two methods onChildDraw and onChildDrawOver as their default behavior is what governs
         // the swiping in the x direction or y direction.
         if (viewHolder instanceof AdapterDrops.DropHolder) {
-            mSwipeListener.onSwipe(viewHolder.getAdapterPosition());
+            mSwipeListener.onSwipe(viewHolder.getLayoutPosition());
         }
     }
 

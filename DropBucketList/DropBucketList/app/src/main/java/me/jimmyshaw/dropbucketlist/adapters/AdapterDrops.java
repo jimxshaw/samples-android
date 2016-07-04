@@ -16,6 +16,7 @@ import io.realm.RealmResults;
 import me.jimmyshaw.dropbucketlist.AppDropBucketList;
 import me.jimmyshaw.dropbucketlist.R;
 import me.jimmyshaw.dropbucketlist.models.Drop;
+import me.jimmyshaw.dropbucketlist.utilities.Util;
 
 public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements SwipeListener {
 
@@ -34,7 +35,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private AddListener mAddListener;
     private DetailListener mDetailListener;
-    private ResetListener mResetListener;
+    private final ResetListener mResetListener;
 
     private LayoutInflater mLayoutInflater;
 
@@ -45,12 +46,6 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     // This is the filter options that's extracted from shared preferences at app start up.
     private int mFilterOption;
-
-    public AdapterDrops(Context context, Realm realm, RealmResults<Drop> results) {
-        mLayoutInflater = LayoutInflater.from(context);
-        update(results);
-        mRealm = realm;
-    }
 
     public AdapterDrops(Context context, Realm realm, RealmResults<Drop> results,
                         AddListener addListener, DetailListener detailListener, ResetListener resetListener) {
@@ -77,22 +72,18 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (!mResults.isEmpty()) {
             if (position < mResults.size()) {
                 return ITEM;
-            }
-            else {
+            } else {
                 return FOOTER;
             }
-        }
-        else {
+        } else {
             if (mFilterOption == Filter.COMPLETE ||
                     mFilterOption == Filter.INCOMPLETE) {
                 if (position == 0) {
                     return NO_ITEMS;
-                }
-                else {
+                } else {
                     return FOOTER;
                 }
-            }
-            else {
+            } else {
                 return ITEM;
             }
         }
@@ -149,14 +140,12 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         // added behind it.
         if (!mResults.isEmpty()) {
             return mResults.size() + COUNT_FOOTER;
-        }
-        else {
+        } else {
             if (mFilterOption == Filter.LEAST_TIME_REMAINING
                     || mFilterOption == Filter.MOST_TIME_REMAINING
                     || mFilterOption == Filter.NONE) {
                 return 0;
-            }
-            else {
+            } else {
                 return COUNT_NO_ITEMS + COUNT_FOOTER;
             }
         }
@@ -168,7 +157,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         // it. Since each row item cannot be added at the same time, we'll use the dateAdded field
         // of each Drop object as the id.
         if (position < mResults.size()) {
-            mResults.get(position).getDateAdded();
+            return mResults.get(position).getDateAdded();
         }
         return RecyclerView.NO_ID;
     }
@@ -192,7 +181,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         // If our results data set has no items and we have a particular filter on, we'll reset the
         // filter to none.
         if (mResults.isEmpty() && (mFilterOption == Filter.COMPLETE ||
-                mFilterOption == Filter.INCOMPLETE)) {
+                mFilterOption == Filter.INCOMPLETE)){
             mResetListener.onReset();
         }
     }
@@ -252,7 +241,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             else {
                 drawable = ContextCompat.getDrawable(mContext, R.drawable.background_row_drop);
             }
-            mItemView.setBackground(drawable);
+            Util.setBackground(mItemView, drawable);
         }
 
         @Override

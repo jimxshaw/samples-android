@@ -1,5 +1,7 @@
 package me.jimmyshaw.dropbucketlist.utilities;
 
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.View;
 
 import java.util.List;
@@ -18,5 +20,15 @@ public class Util {
         }
     }
 
+    public static boolean moreThanJellyBean() {
+        return Build.VERSION.SDK_INT > 15;
+    }
 
+    public static void setBackground(View view, Drawable drawable) {
+        if (moreThanJellyBean()) {
+            view.setBackground(drawable);
+        } else {
+            view.setBackgroundDrawable(drawable);
+        }
+    }
 }

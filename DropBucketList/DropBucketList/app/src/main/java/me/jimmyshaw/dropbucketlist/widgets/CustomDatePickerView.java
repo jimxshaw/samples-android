@@ -5,6 +5,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -29,6 +30,11 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
     private Calendar mCalendar;
 
     private SimpleDateFormat mSimpleDateFormat;
+
+    private Drawable mUpNormal;
+    private Drawable mUpPressed;
+    private Drawable mDownNormal;
+    private Drawable mDownPressed;
 
     // These int variables represent the boundaries of our drawable text views.
     public static final int LEFT = 0;
@@ -96,6 +102,11 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
         // The actual updating of the month format will take place in our updateCalendar method right
         // before we set the text of the month text view.
         mSimpleDateFormat = new SimpleDateFormat("MMM");
+
+        mUpNormal = ContextCompat.getDrawable(context, R.drawable.ic_up_normal);
+        mUpPressed = ContextCompat.getDrawable(context, R.drawable.ic_up_pressed);
+        mDownNormal = ContextCompat.getDrawable(context, R.drawable.ic_down_normal);
+        mDownPressed = ContextCompat.getDrawable(context, R.drawable.ic_down_pressed);
     }
 
     @Override
@@ -218,9 +229,7 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
                 mDecrement = false;
                 changeDrawable(textView, false);
             }
-
         }
-
     }
 
     private boolean hasTopDrawable(Drawable[] drawables) {
