@@ -275,13 +275,13 @@ public class CustomDatePickerView extends LinearLayout implements View.OnTouchLi
         if (isPressed) {
             if (mIncrement) {
                 // Left, Top, Right, Down regions of the text view.
-                textView.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_up_pressed, 0, R.drawable.ic_down_normal);
+                textView.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.date_picker_up_pressed, 0, R.drawable.date_picker_down_normal);
             }
             if (mDecrement) {
-                textView.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_up_normal, 0, R.drawable.ic_down_pressed);
+                textView.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.date_picker_up_normal, 0, R.drawable.date_picker_down_pressed);
             }
         } else {
-            textView.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_up_normal, 0, R.drawable.ic_down_normal);
+            textView.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.date_picker_up_normal, 0, R.drawable.date_picker_down_normal);
         }
     }
 
