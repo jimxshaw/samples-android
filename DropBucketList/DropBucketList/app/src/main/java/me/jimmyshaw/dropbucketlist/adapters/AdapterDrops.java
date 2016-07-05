@@ -1,6 +1,7 @@
 package me.jimmyshaw.dropbucketlist.adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -72,18 +73,22 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (!mResults.isEmpty()) {
             if (position < mResults.size()) {
                 return ITEM;
-            } else {
+            }
+            else {
                 return FOOTER;
             }
-        } else {
+        }
+        else {
             if (mFilterOption == Filter.COMPLETE ||
                     mFilterOption == Filter.INCOMPLETE) {
                 if (position == 0) {
                     return NO_ITEMS;
-                } else {
+                }
+                else {
                     return FOOTER;
                 }
-            } else {
+            }
+            else {
                 return ITEM;
             }
         }
@@ -140,12 +145,14 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         // added behind it.
         if (!mResults.isEmpty()) {
             return mResults.size() + COUNT_FOOTER;
-        } else {
+        }
+        else {
             if (mFilterOption == Filter.LEAST_TIME_REMAINING
                     || mFilterOption == Filter.MOST_TIME_REMAINING
                     || mFilterOption == Filter.NONE) {
                 return 0;
-            } else {
+            }
+            else {
                 return COUNT_NO_ITEMS + COUNT_FOOTER;
             }
         }
@@ -181,7 +188,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         // If our results data set has no items and we have a particular filter on, we'll reset the
         // filter to none.
         if (mResults.isEmpty() && (mFilterOption == Filter.COMPLETE ||
-                mFilterOption == Filter.INCOMPLETE)){
+                mFilterOption == Filter.INCOMPLETE)) {
             mResetListener.onReset();
         }
     }
@@ -213,6 +220,16 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             itemView.setOnClickListener(this);
             mTextViewGoal = (TextView) itemView.findViewById(R.id.text_view_goal);
             mTextViewDateDue = (TextView) itemView.findViewById(R.id.text_view_date_due);
+
+            // To use any custom fonts like Raleway, we have to use a special type called Typeface.
+            // The createFromAsset method is used because we already have the .ttf font file located
+            // in our assets/fonts folder. An asset manager, the first parameter, handles all that
+            // goes inside the asset folder. The path to the .ttf file is our second parameter. After
+            // capturing the typeface, set it to whichever text view we like.
+            Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "fonts/raleway_thin.ttf");
+            mTextViewGoal.setTypeface(typeface);
+            mTextViewDateDue.setTypeface(typeface);
+
             mDetailListener = listener;
         }
 
