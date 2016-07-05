@@ -49,11 +49,11 @@
 
         <Button
             android:id="@+id/button_add_it"
+            style="@style/AddButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/date_picker_view_date"
-            android:text="@string/string_add_it"
-            android:textAllCaps="false"/>
+            android:text="@string/string_add_it"/>
 
     </RelativeLayout>
 
