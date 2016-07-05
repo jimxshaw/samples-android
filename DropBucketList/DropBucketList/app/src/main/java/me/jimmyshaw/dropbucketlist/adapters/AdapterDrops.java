@@ -1,7 +1,6 @@
 package me.jimmyshaw.dropbucketlist.adapters;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -216,19 +215,14 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             // We need access to the context in order to get our drawable resources and set the
             // background color of completed row items.
             mContext = itemView.getContext();
+
             mItemView = itemView;
             itemView.setOnClickListener(this);
+
             mTextViewGoal = (TextView) itemView.findViewById(R.id.text_view_goal);
             mTextViewDateDue = (TextView) itemView.findViewById(R.id.text_view_date_due);
 
-            // To use any custom fonts like Raleway, we have to use a special type called Typeface.
-            // The createFromAsset method is used because we already have the .ttf font file located
-            // in our assets/fonts folder. An asset manager, the first parameter, handles all that
-            // goes inside the asset folder. The path to the .ttf file is our second parameter. After
-            // capturing the typeface, set it to whichever text view we like.
-            Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "fonts/raleway_thin.ttf");
-            mTextViewGoal.setTypeface(typeface);
-            mTextViewDateDue.setTypeface(typeface);
+            AppDropBucketList.setWidgetTypeface(mContext, mTextViewGoal, mTextViewDateDue);
 
             mDetailListener = listener;
         }
@@ -285,17 +279,13 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         Button mButtonAdd;
         AddListener mListener;
 
-        public FooterHolder(View itemView) {
-            super(itemView);
-
-            mButtonAdd = (Button) itemView.findViewById(R.id.button_footer);
-            mButtonAdd.setOnClickListener(this);
-        }
-
         public FooterHolder(View itemView, AddListener listener) {
             super(itemView);
 
             mButtonAdd = (Button) itemView.findViewById(R.id.button_footer);
+            // We're allowed to set the typeface on a button even though the set method requires a
+            // text view is because Button extends TextView.
+            AppDropBucketList.setWidgetTypeface(mButtonAdd.getContext(), mButtonAdd);
             mButtonAdd.setOnClickListener(this);
 
             mListener = listener;

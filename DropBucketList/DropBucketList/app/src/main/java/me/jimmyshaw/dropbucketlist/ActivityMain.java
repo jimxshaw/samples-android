@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -124,6 +125,7 @@ public class ActivityMain extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
         mButtonAdd = (Button) findViewById(R.id.button_add_a_drop);
+        AppDropBucketList.setWidgetTypeface(mButtonAdd.getContext(), mButtonAdd);
         mButtonAdd.setOnClickListener(mButtonActivityMainAddListener);
 
         mRecyclerView = (CustomRecyclerView) findViewById(R.id.recycler_view_drops);
@@ -222,7 +224,7 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
         // This method's boolean determines who handles the menu item's action. True means our code,
         // the developer, will handle the action. False means Android will handle the action.
         // We'll assume the item action was handled successfully but if not then the default switch
@@ -230,7 +232,7 @@ public class ActivityMain extends AppCompatActivity {
         boolean actionHandled = true;
         int filterOption = Filter.NONE;
 
-        switch (item.getItemId()) {
+        switch (menuItem.getItemId()) {
             case R.id.action_add:
                 showDialogAdd();
                 break;
