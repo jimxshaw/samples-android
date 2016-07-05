@@ -17,6 +17,11 @@
             </intent-filter>
         </activity>
 
+        <!--
+            A service's attribute called exported asks whether or not this particular service can
+            can be used by any other app besides the one where it resides. We put false because no
+            other app is allowed to use this service.
+        -->
         <service
             android:name=".services.NotificationService"
             android:exported="false">
