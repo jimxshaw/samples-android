@@ -14,7 +14,7 @@
         android:text="JAN"/>
 
     <Space
-        android:layout_width="18dp"
+        android:layout_width="@dimen/date_picker_text_view_space_padding"
         android:layout_height="match_parent"/>
 
     <TextView
@@ -23,7 +23,7 @@
         android:text="01"/>
 
     <Space
-        android:layout_width="18dp"
+        android:layout_width="@dimen/date_picker_text_view_space_padding"
         android:layout_height="match_parent"/>
 
     <TextView
