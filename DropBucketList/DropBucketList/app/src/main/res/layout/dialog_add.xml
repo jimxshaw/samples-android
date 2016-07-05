@@ -33,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/text_view_title"
+            android:background="@drawable/background_edit_text_add"
             android:hint="@string/hint_edit_text_drop"
             android:padding="16dp"
             android:singleLine="true"/>
