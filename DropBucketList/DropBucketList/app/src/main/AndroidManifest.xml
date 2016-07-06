@@ -10,9 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!--
+            By adding the noHistory attribute with the value to true for our SplashScreenActivity,
+            we can avoid reaching the SplashScreen whenever we click Back from any other activity.
+        -->
         <activity
             android:name=".ActivitySplashScreen"
             android:configChanges="orientation|keyboardHidden"
+            android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
