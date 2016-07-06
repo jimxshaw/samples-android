@@ -8,6 +8,7 @@ import android.util.Log;
 import br.com.goncalves.pugnotification.notification.PugNotification;
 import io.realm.Realm;
 import io.realm.RealmResults;
+import me.jimmyshaw.dropbucketlist.ActivityMain;
 import me.jimmyshaw.dropbucketlist.R;
 import me.jimmyshaw.dropbucketlist.models.Drop;
 
@@ -36,11 +37,9 @@ public class NotificationService extends IntentService {
             // method because we're already in a background thread with this service.
             RealmResults<Drop> results = realm.where(Drop.class).equalTo("completed", false).findAll();
 
-            fireNotification();
-
             for (Drop currentGoal : results) {
                 if (isNotificationNeeded(currentGoal.getDateAdded(), currentGoal.getDateDue())) {
-                    fireNotification();
+                    fireNotification(currentGoal);
                 }
             }
         }
@@ -69,15 +68,20 @@ public class NotificationService extends IntentService {
 
     }
 
-    private void fireNotification() {
+    private void fireNotification(Drop goal) {
+        String message = getString(R.string.notification_message_small_device)
+                            + "\"" + goal.getGoal() + "\"";
+
         PugNotification.with(this)
                 .load()
-                .title("DropBucketList")
-                .message("A goal is approaching its deadline!")
-                .bigTextStyle("A goal is approaching its deadline!")
+                .title(R.string.app_name)
+                .message(message)
+                .bigTextStyle(message)
                 .smallIcon(R.drawable.ic_logo)
                 .largeIcon(R.drawable.ic_logo)
-                .flags(Notification.DEFAULT_ALL)
+                .flags(Notification.DEFAULT_ALL) // The defaults are lights, sound and vibrate.
+                .autoCancel(true) // Clears the message if the user clicks on it.
+                .click(ActivityMain.class) // Clicking on the message will take the user to this app's main activity.
                 .simple()
                 .build();
     }

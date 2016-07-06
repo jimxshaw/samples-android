@@ -12,4 +12,6 @@
     <string name="action_show_incomplete">Incomplete</string>
     <string name="string_no_items">No items to display</string>
     <string name="action_none">None</string>
+    <string name="notification_message_small_device">A goal\'s deadline is approaching: </string>
+    <string name="notification_message_large_device">A goal\'s deadline is approaching: </string>
 </resources>
