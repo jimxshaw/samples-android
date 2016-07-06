@@ -177,7 +177,7 @@ public class ActivityMain extends AppCompatActivity {
         // pending intent triggers. Third parameter is the interval time, how often do we want the
         // pending intent to fire. Note that the interval time is recommended to be an hour or more.
         // If not then the device's battery will drain quickly.
-        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 1000, 3600000, pendingIntent);
+        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 1000, 5000, pendingIntent);
 
     }
 

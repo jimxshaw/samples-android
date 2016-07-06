@@ -1,11 +1,14 @@
 package me.jimmyshaw.dropbucketlist.services;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.content.Intent;
 import android.util.Log;
 
+import br.com.goncalves.pugnotification.notification.PugNotification;
 import io.realm.Realm;
 import io.realm.RealmResults;
+import me.jimmyshaw.dropbucketlist.R;
 import me.jimmyshaw.dropbucketlist.models.Drop;
 
 
@@ -33,9 +36,11 @@ public class NotificationService extends IntentService {
             // method because we're already in a background thread with this service.
             RealmResults<Drop> results = realm.where(Drop.class).equalTo("completed", false).findAll();
 
+            fireNotification();
+
             for (Drop currentGoal : results) {
                 if (isNotificationNeeded(currentGoal.getDateAdded(), currentGoal.getDateDue())) {
-                    Log.d(TAG, "onHandleIntent: notification needed");
+                    fireNotification();
                 }
             }
         }
@@ -62,6 +67,19 @@ public class NotificationService extends IntentService {
             return (currentTime > (dateAdded + ninetyPercentDifference)) ? true : false;
         }
 
+    }
+
+    private void fireNotification() {
+        PugNotification.with(this)
+                .load()
+                .title("DropBucketList")
+                .message("A goal is approaching its deadline!")
+                .bigTextStyle("A goal is approaching its deadline!")
+                .smallIcon(R.drawable.ic_logo)
+                .largeIcon(R.drawable.ic_logo)
+                .flags(Notification.DEFAULT_ALL)
+                .simple()
+                .build();
     }
 
 }
