@@ -33,7 +33,8 @@ public class Util {
     public static void setBackground(View view, Drawable drawable) {
         if (apiLevelGreaterThanJellyBean()) {
             view.setBackground(drawable);
-        } else {
+        }
+        else {
             view.setBackgroundDrawable(drawable);
         }
     }

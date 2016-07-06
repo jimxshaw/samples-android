@@ -27,10 +27,19 @@
             android:exported="false">
         </service>
 
+        <!--
+            A broadcast receiver's enabled and exported attribute asks whether or not other Android
+            components (Activities, Services, Broadcast Receivers) can trigger or be triggered by
+            this particular receiver. The action.BOOT_COMPLETED is a standard broadcast action that
+            broadcasts once after the device has finished booting. It's typically used to with alarms.
+        -->
         <receiver
             android:name=".receivers.BootupReceiver"
             android:enabled="true"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
         </receiver>
     </application>
 

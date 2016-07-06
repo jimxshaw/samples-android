@@ -70,7 +70,7 @@ public class NotificationService extends IntentService {
 
     private void fireNotification(Drop goal) {
         String message = getString(R.string.notification_message_small_device)
-                            + "\"" + goal.getGoal() + "\"";
+                            + " \"" + goal.getGoal() + "\"";
 
         PugNotification.with(this)
                 .load()
