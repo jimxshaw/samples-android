@@ -190,6 +190,60 @@ public class ActivityMain extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        // The menu will only appear only if this method returns true, otherwise no menu will be shown.
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        // This method's boolean determines who handles the menu item's action. True means our code,
+        // the developer, will handle the action. False means Android will handle the action.
+        // We'll assume the item action was handled successfully but if not then the default switch
+        // case will return false.
+        // The toolbar's title changes to the filter option selected as a convenience to the user.
+        // If the filter is none then the default title of our app's name is shown.
+        boolean actionHandled = true;
+        int filterOption = Filter.NONE;
+
+        switch (menuItem.getItemId()) {
+            case R.id.action_add:
+                showDialogAdd();
+                break;
+            case R.id.action_sort_ascending_date:
+                filterOption = Filter.LEAST_TIME_REMAINING;
+                mToolbar.setTitle(menuItem.getTitle());
+                break;
+            case R.id.action_sort_descending_date:
+                filterOption = Filter.MOST_TIME_REMAINING;
+                mToolbar.setTitle(menuItem.getTitle());
+                break;
+            case R.id.action_complete:
+                filterOption = Filter.COMPLETE;
+                mToolbar.setTitle(menuItem.getTitle());
+                break;
+            case R.id.action_incomplete:
+                filterOption = Filter.INCOMPLETE;
+                mToolbar.setTitle(menuItem.getTitle());
+                break;
+            case R.id.action_none:
+                filterOption = Filter.NONE;
+                mToolbar.setTitle(R.string.app_name);
+                break;
+            default:
+                actionHandled = false;
+                break;
+        }
+
+        // We update our results data set according to which menu item action was clicked. The default
+        // filter is none.
+        updateResults(filterOption);
+        AppDropBucketList.saveFilterToSharePreferences(this, filterOption);
+        return actionHandled;
+    }
+
     public void updateResults(int filterOption) {
         // A few things are happening here. First, we have to sort asynchronously or the
         // operation would run on the UI thread and tie up the app. Second, we have to assign the
@@ -217,52 +271,6 @@ public class ActivityMain extends AppCompatActivity {
                 break;
         }
         mResults.addChangeListener(mRealmChangeListener);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        // The menu will only appear only if this method returns true, otherwise no menu will be shown.
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
-        // This method's boolean determines who handles the menu item's action. True means our code,
-        // the developer, will handle the action. False means Android will handle the action.
-        // We'll assume the item action was handled successfully but if not then the default switch
-        // case will return false.
-        boolean actionHandled = true;
-        int filterOption = Filter.NONE;
-
-        switch (menuItem.getItemId()) {
-            case R.id.action_add:
-                showDialogAdd();
-                break;
-            case R.id.action_sort_ascending_date:
-                filterOption = Filter.LEAST_TIME_REMAINING;
-                break;
-            case R.id.action_sort_descending_date:
-                filterOption = Filter.MOST_TIME_REMAINING;
-                break;
-            case R.id.action_complete:
-                filterOption = Filter.COMPLETE;
-                break;
-            case R.id.action_incomplete:
-                filterOption = Filter.INCOMPLETE;
-                break;
-            case R.id.action_none:
-                filterOption = Filter.NONE;
-            default:
-                actionHandled = false;
-                break;
-        }
-
-        // We update our results data set according to which menu item action was clicked. The default
-        // filter is none.
-        updateResults(filterOption);
-        AppDropBucketList.saveFilterToSharePreferences(this, filterOption);
-        return actionHandled;
     }
 
     @Override
