@@ -32,5 +32,4 @@
         android:scaleType="fitCenter"
         android:src="@drawable/ic_close"/>
 
-
 </RelativeLayout>
