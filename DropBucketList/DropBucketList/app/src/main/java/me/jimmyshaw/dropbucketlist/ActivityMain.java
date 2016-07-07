@@ -24,6 +24,7 @@ import me.jimmyshaw.dropbucketlist.adapters.CompleteListener;
 import me.jimmyshaw.dropbucketlist.adapters.DetailListener;
 import me.jimmyshaw.dropbucketlist.adapters.Divider;
 import me.jimmyshaw.dropbucketlist.adapters.Filter;
+import me.jimmyshaw.dropbucketlist.adapters.IncompleteListener;
 import me.jimmyshaw.dropbucketlist.adapters.ResetListener;
 import me.jimmyshaw.dropbucketlist.adapters.SimpleTouchCallback;
 import me.jimmyshaw.dropbucketlist.models.Drop;
@@ -86,6 +87,17 @@ public class ActivityMain extends AppCompatActivity {
         }
     };
 
+    // We'd like to give the user the change to mark a goal as incomplete after it has been marked
+    // as completed. Instead of creating another detail layout, we'd like to feature the recycler
+    // view's long press functionality. When the user long presses on a completed goal, it will be
+    // marked as incomplete.
+    private IncompleteListener mIncompleteListener = new IncompleteListener() {
+        @Override
+        public void onIncomplete(int position) {
+            mAdapterDrops.markAsIncomplete(position);
+        }
+    };
+
     private ResetListener mResetListener = new ResetListener() {
         @Override
         public void onReset() {
@@ -137,8 +149,8 @@ public class ActivityMain extends AppCompatActivity {
         mRecyclerView.hideIfEmpty(mToolbar);
         mRecyclerView.showIfEmpty(mEmptyDropsView);
 
-        mAdapterDrops = new AdapterDrops(this, mRealm, mResults, mAddListener, mDetailListener, mResetListener);
-        // This setHasStableIds method is for optimization. It saysing when we provide a view holder,
+        mAdapterDrops = new AdapterDrops(this, mRealm, mResults, mAddListener, mDetailListener, mResetListener, mIncompleteListener);
+        // This setHasStableIds method is for optimization. It saying when we provide a view holder,
         // its id is unique and will not change.
         mAdapterDrops.setHasStableIds(true);
 

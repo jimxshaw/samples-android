@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import me.jimmyshaw.dropbucketlist.models.Drop;
 import me.jimmyshaw.dropbucketlist.utilities.Util;
 
 public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements SwipeListener {
+
+    public static final String TAG = "Jim";
 
     // ITEM represents the position of a particular goal in the recycler view. The footer, which
     // is also part of the recycler view is always at a position one greater than the last goal's
@@ -36,6 +39,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private AddListener mAddListener;
     private DetailListener mDetailListener;
     private final ResetListener mResetListener;
+    private IncompleteListener mIncompleteListener;
 
     private LayoutInflater mLayoutInflater;
 
@@ -48,7 +52,8 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private int mFilterOption;
 
     public AdapterDrops(Context context, Realm realm, RealmResults<Drop> results,
-                        AddListener addListener, DetailListener detailListener, ResetListener resetListener) {
+                        AddListener addListener, DetailListener detailListener,
+                        ResetListener resetListener, IncompleteListener incompleteListener) {
         mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
         update(results);
@@ -56,6 +61,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         mAddListener = addListener;
         mDetailListener = detailListener;
         mResetListener = resetListener;
+        mIncompleteListener = incompleteListener;
     }
 
     public void update(RealmResults<Drop> results) {
@@ -107,7 +113,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
         else {
             View view = mLayoutInflater.inflate(R.layout.row_drop, parent, false);
-            return new DropHolder(view, mDetailListener);
+            return new DropHolder(view, mDetailListener, mIncompleteListener);
         }
 
     }
@@ -128,6 +134,8 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             // drop, a boolean, will determine whether a goal is complete. The only way the isCompleted
             // property is set is through this adapter's markAsComplete method being called.
             dropHolder.setBackground(drop.isCompleted());
+
+            holder.itemView.setLongClickable(true);
         }
 
     }
@@ -202,15 +210,26 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    public static class DropHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public void markAsIncomplete(int position) {
+        if (position < mResults.size()) {
+            mRealm.beginTransaction();
+            mResults.get(position).setCompleted(false);
+            mRealm.commitTransaction();
+            notifyItemChanged(position);
+        }
+    }
+
+    public static class DropHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener, View.OnLongClickListener {
 
         TextView mTextViewGoal;
         TextView mTextViewDateDue;
         DetailListener mDetailListener;
+        IncompleteListener mIncompleteListener;
         Context mContext;
         View mItemView;
 
-        public DropHolder(View itemView, DetailListener listener) {
+        public DropHolder(View itemView, DetailListener detailListener, IncompleteListener incompleteListener) {
             super(itemView);
             // We need access to the context in order to get our drawable resources and set the
             // background color of completed row items.
@@ -218,13 +237,15 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             mItemView = itemView;
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
 
             mTextViewGoal = (TextView) itemView.findViewById(R.id.text_view_goal);
             mTextViewDateDue = (TextView) itemView.findViewById(R.id.text_view_date_due);
 
             AppDropBucketList.setWidgetTypeface(mContext, mTextViewGoal, mTextViewDateDue);
 
-            mDetailListener = listener;
+            mDetailListener = detailListener;
+            mIncompleteListener = incompleteListener;
         }
 
         public void setGoal(String goal) {
@@ -257,10 +278,16 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         @Override
         public void onClick(View view) {
-            mDetailListener.onClick(getAdapterPosition());
+            //mDetailListener.onClick(getAdapterPosition());
         }
 
 
+        @Override
+        public boolean onLongClick(View view) {
+            mIncompleteListener.onIncomplete(getAdapterPosition());
+            Log.d(TAG, "onLongClick");
+            return true;
+        }
     }
 
     // We must have a view holder to for the scenario when the user applies a filter option but there
