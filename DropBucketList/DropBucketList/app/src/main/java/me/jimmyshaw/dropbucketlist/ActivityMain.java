@@ -70,7 +70,13 @@ public class ActivityMain extends AppCompatActivity {
     private DetailListener mDetailListener = new DetailListener() {
         @Override
         public void onClick(int position) {
-            showDialogDetail(position);
+            // Check to see if the goal at the clicked position is completed or not. Only show the
+            // dialog to mark a goal as completed if the goal is incomplete. If the goal is already
+            // complete then do nothing because there wouldn't be any point to show that dialog.
+            boolean isGoalCompleted = mResults.get(position).isCompleted();
+            if (!isGoalCompleted) {
+                showDialogDetail(position);
+            }
         }
     };
 
