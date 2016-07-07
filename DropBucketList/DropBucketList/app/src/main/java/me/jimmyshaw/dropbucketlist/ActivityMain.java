@@ -232,6 +232,12 @@ public class ActivityMain extends AppCompatActivity {
                 filterOption = Filter.NONE;
                 mToolbar.setTitle(R.string.app_name);
                 break;
+            // Android treats clicking the filter symbol as an actual action before the sub-menus
+            // containing the filter options appear. We have to exit the method with a return statement
+            // immediately to signify that clicking the filter symbol itself does nothing. After
+            // clicking the filter symbol, which does nothing, the sub-menus will show up.
+            case R.id.action_filter_symbol:
+                return actionHandled;
             default:
                 actionHandled = false;
                 break;
