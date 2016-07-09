@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical" android:background="@android:color/white">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="165dp"
@@ -33,9 +33,9 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="87dp"
+            android:layout_height="78dp"
             android:orientation="horizontal"
-            android:weightSum="4">
+            android:weightSum="4" android:layout_marginTop="32dp">
             <Button
                 android:id="@+id/button"
                 android:layout_width="match_parent"
@@ -74,7 +74,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="87dp"
+            android:layout_height="78dp"
             android:orientation="horizontal"
             android:weightSum="4">
             <Button
@@ -115,7 +115,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="87dp"
+            android:layout_height="78dp"
             android:orientation="horizontal"
             android:weightSum="4">
             <Button
@@ -156,7 +156,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="87dp"
+            android:layout_height="78dp"
             android:orientation="horizontal"
             android:weightSum="4">
             <Button
@@ -196,4 +196,11 @@
         </LinearLayout>
 
     </LinearLayout>
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageButton5" android:src="@drawable/equal"
+        android:background="@android:color/transparent" android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" android:paddingTop="125dp"
+        android:paddingRight="10dp"/>
 </RelativeLayout>
