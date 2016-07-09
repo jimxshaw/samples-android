@@ -1,9 +1,9 @@
 package me.jimmyshaw.greencalc;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
 
-public class ActivityCalc extends AppCompatActivity {
+public class ActivityCalc extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
