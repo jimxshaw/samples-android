@@ -13,13 +13,15 @@
         android:layout_height="match_parent"
         android:background="@android:color/white"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="165dp"
             android:background="@color/colorPrimary"
             android:orientation="vertical">
+
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/text_view_results"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -38,8 +40,9 @@
             android:layout_marginTop="30dp"
             android:orientation="horizontal"
             android:weightSum="4">
+
             <Button
-                android:id="@+id/button"
+                android:id="@+id/button_seven"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -48,8 +51,9 @@
                 android:text="7"
                 android:textColor="@android:color/black"
                 android:textSize="35sp"/>
+
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/button_eight"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -58,8 +62,9 @@
                 android:text="8"
                 android:textColor="@android:color/black"
                 android:textSize="35sp"/>
+
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/button_nine"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -68,8 +73,9 @@
                 android:text="9"
                 android:textColor="@android:color/black"
                 android:textSize="35sp"/>
+
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/image_button_divide"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -83,8 +89,9 @@
             android:layout_height="78dp"
             android:orientation="horizontal"
             android:weightSum="4">
+
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/button_four"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -93,8 +100,9 @@
                 android:text="4"
                 android:textColor="@android:color/black"
                 android:textSize="35sp"/>
+
             <Button
-                android:id="@+id/button5"
+                android:id="@+id/button_five"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -103,8 +111,9 @@
                 android:text="5"
                 android:textColor="@android:color/black"
                 android:textSize="35sp"/>
+
             <Button
-                android:id="@+id/button6"
+                android:id="@+id/button_six"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -113,8 +122,9 @@
                 android:text="6"
                 android:textColor="@android:color/black"
                 android:textSize="35sp"/>
+
             <ImageButton
-                android:id="@+id/imageButton2"
+                android:id="@+id/image_button_multiply"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -128,8 +138,9 @@
             android:layout_height="78dp"
             android:orientation="horizontal"
             android:weightSum="4">
+
             <Button
-                android:id="@+id/button7"
+                android:id="@+id/button_one"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -138,8 +149,9 @@
                 android:text="1"
                 android:textColor="@android:color/black"
                 android:textSize="35sp"/>
+
             <Button
-                android:id="@+id/button8"
+                android:id="@+id/button_two"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -148,8 +160,9 @@
                 android:text="2"
                 android:textColor="@android:color/black"
                 android:textSize="35sp"/>
+
             <Button
-                android:id="@+id/button9"
+                android:id="@+id/button_three"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -158,8 +171,9 @@
                 android:text="3"
                 android:textColor="@android:color/black"
                 android:textSize="35sp"/>
+
             <ImageButton
-                android:id="@+id/imageButton3"
+                android:id="@+id/image_button_subtract"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -173,8 +187,9 @@
             android:layout_height="78dp"
             android:orientation="horizontal"
             android:weightSum="4">
+
             <Button
-                android:id="@+id/button10"
+                android:id="@+id/button_clear"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -184,8 +199,9 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="35sp"
                 android:textStyle="bold"/>
+
             <Button
-                android:id="@+id/button11"
+                android:id="@+id/button_decimal"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -194,8 +210,9 @@
                 android:text="."
                 android:textColor="@android:color/black"
                 android:textSize="35sp"/>
+
             <Button
-                android:id="@+id/button12"
+                android:id="@+id/button_zero"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -204,8 +221,9 @@
                 android:text="0"
                 android:textColor="@android:color/black"
                 android:textSize="35sp"/>
+
             <ImageButton
-                android:id="@+id/imageButton4"
+                android:id="@+id/image_button_add"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -215,8 +233,9 @@
         </LinearLayout>
 
     </LinearLayout>
+
     <ImageButton
-        android:id="@+id/imageButton5"
+        android:id="@+id/image_button_equal"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -225,4 +244,5 @@
         android:background="@android:color/transparent"
         android:paddingTop="125dp"
         android:src="@drawable/equal"/>
+
 </RelativeLayout>
