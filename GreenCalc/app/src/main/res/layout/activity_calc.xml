@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent"
+    android:background="@android:color/white"
     tools:context="me.jimmyshaw.greencalc.ActivityCalc">
 
 
@@ -167,14 +167,14 @@
                 android:background="@android:color/white"
                 android:text="C"
                 android:textColor="@color/colorPrimary"
-                android:textSize="35sp"/>
+                android:textSize="35sp" android:textStyle="bold"/>
             <Button
                 android:id="@+id/button11"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@android:color/white"
-                android:text="0"
+                android:text="."
                 android:textColor="@android:color/black"
                 android:textSize="35sp"/>
             <Button
@@ -183,7 +183,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@android:color/white"
-                android:text="."
+                android:text="0"
                 android:textColor="@android:color/black"
                 android:textSize="35sp"/>
             <ImageButton
