@@ -142,6 +142,11 @@ public class ActivityCalc extends Activity {
         onClearPress();
     }
 
+    @OnClick(R.id.image_button_equal)
+    public void processEqualClick() {
+        executeOperation(Operation.EQUAL);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -161,7 +166,11 @@ public class ActivityCalc extends Activity {
     }
 
     private void onClearPress() {
-        mRunningNumberString = "";
+        mRunningNumberString = "0";
+        mLeftSideNumberString = "0.0";
+        mRightSideNumberString = "0.0";
+        mResult = 0.0;
+        mCurrentOperation = null;
         mTextViewResults.setText(mRunningNumberString);
     }
 
