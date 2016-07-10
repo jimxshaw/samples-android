@@ -55,10 +55,10 @@ public class ActivityCalc extends Activity {
 
     // Here's the running string concatenation of the user's number presses.
     private String mRunningNumberString = "0";
-    private String mLeftSideNumberString = "0.0";
-    private String mRightSideNumberString = "0.0";
+    private String mLeftSideNumberString = "";
+    private String mRightSideNumberString = "";
 
-    private double mResult = 0.0;
+    private double mResult = 0;
 
     private Operation mCurrentOperation;
 
@@ -167,11 +167,11 @@ public class ActivityCalc extends Activity {
 
     private void onClearPress() {
         mRunningNumberString = "0";
-        mLeftSideNumberString = "0.0";
-        mRightSideNumberString = "0.0";
-        mResult = 0.0;
+        mLeftSideNumberString = "0";
+        mRightSideNumberString = "0";
+        mResult = 0;
         mCurrentOperation = null;
-        formatResults(mRunningNumberString);
+        formatResults("0");
     }
 
     private void executeOperation(Operation incomingOperation) {
@@ -181,27 +181,24 @@ public class ActivityCalc extends Activity {
                 mRightSideNumberString = mRunningNumberString;
                 mRunningNumberString = "";
 
-                Double leftSideNumberDouble = parseNumberStringToDouble(mLeftSideNumberString);
-                Double rightSideNumberDouble = parseNumberStringToDouble(mRightSideNumberString);
-
                 switch (mCurrentOperation) {
                     case DIVIDE:
-                        if (rightSideNumberDouble == 0) {
+                        if (parseNumberStringToDouble(mRightSideNumberString) == 0) {
                             onClearPress();
                             Toast.makeText(ActivityCalc.this, "Cannot divide by zero", Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            mResult = leftSideNumberDouble / rightSideNumberDouble;
+                            mResult = parseNumberStringToDouble(mLeftSideNumberString) / parseNumberStringToDouble(mRightSideNumberString);
                         }
                         break;
                     case MULTIPLY:
-                        mResult = leftSideNumberDouble * rightSideNumberDouble;
+                        mResult = parseNumberStringToDouble(mLeftSideNumberString) * parseNumberStringToDouble(mRightSideNumberString);
                         break;
                     case SUBTRACT:
-                        mResult = leftSideNumberDouble - rightSideNumberDouble;
+                        mResult = parseNumberStringToDouble(mLeftSideNumberString) - parseNumberStringToDouble(mRightSideNumberString);
                         break;
                     case ADD:
-                        mResult = leftSideNumberDouble + rightSideNumberDouble;
+                        mResult = parseNumberStringToDouble(mLeftSideNumberString) + parseNumberStringToDouble(mRightSideNumberString);
                         break;
                 }
 
@@ -219,7 +216,7 @@ public class ActivityCalc extends Activity {
 
     private double parseNumberStringToDouble(String numberString) {
         if (numberString == null) {
-            return Double.parseDouble("0.0");
+            return Double.parseDouble("0");
         }
 
         return Double.parseDouble(numberString);
