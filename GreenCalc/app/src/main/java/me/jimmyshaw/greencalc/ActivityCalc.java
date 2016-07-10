@@ -54,7 +54,7 @@ public class ActivityCalc extends Activity {
     Button mButtonDecimal;
 
     // Here's the running string concatenation of the user's number presses.
-    private String mRunningNumberString = "0";
+    private String mRunningNumberString = "";
     private String mLeftSideNumberString = "";
     private String mRightSideNumberString = "";
 
@@ -123,7 +123,9 @@ public class ActivityCalc extends Activity {
                 break;
         }
 
-        executeOperation(operation);
+        if (mRunningNumberString != null) {
+            executeOperation(operation);
+        }
     }
 
     @OnClick(R.id.button_decimal)
@@ -223,6 +225,16 @@ public class ActivityCalc extends Activity {
     }
 
     private void formatResults(String numberString) {
-        mTextViewResults.setText(numberString);
+//        mTextViewResults.setText(numberString);
+
+        if (Double.valueOf(numberString).equals(0.0)) {
+            mTextViewResults.setText("" + 0);
+        }
+        else if (numberString.charAt(0) == '0') {
+            mTextViewResults.setText(numberString.substring(1));
+        }
+        else {
+            mTextViewResults.setText(numberString);
+        }
     }
 }
