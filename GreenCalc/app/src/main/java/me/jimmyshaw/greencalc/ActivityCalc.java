@@ -54,7 +54,9 @@ public class ActivityCalc extends Activity {
     Button mButtonDecimal;
 
     // Here's the running string concatenation of the user's number presses.
-    String userNumberInput = "";
+    String runningNumberString = "";
+    String leftSideNumberString = "";
+    String rightSideNumberString = "";
 
     @OnClick({R.id.button_nine, R.id.button_eight, R.id.button_seven,
             R.id.button_six, R.id.button_five, R.id.button_four,
@@ -98,19 +100,19 @@ public class ActivityCalc extends Activity {
 
     @OnClick(R.id.button_decimal)
     public void processDecimalClick() {
-        if (userNumberInput.contains(".")) {
+        if (runningNumberString.contains(".")) {
             Toast.makeText(ActivityCalc.this, "Cannot have multiple decimals", Toast.LENGTH_SHORT).show();
         }
         else {
-            userNumberInput += ".";
-            mTextViewResults.setText(userNumberInput);
+            runningNumberString += ".";
+            mTextViewResults.setText(runningNumberString);
         }
     }
 
     @OnClick(R.id.button_clear)
     public void processClearClick() {
-        userNumberInput = "";
-        mTextViewResults.setText(userNumberInput);
+        runningNumberString = "";
+        mTextViewResults.setText(runningNumberString);
     }
 
     @Override
@@ -127,7 +129,7 @@ public class ActivityCalc extends Activity {
     }
 
     private void onNumberPress(int number) {
-        userNumberInput += String.valueOf(number);
-        mTextViewResults.setText(userNumberInput);
+        runningNumberString += String.valueOf(number);
+        mTextViewResults.setText(runningNumberString);
     }
 }
