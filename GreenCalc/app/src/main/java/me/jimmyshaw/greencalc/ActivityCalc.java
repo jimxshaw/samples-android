@@ -54,9 +54,9 @@ public class ActivityCalc extends Activity {
     Button mButtonDecimal;
 
     // Here's the running string concatenation of the user's number presses.
-    private String mRunningNumberString = "";
-    private String mLeftSideNumberString = "";
-    private String mRightSideNumberString = "";
+    private String mRunningNumberString = "0";
+    private String mLeftSideNumberString = "0";
+    private String mRightSideNumberString = "0";
 
     private double mResult = 0;
 
