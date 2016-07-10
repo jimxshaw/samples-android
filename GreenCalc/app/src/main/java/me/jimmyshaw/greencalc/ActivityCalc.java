@@ -54,9 +54,13 @@ public class ActivityCalc extends Activity {
     Button mButtonDecimal;
 
     // Here's the running string concatenation of the user's number presses.
-    String runningNumberString = "";
-    String leftSideNumberString = "";
-    String rightSideNumberString = "";
+    private String mRunningNumberString = "";
+    private String mLeftSideNumberString = "0.0";
+    private String mRightSideNumberString = "0.0";
+
+    private double mResult = 0.0;
+
+    private Operation mCurrentOperation;
 
     @OnClick({R.id.button_nine, R.id.button_eight, R.id.button_seven,
             R.id.button_six, R.id.button_five, R.id.button_four,
@@ -98,21 +102,44 @@ public class ActivityCalc extends Activity {
         onNumberPress(number);
     }
 
+    @OnClick({R.id.image_button_divide, R.id.image_button_multiply, R.id.image_button_subtract, R.id.image_button_add})
+    public void processOperationClick(ImageButton operationButton) {
+        Operation operation = Operation.ADD;
+
+        switch (operationButton.getId()) {
+            case R.id.image_button_divide:
+                operation = Operation.DIVIDE;
+                break;
+            case R.id.image_button_multiply:
+                operation = Operation.MULTIPLY;
+                break;
+            case R.id.image_button_subtract:
+                operation = Operation.SUBTRACT;
+                break;
+            case R.id.image_button_add:
+                operation = Operation.ADD;
+                break;
+            default:
+                break;
+        }
+
+        executeOperation(operation);
+    }
+
     @OnClick(R.id.button_decimal)
     public void processDecimalClick() {
-        if (runningNumberString.contains(".")) {
+        if (mRunningNumberString.contains(".")) {
             Toast.makeText(ActivityCalc.this, "Cannot have multiple decimals", Toast.LENGTH_SHORT).show();
         }
         else {
-            runningNumberString += ".";
-            mTextViewResults.setText(runningNumberString);
+            mRunningNumberString += ".";
+            mTextViewResults.setText(mRunningNumberString);
         }
     }
 
     @OnClick(R.id.button_clear)
     public void processClearClick() {
-        runningNumberString = "";
-        mTextViewResults.setText(runningNumberString);
+        onClearPress();
     }
 
     @Override
@@ -129,7 +156,55 @@ public class ActivityCalc extends Activity {
     }
 
     private void onNumberPress(int number) {
-        runningNumberString += String.valueOf(number);
-        mTextViewResults.setText(runningNumberString);
+        mRunningNumberString += String.valueOf(number);
+        mTextViewResults.setText(mRunningNumberString);
+    }
+
+    private void onClearPress() {
+        mRunningNumberString = "";
+        mTextViewResults.setText(mRunningNumberString);
+    }
+
+    private void executeOperation(Operation incomingOperation) {
+
+        if (mCurrentOperation != null) {
+            if (mRunningNumberString != "") {
+                mRightSideNumberString = mRunningNumberString;
+                mRunningNumberString = "";
+
+                Double leftSideNumberDouble = Double.parseDouble(mLeftSideNumberString);
+                Double rightSideNumberDouble = Double.parseDouble(mRightSideNumberString);
+
+                switch (mCurrentOperation) {
+                    case DIVIDE:
+                        if (rightSideNumberDouble != 0.0) {
+                            mResult = leftSideNumberDouble / rightSideNumberDouble;
+                        }
+                        else {
+                            onClearPress();
+                            Toast.makeText(ActivityCalc.this, "Cannot divide by zero", Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+                    case MULTIPLY:
+                        mResult = leftSideNumberDouble * rightSideNumberDouble;
+                        break;
+                    case SUBTRACT:
+                        mResult = leftSideNumberDouble - rightSideNumberDouble;
+                        break;
+                    case ADD:
+                        mResult = leftSideNumberDouble + rightSideNumberDouble;
+                        break;
+                }
+
+                mLeftSideNumberString = String.valueOf(mResult);
+                mTextViewResults.setText(mLeftSideNumberString);
+            }
+        }
+        else {
+            mLeftSideNumberString = mRunningNumberString;
+            mRunningNumberString = "";
+        }
+
+        mCurrentOperation = incomingOperation;
     }
 }
