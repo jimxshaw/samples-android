@@ -54,7 +54,7 @@ public class ActivityCalc extends Activity {
     Button mButtonDecimal;
 
     // Here's the running string concatenation of the user's number presses.
-    private String mRunningNumberString = "";
+    private String mRunningNumberString = "0";
     private String mLeftSideNumberString = "0.0";
     private String mRightSideNumberString = "0.0";
 
@@ -133,7 +133,7 @@ public class ActivityCalc extends Activity {
         }
         else {
             mRunningNumberString += ".";
-            mTextViewResults.setText(mRunningNumberString);
+            formatResults(mRunningNumberString);
         }
     }
 
@@ -156,13 +156,13 @@ public class ActivityCalc extends Activity {
         ButterKnife.bind(this);
 
         // The default text shown every time our app launches is 0.
-        mTextViewResults.setText("0");
+        formatResults("0");
 
     }
 
     private void onNumberPress(int number) {
         mRunningNumberString += String.valueOf(number);
-        mTextViewResults.setText(mRunningNumberString);
+        formatResults(mRunningNumberString);
     }
 
     private void onClearPress() {
@@ -171,7 +171,7 @@ public class ActivityCalc extends Activity {
         mRightSideNumberString = "0.0";
         mResult = 0.0;
         mCurrentOperation = null;
-        mTextViewResults.setText(mRunningNumberString);
+        formatResults(mRunningNumberString);
     }
 
     private void executeOperation(Operation incomingOperation) {
@@ -181,17 +181,17 @@ public class ActivityCalc extends Activity {
                 mRightSideNumberString = mRunningNumberString;
                 mRunningNumberString = "";
 
-                Double leftSideNumberDouble = Double.parseDouble(mLeftSideNumberString);
-                Double rightSideNumberDouble = Double.parseDouble(mRightSideNumberString);
+                Double leftSideNumberDouble = parseNumberStringToDouble(mLeftSideNumberString);
+                Double rightSideNumberDouble = parseNumberStringToDouble(mRightSideNumberString);
 
                 switch (mCurrentOperation) {
                     case DIVIDE:
-                        if (rightSideNumberDouble != 0.0) {
-                            mResult = leftSideNumberDouble / rightSideNumberDouble;
-                        }
-                        else {
+                        if (rightSideNumberDouble == 0) {
                             onClearPress();
                             Toast.makeText(ActivityCalc.this, "Cannot divide by zero", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            mResult = leftSideNumberDouble / rightSideNumberDouble;
                         }
                         break;
                     case MULTIPLY:
@@ -206,7 +206,7 @@ public class ActivityCalc extends Activity {
                 }
 
                 mLeftSideNumberString = String.valueOf(mResult);
-                mTextViewResults.setText(mLeftSideNumberString);
+                formatResults(mLeftSideNumberString);
             }
         }
         else {
@@ -215,5 +215,17 @@ public class ActivityCalc extends Activity {
         }
 
         mCurrentOperation = incomingOperation;
+    }
+
+    private double parseNumberStringToDouble(String numberString) {
+        if (numberString == null) {
+            return Double.parseDouble("0.0");
+        }
+
+        return Double.parseDouble(numberString);
+    }
+
+    private void formatResults(String numberString) {
+        mTextViewResults.setText(numberString);
     }
 }
