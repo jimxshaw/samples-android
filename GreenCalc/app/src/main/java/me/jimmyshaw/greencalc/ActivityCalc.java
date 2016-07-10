@@ -2,12 +2,132 @@ package me.jimmyshaw.greencalc;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class ActivityCalc extends Activity {
+
+    // Use Bufferknife to bind all our views.
+    @BindView(R.id.text_view_results)
+    TextView mTextViewResults;
+
+    @BindView(R.id.image_button_equal)
+    ImageButton mImageButtonEqual;
+
+    @BindView(R.id.image_button_divide)
+    ImageButton mImageButtonDivide;
+    @BindView(R.id.image_button_multiply)
+    ImageButton mImageButtonMultiply;
+    @BindView(R.id.image_button_subtract)
+    ImageButton mImageButtonSubtract;
+    @BindView(R.id.image_button_add)
+    ImageButton mImageButtonAdd;
+
+    @BindView(R.id.button_nine)
+    Button mButtonNine;
+    @BindView(R.id.button_eight)
+    Button mButtonEight;
+    @BindView(R.id.button_seven)
+    Button mButtonSeven;
+    @BindView(R.id.button_six)
+    Button mButtonSix;
+    @BindView(R.id.button_five)
+    Button mButtonFive;
+    @BindView(R.id.button_four)
+    Button mButtonFour;
+    @BindView(R.id.button_three)
+    Button mButtonThree;
+    @BindView(R.id.button_two)
+    Button mButtonTwo;
+    @BindView(R.id.button_one)
+    Button mButtonOne;
+    @BindView(R.id.button_zero)
+    Button mButtonZero;
+
+    @BindView(R.id.button_decimal)
+    Button mButtonDecimal;
+
+    // Here's the running string concatenation of the user's number presses.
+    String userNumberInput = "";
+
+    @OnClick({R.id.button_nine, R.id.button_eight, R.id.button_seven,
+            R.id.button_six, R.id.button_five, R.id.button_four,
+            R.id.button_three, R.id.button_two, R.id.button_one, R.id.button_zero})
+    public void processNumberClick(Button numberButton) {
+        int number = 0;
+
+        switch (numberButton.getText().toString()) {
+            case "9":
+                number = 9;
+                break;
+            case "8":
+                number = 8;
+                break;
+            case "7":
+                number = 7;
+                break;
+            case "6":
+                number = 6;
+                break;
+            case "5":
+                number = 5;
+                break;
+            case "4":
+                number = 4;
+                break;
+            case "3":
+                number = 3;
+                break;
+            case "2":
+                number = 2;
+                break;
+            case "1":
+                number = 1;
+                break;
+            default:
+                break;
+        }
+        onNumberPress(number);
+    }
+
+    @OnClick(R.id.button_decimal)
+    public void processDecimalClick() {
+        if (userNumberInput.contains(".")) {
+            Toast.makeText(ActivityCalc.this, "Cannot have multiple decimals", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            userNumberInput += ".";
+            mTextViewResults.setText(userNumberInput);
+        }
+    }
+
+    @OnClick(R.id.button_clear)
+    public void processClearClick() {
+        userNumberInput = "";
+        mTextViewResults.setText(userNumberInput);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calc);
+
+        // We must bind our activity to Butterknife in order for all data bindings to work.
+        ButterKnife.bind(this);
+
+        // The default text shown every time our app launches is 0.
+        mTextViewResults.setText("0");
+
+    }
+
+    private void onNumberPress(int number) {
+        userNumberInput += String.valueOf(number);
+        mTextViewResults.setText(userNumberInput);
     }
 }

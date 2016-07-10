@@ -29,7 +29,9 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="55dp"
-                android:text="9000"
+                android:maxLines="1"
+                android:ellipsize="none"
+                android:text="Welcome!"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="30sp"/>
         </LinearLayout>
