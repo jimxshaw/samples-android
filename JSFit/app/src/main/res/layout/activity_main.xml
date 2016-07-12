@@ -12,6 +12,7 @@
     tools:context="me.jimmyshaw.jsfit.ActivityMain">
 
     <RelativeLayout
+        android:id="@+id/relative_layout_anaerobic"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="5dp"
@@ -68,6 +69,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/relative_layout_aerobic"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -123,6 +125,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/relative_layout_other"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="5dp"
