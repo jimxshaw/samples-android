@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@drawable/rounded_corners"
-        android:backgroundTint="#F57C00"
+        android:backgroundTint="#FF5252"
         android:layout_marginBottom="5dp">
 
         <ImageView
@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="6 workouts"
+            android:text="7 workouts"
             android:id="@+id/textView3"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
@@ -72,7 +72,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@drawable/rounded_corners"
-        android:backgroundTint="#F57C00">
+        android:backgroundTint="#03A9F4">
 
         <ImageView
             android:id="@+id/imageView2"
@@ -80,13 +80,13 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/lift"/>
+            android:src="@drawable/cardio"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="40%"
+            android:text="75%"
             android:id="@+id/textView4"
             android:textSize="40sp"
             android:textColor="@android:color/white"
@@ -98,7 +98,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Anaerobic"
+            android:text="Aerobic"
             android:id="@+id/textView5"
             android:textColor="@android:color/white"
             android:textStyle="bold"
@@ -127,7 +127,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@drawable/rounded_corners"
-        android:backgroundTint="#F57C00"
+        android:backgroundTint="#8BC34A"
         android:layout_marginTop="5dp">
 
         <ImageView
@@ -136,13 +136,13 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/lift"/>
+            android:src="@drawable/flower"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="40%"
+            android:text="66%"
             android:id="@+id/textView7"
             android:textSize="40sp"
             android:textColor="@android:color/white"
@@ -154,7 +154,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Anaerobic"
+            android:text="Other"
             android:id="@+id/textView8"
             android:textColor="@android:color/white"
             android:textStyle="bold"
@@ -167,7 +167,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="6 workouts"
+            android:text="4 workouts"
             android:id="@+id/textView9"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
