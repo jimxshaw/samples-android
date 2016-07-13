@@ -1,5 +1,6 @@
 package me.jimmyshaw.jsfit;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -48,6 +49,7 @@ public class ActivityMain extends AppCompatActivity {
                 break;
         }
 
-        ActivityDetails.newIntent(this, stringExtra);
+        Intent intent = ActivityDetails.newIntent(this, stringExtra);
+        startActivity(intent);
     }
 }
