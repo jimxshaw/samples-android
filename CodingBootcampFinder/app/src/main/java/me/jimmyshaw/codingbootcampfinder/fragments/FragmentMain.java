@@ -24,7 +24,7 @@ public class FragmentMain extends Fragment implements OnMapReadyCallback {
         // Required empty public constructor
     }
 
-    public static FragmentMain newInstance(String param1, String param2) {
+    public static FragmentMain newInstance() {
         FragmentMain fragment = new FragmentMain();
 
         return fragment;
@@ -43,7 +43,7 @@ public class FragmentMain extends Fragment implements OnMapReadyCallback {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
