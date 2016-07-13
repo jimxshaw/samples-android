@@ -3,4 +3,8 @@
     <color name="colorPrimary">#009688</color>
     <color name="colorPrimaryDark">#00796B</color>
     <color name="colorAccent">#FF9800</color>
+
+    <color name="backgroundExertciseAnaerobic">#FF5252</color>
+    <color name="backgroundExerciseAerobic">#03A9F4</color>
+    <color name="backgroundExerciseOther">#8BC34A</color>
 </resources>

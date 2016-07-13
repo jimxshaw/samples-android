@@ -18,7 +18,7 @@
         android:layout_marginBottom="5dp"
         android:layout_weight="1"
         android:background="@drawable/rounded_corners"
-        android:backgroundTint="#FF5252">
+        android:backgroundTint="@color/backgroundExertciseAnaerobic">
 
         <ImageView
             android:id="@+id/imageView"
@@ -74,7 +74,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@drawable/rounded_corners"
-        android:backgroundTint="#03A9F4">
+        android:backgroundTint="@color/backgroundExerciseAerobic">
 
         <ImageView
             android:id="@+id/imageView2"
@@ -131,7 +131,7 @@
         android:layout_marginTop="5dp"
         android:layout_weight="1"
         android:background="@drawable/rounded_corners"
-        android:backgroundTint="#8BC34A">
+        android:backgroundTint="@color/backgroundExerciseOther">
 
         <ImageView
             android:id="@+id/imageView3"

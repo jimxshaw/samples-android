@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">JS Fit</string>
+    <string name="exercise_anaerobic">Anaerobic</string>
+    <string name="exercise_aerobic">Aerobic</string>
+    <string name="exercise_other">Other</string>
 </resources>

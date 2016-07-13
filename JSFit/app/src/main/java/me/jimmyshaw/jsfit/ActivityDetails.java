@@ -40,5 +40,29 @@ public class ActivityDetails extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mExerciseType = getIntent().getStringExtra(EXTRA_EXERCISE_TYPE);
+
+        updateUI(mExerciseType);
+    }
+
+    private void updateUI(String extra) {
+
+        switch (extra) {
+            case "Anaerobic":
+                mBackgroundDetailsMain.setBackgroundColor(getResources().getColor(R.color.backgroundExertciseAnaerobic));
+                mExerciseTypeTitle.setText(R.string.exercise_anaerobic);
+                mExerciseTypeSymbol.setImageResource(R.drawable.lift);
+                break;
+            case "Aerobic":
+                mBackgroundDetailsMain.setBackgroundColor(getResources().getColor(R.color.backgroundExerciseAerobic));
+                mExerciseTypeTitle.setText(R.string.exercise_aerobic);
+                mExerciseTypeSymbol.setImageResource(R.drawable.cardio);
+                break;
+            case "Other":
+                mBackgroundDetailsMain.setBackgroundColor(getResources().getColor(R.color.backgroundExerciseOther));
+                mExerciseTypeTitle.setText(R.string.exercise_other);
+                mExerciseTypeSymbol.setImageResource(R.drawable.flower);
+                break;
+        }
+
     }
 }
