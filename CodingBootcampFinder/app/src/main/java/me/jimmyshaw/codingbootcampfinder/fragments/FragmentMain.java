@@ -1,8 +1,10 @@
 package me.jimmyshaw.codingbootcampfinder.fragments;
 
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,10 @@ import me.jimmyshaw.codingbootcampfinder.R;
 public class FragmentMain extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+
+    private MarkerOptions mUserMarker;
+
+    private final int ZOOM_LEVEL = 15;
 
     public FragmentMain() {
         // Required empty public constructor
@@ -63,10 +69,18 @@ public class FragmentMain extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+
+    public void setUserMarker(LatLng latLng) {
+        // If there's no user market, we create one based on the passed in lat and long.
+        if (mUserMarker == null) {
+            Log.d("FragmentMain", "Current location: " + "lat " + latLng.latitude + " lng " + latLng.longitude);
+            mUserMarker = new MarkerOptions().position(latLng).title("Current location");
+            mMap.addMarker(mUserMarker);
+
+        }
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_LEVEL));
     }
 
 }

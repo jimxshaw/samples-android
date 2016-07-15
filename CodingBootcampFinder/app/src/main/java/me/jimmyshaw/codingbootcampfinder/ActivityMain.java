@@ -16,6 +16,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 
 import me.jimmyshaw.codingbootcampfinder.fragments.FragmentMain;
 
@@ -87,6 +88,8 @@ public class ActivityMain extends FragmentActivity implements GoogleApiClient.On
     @Override
     public void onLocationChanged(Location location) {
         Log.d("ActivityMain", "lat: " + location.getLatitude() + " " + "lng: " + location.getLongitude());
+        // Our fragment, which displays the map, need to know the user's location.
+        mFragmentMain.setUserMarker(new LatLng(location.getLatitude(), location.getLongitude()));
     }
 
     @Override
