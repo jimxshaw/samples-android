@@ -65,11 +65,16 @@ public class ActivityMain extends FragmentActivity implements GoogleApiClient.On
         // However, we only start location services if the user gives permission. If permission hasn't
         // been granted then we request it.
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // When we request permissions, we use a string array to place any number of permissions
+            // in this particular request. In this case, we're only requesting one permission, the
+            // fine location permission. We use an arbitrary constant int value as the identifier of
+            // this permission request.
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION);
             Log.d("ActivityMain", "Requesting permissions");
         }
         else {
             // If permission has already been granted then do start the location services.
+            Log.d("ActivityMain", "onConnected start location services");
             startLocationServices();
         }
     }
@@ -81,12 +86,36 @@ public class ActivityMain extends FragmentActivity implements GoogleApiClient.On
 
     @Override
     public void onLocationChanged(Location location) {
-
+        Log.d("ActivityMain", "lat: " + location.getLatitude() + " " + "lng: " + location.getLongitude());
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // The request code constant is simply an arbitrary code that acts as an identifier of a
+        // permission request.
+        switch (requestCode) {
+            case PERMISSION_LOCATION:
+                // We check if there's at least one result of permission being granted and check that
+                // the first result has actually been granted. If all of that is true then start
+                // the location services.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("ActivityMain", "onRequestPermissionResult start location services");
+                    startLocationServices();
+                }
+                else {
+                    // If permission is denied, show a dialog stating that location services cannot
+                    // run if permission is denied.
+                    Log.d("ActivityMain", "Permission denied, cannot start location services");
+                }
+                break;
+        }
     }
 
     private void loadFragment() {
@@ -119,4 +148,5 @@ public class ActivityMain extends FragmentActivity implements GoogleApiClient.On
             ex.printStackTrace();
         }
     }
+
 }
