@@ -1,10 +1,14 @@
 package me.jimmyshaw.codingbootcampfinder;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -18,6 +22,8 @@ import me.jimmyshaw.codingbootcampfinder.fragments.FragmentMain;
 public class ActivityMain extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks,
         LocationListener {
+
+    private final int PERMISSION_LOCATION = 100;
 
     private FragmentMain mFragmentMain;
 
@@ -55,7 +61,17 @@ public class ActivityMain extends FragmentActivity implements GoogleApiClient.On
         // This method is called by our Google API services client after a connection has been
         // established. Where the connection actually happens is within this activity's onStart and
         // the disconnection is within this activity's onStop.
-        // However, we only start location services if the user gives permission.
+
+        // However, we only start location services if the user gives permission. If permission hasn't
+        // been granted then we request it.
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_LOCATION);
+            Log.d("ActivityMain", "Requesting permissions");
+        }
+        else {
+            // If permission has already been granted then do start the location services.
+            startLocationServices();
+        }
     }
 
     @Override
