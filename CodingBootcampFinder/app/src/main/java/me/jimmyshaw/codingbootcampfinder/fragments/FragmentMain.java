@@ -1,12 +1,18 @@
 package me.jimmyshaw.codingbootcampfinder.fragments;
 
 
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -16,7 +22,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import me.jimmyshaw.codingbootcampfinder.R;
 import me.jimmyshaw.codingbootcampfinder.models.Camp;
@@ -29,6 +38,10 @@ public class FragmentMain extends Fragment implements OnMapReadyCallback {
     private MarkerOptions mUserMarker;
 
     private final int ZOOM_LEVEL = 15;
+
+    private EditText mEditTextZipCode;
+
+    private int mZipCode;
 
     public FragmentMain() {
         // Required empty public constructor
@@ -57,6 +70,8 @@ public class FragmentMain extends Fragment implements OnMapReadyCallback {
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        captureUserInputZipCodeFromEditText(view);
+
         return view;
     }
 
@@ -84,6 +99,18 @@ public class FragmentMain extends Fragment implements OnMapReadyCallback {
 
         }
 
+        try {
+            // Use Geocoder to automatically set the user marker at the user's present location.
+            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            mZipCode = Integer.parseInt(addresses.get(0).getPostalCode());
+
+            updateMapForZipCode(mZipCode);
+        }
+        catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
         updateMapForZipCode(94102);
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_LEVEL));
@@ -105,6 +132,31 @@ public class FragmentMain extends Fragment implements OnMapReadyCallback {
 
             mMap.addMarker(marker);
         }
+    }
+
+    private void captureUserInputZipCodeFromEditText(View view) {
+        mEditTextZipCode = (EditText) view.findViewById(R.id.edit_text_zip_code);
+        mEditTextZipCode.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+
+                if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == keyEvent.KEYCODE_ENTER)) {
+                    // TODO: Add validation
+                    String userInput = mEditTextZipCode.getText().toString();
+                    mZipCode = Integer.parseInt(userInput);
+
+                    // We get rid of the keyboard after the user submits the edit text input.
+                    InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(mEditTextZipCode.getWindowToken(), 0);
+
+                    updateMapForZipCode(mZipCode);
+
+                    return true;
+                }
+
+                return false;
+            }
+        });
     }
 
 }

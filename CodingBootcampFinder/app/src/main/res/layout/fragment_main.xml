@@ -29,6 +29,7 @@
                 android:src="@drawable/search"/>
 
             <EditText
+                android:id="@+id/edit_text_zip_code"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="6"
