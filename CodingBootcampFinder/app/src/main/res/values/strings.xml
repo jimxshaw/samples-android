@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Coding Bootcamp Finder</string>
     <string name="title_activity_activity_main">Map</string>
+    <string name="vital_info">AIzaSyDMItwYPhvE3oUWM-cqa6MqNkVvHSmTS-M</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="search_box_hint">Please enter a ZIP code</string>
