@@ -16,7 +16,7 @@ public class DataService {
 
     }
 
-    public ArrayList<Camp> GetCampLocationsWithinTenMilesOfZipCode(int zipCode) {
+    public ArrayList<Camp> getCampLocationsWithinTenMilesOfZipCode(int zipCode) {
         // Pretending to download data from a server.
         ArrayList<Camp> camps = new ArrayList<>();
         camps.add(new Camp(37.783697f, -122.408966f, "Hack Reactor", "944 Market St, San Francisco, CA 94102", "sof"));

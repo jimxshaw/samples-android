@@ -1,7 +1,6 @@
 package me.jimmyshaw.codingbootcampfinder.fragments;
 
 
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,10 +12,15 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 import me.jimmyshaw.codingbootcampfinder.R;
+import me.jimmyshaw.codingbootcampfinder.models.Camp;
+import me.jimmyshaw.codingbootcampfinder.services.DataService;
 
 public class FragmentMain extends Fragment implements OnMapReadyCallback {
 
@@ -80,7 +84,27 @@ public class FragmentMain extends Fragment implements OnMapReadyCallback {
 
         }
 
+        updateMapForZipCode(94102);
+
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_LEVEL));
+    }
+
+    private void updateMapForZipCode(int zipCode) {
+        // Get a list of camps from our data service singleton.
+        ArrayList<Camp> campsList = DataService.getInstance().getCampLocationsWithinTenMilesOfZipCode(zipCode);
+
+        for (int i = 0; i < campsList.size(); i++) {
+            // For each camp in our camps list, add that camp's lat and lng plus other fields
+            // to a new map marker object. Finally, add the new marker to our map.
+            Camp camp = campsList.get(i);
+
+            MarkerOptions marker = new MarkerOptions().position(new LatLng(camp.getLatitude(), camp.getLongitude()));
+            marker.title(camp.getLocationTitle());
+            marker.snippet(camp.getLocationAddress());
+            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.map_pin));
+
+            mMap.addMarker(marker);
+        }
     }
 
 }
