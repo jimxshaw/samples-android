@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="me.jimmyshaw.codingbootcampfinder.ActivityMain">
+    tools:context=".activities.ActivityMain">
 
     <FrameLayout
         android:id="@+id/frame_layout_container_main"

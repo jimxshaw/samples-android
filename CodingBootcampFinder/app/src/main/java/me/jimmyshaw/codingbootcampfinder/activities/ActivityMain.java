@@ -1,4 +1,4 @@
-package me.jimmyshaw.codingbootcampfinder;
+package me.jimmyshaw.codingbootcampfinder.activities;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -18,6 +18,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 
+import me.jimmyshaw.codingbootcampfinder.R;
 import me.jimmyshaw.codingbootcampfinder.fragments.FragmentMain;
 
 public class ActivityMain extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener,
