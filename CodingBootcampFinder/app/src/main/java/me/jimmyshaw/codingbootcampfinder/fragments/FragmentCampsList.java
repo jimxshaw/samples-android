@@ -54,7 +54,7 @@ public class FragmentCampsList extends Fragment {
     private void setupRecyclerView(View view) {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setAdapter(new CampAdapter(mCamps));
+        mRecyclerView.setAdapter(new CampAdapter(getActivity(), mCamps));
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);

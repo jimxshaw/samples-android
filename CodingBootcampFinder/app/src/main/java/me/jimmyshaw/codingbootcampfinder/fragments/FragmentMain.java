@@ -43,6 +43,8 @@ public class FragmentMain extends Fragment implements OnMapReadyCallback {
 
     private int mZipCode;
 
+    private FragmentCampsList mFragmentCampsList;
+
     public FragmentMain() {
         // Required empty public constructor
     }
@@ -70,7 +72,11 @@ public class FragmentMain extends Fragment implements OnMapReadyCallback {
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        initilizeFragmentCampsList();
+
         captureUserInputZipCodeFromEditText(view);
+
+        hideCampsList();
 
         return view;
     }
@@ -149,6 +155,8 @@ public class FragmentMain extends Fragment implements OnMapReadyCallback {
                     InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     inputMethodManager.hideSoftInputFromWindow(mEditTextZipCode.getWindowToken(), 0);
 
+                    showCampsList();
+
                     updateMapForZipCode(mZipCode);
 
                     return true;
@@ -157,6 +165,26 @@ public class FragmentMain extends Fragment implements OnMapReadyCallback {
                 return false;
             }
         });
+    }
+
+    private void initilizeFragmentCampsList() {
+        mFragmentCampsList = (FragmentCampsList) getActivity().getSupportFragmentManager().findFragmentById(R.id.container_camps_list);
+
+        if (mFragmentCampsList == null) {
+            mFragmentCampsList = mFragmentCampsList.newInstance();
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.container_camps_list, mFragmentCampsList)
+                    .commit();
+        }
+    }
+
+    private void showCampsList() {
+        getActivity().getSupportFragmentManager().beginTransaction().show(mFragmentCampsList).commit();
+    }
+
+    private void hideCampsList() {
+        getActivity().getSupportFragmentManager().beginTransaction().hide(mFragmentCampsList).commit();
     }
 
 }

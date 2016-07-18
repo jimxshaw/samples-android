@@ -2,6 +2,8 @@ package me.jimmyshaw.codingbootcampfinder.models;
 
 public class Camp {
 
+    private final String DRAWABLE = "drawable/";
+
     private float mLatitude;
     private float mLongitude;
     private String mLocationTitle;
@@ -14,6 +16,10 @@ public class Camp {
         mLocationTitle = locationTitle;
         mLocationAddress = locationAddress;
         mLocationImgUrl = locationImgUrl;
+    }
+
+    public String getImgUrl() {
+        return DRAWABLE + mLocationImgUrl;
     }
 
     public String getLocationTitle() {
