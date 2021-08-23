@@ -1,8 +1,16 @@
 <resources>
     <string name="app_name">SimpleQuiz</string>
-    <string name="question_text">Burj Khalifa is the tallest building in the world.</string>
+
+    <string name="question_tallest_building">Burj Khalifa is the tallest building in the world.</string>
+    <string name="question_earth">Earth has 6 continents.</string>
+    <string name="question_animal">Platypus is the only mammal that lay eggs.</string>
+    <string name="question_us">The United States was founded in 1776.</string>
+    <string name="question_android">Android\'s runtime environment is called ART.</string>
+
     <string name="true_button">True</string>
     <string name="false_button">False</string>
+    <string name="next_button">Next</string>
+
     <string name="correct_toast">Correct!</string>
     <string name="wrong_toast">Wrong!</string>
 </resources>
