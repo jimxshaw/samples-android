@@ -34,21 +34,11 @@ class MainActivity : AppCompatActivity() {
 
 
         trueButton.setOnClickListener {
-            Toast.makeText(
-                this,
-                R.string.correct_toast,
-                Toast.LENGTH_SHORT
-            )
-                .show()
+            checkAnswer(true)
         }
 
         falseButton.setOnClickListener {
-            Toast.makeText(
-                this,
-                R.string.wrong_toast,
-                Toast.LENGTH_SHORT
-            )
-                .show()
+            checkAnswer(false)
         }
 
         nextButton.setOnClickListener {
@@ -64,5 +54,22 @@ class MainActivity : AppCompatActivity() {
         val questionTextResId = questionBank[currentIndex].textResId
 
         questionTextView.setText(questionTextResId)
+    }
+
+    private fun checkAnswer(userAnswer: Boolean) {
+        val correctAnswer = questionBank[currentIndex].answer
+
+        val messageResId = if (userAnswer == correctAnswer) {
+            R.string.correct_toast
+        } else {
+            R.string.wrong_toast
+        }
+
+        Toast.makeText(
+            this,
+            messageResId,
+            Toast.LENGTH_SHORT
+        )
+            .show()
     }
 }
