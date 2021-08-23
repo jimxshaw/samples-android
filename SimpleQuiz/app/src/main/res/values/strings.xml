@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">SimpleQuiz</string>
+    <string name="question_text">Burj Khalifa is the tallest building in the world.</string>
+    <string name="true_button">True</string>
+    <string name="false_button">False</string>
+    <string name="correct_toast">Correct!</string>
+    <string name="wrong_toast">Wrong!</string>
+</resources>
