@@ -1,5 +1,6 @@
 package me.jimmyshaw.simplequiz
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -16,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var trueButton: Button
     private lateinit var falseButton: Button
     private lateinit var nextButton: Button
+    private lateinit var cheatButton: Button
     private lateinit var questionTextView: TextView
 
     private val quizViewModel: QuizViewModel by lazy {
@@ -32,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         trueButton = findViewById(R.id.btn_true)
         falseButton = findViewById(R.id.btn_false)
         nextButton = findViewById(R.id.btn_next)
+        cheatButton = findViewById(R.id.btn_cheat)
         questionTextView = findViewById(R.id.tv_question)
 
 
@@ -46,6 +49,11 @@ class MainActivity : AppCompatActivity() {
         nextButton.setOnClickListener {
             quizViewModel.moveToNext()
             updateQuestion()
+        }
+
+        cheatButton.setOnClickListener {
+            val intent = Intent(this, CheatActivity::class.java)
+            startActivity(intent)
         }
 
         updateQuestion()
