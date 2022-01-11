@@ -9,10 +9,22 @@
             android:id="@+id/firstFragment"
             android:name="me.jimmyshaw.navigationcomponent.FirstFragment"
             android:label="fragment_first"
-            tools:layout="@layout/fragment_first" />
+            tools:layout="@layout/fragment_first">
+        <action
+                android:id="@+id/actionNavigateToSecondFragment"
+                app:destination="@id/secondFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
     <fragment
             android:id="@+id/secondFragment"
             android:name="me.jimmyshaw.navigationcomponent.SecondFragment"
             android:label="fragment_second"
-            tools:layout="@layout/fragment_second" />
+            tools:layout="@layout/fragment_second">
+        <action
+                android:id="@+id/actionNavigateToFirstFragment"
+                app:destination="@id/firstFragment"
+                app:enterAnim="@android:anim/slide_in_left"
+                app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
 </navigation>
