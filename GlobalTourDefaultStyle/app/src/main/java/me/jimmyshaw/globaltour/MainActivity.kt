@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFrag.navController
 
         // Define AppBarConfiguration: Connect DrawerLayout with Navigation Component
-        val appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
+        val appBarConfiguration = AppBarConfiguration(setOf(R.id.fragmentFavoriteList, R.id.fragmentCityList), drawerLayout)
 
         // Connect Toolbar with NavController
         toolbar.setupWithNavController(navController, appBarConfiguration)
