@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GlobalTour</string>
+    <string name="nav_menu_about_app">About</string>
 </resources>
